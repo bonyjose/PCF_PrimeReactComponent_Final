@@ -8,6 +8,9 @@ import { Dropdown } from "primereact/dropdown";
 // import "./CSS/primeicons.css";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import {GridQuarterlyComponent} from './GridComponents/QuarterlyGrid'
+import{ GridMonthlyComponent} from './GridComponents/MonthlyGrid'
+import{ GridYearlyComponent} from './GridComponents/YearlyGrid'
 
 interface Props {}
 interface State {
@@ -17,6 +20,7 @@ interface State {
 
 export class App extends React.Component<Props, State> {
   products: { id: string; name: string; place: string; price: string }[];
+  //   Lists: {};
 
   constructor(props: Props) {
     super(props);
@@ -26,7 +30,7 @@ export class App extends React.Component<Props, State> {
         { label: "Monthly", value: "Monthly" },
         { label: "Quarterly", value: "Quarterly" },
       ],
-      SelectedLayout: "",
+      SelectedLayout: "Yearly",
     };
     this.products = [
       {
@@ -72,13 +76,7 @@ export class App extends React.Component<Props, State> {
         price: "30",
       },
     ];
-    this.increment = this.increment.bind(this);
-  }
-
-  increment() {
-    // this.setState({
-    //     count: this.state.count + 1
-    // });
+    this.handleChange = this.handleChange.bind(this);
   }
 
   LayoutGridYearly() {
@@ -98,6 +96,7 @@ export class App extends React.Component<Props, State> {
   }
 
   LayoutGridMonthly() {
+    debugger;
     return (
       <DataTable
         value={this.products}
@@ -128,31 +127,40 @@ export class App extends React.Component<Props, State> {
       </DataTable>
     );
   }
-chooseLayout()
-{
-    if (this.state.SelectedLayout == "Yearly")
-        {
-            return <this.LayoutGridYearly />
-        }
-        else if (this.state.SelectedLayout == "Quarterly")
-        {
-            return  <this.LayoutGridQuarterly />
-        }
-         else if (this.state.SelectedLayout == "Monthly")
-        {
-            return <this.LayoutGridMonthly />
-        }
-}
+  chooseLayout() {
+    debugger;
+    if (this.state.SelectedLayout == "Yearly") {
+      return <this.LayoutGridYearly />;
+    } else if (this.state.SelectedLayout == "Quarterly") {
+      return <this.LayoutGridQuarterly />;
+    } else if (this.state.SelectedLayout == "Monthly") {
+      <this.LayoutGridMonthly />;
+    }
+  }
 
-// onChangeOption(e){
-//     if (e.detail === 0){
-//         console.log(e.target.value);
-//     }
-// }
-
-
+  handleChange(e: { originalEvent: Event; value: any }) {
+    this.setState({ SelectedLayout: e.value });
+    debugger;
+    // this.chooseLayout();
+  }
 
   public render() {
+    const SelectedLayout = this.state.SelectedLayout;
+    let Div;
+    if (SelectedLayout == "Yearly")
+    {
+      Div = <GridYearlyComponent />;
+    } 
+    else if (SelectedLayout == "Monthly")
+    {
+      Div = <GridMonthlyComponent/>;
+    }
+    else if (SelectedLayout == "Quarterly")
+    {
+      Div = <GridQuarterlyComponent/>;
+    }
+
+
     return (
       <div className="App">
         <label htmlFor="LayoutType"> Layout Type </label>
@@ -160,19 +168,19 @@ chooseLayout()
           value={this.state.SelectedLayout}
           options={this.state.LayoutType}
           onChange={(e) => {
-            this.setState(
-                { SelectedLayout: e.value }
-                ); this.chooseLayout();
+            this.handleChange(e);
           }}
           placeholder="Select a Layout"
         />{" "}
         <br />
-        
         <h3>DataTable</h3>
-         
+        {Div}
       </div>
     );
   }
 }
 
+
+
+ 
 export default App;
