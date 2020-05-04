@@ -17,7 +17,6 @@ interface State {
 
 export class App extends React.Component<Props, State> {
   products: { id: string; name: string; place: string; price: string }[];
-  //   Lists: {};
 
   constructor(props: Props) {
     super(props);
@@ -82,33 +81,95 @@ export class App extends React.Component<Props, State> {
     // });
   }
 
-  // products:[];
+  LayoutGridYearly() {
+    return (
+      <DataTable
+        value={this.products}
+        paginator={true}
+        rows={5}
+        rowsPerPageOptions={[5, 10, 30]}
+      >
+        <Column field="id" header="ID" />
+        <Column field="name" header="Name" />
+        <Column field="PRice" header="Price" />
+        <Column field="place" header="place" />
+      </DataTable>
+    );
+  }
+
+  LayoutGridMonthly() {
+    return (
+      <DataTable
+        value={this.products}
+        paginator={true}
+        rows={5}
+        rowsPerPageOptions={[5, 10, 30]}
+      >
+        <Column field="id" header="ID" />
+        <Column field="name" header="Name" />
+        <Column field="PRice" header="Price" />
+        <Column field="place" header="place" />
+      </DataTable>
+    );
+  }
+
+  LayoutGridQuarterly() {
+    return (
+      <DataTable
+        value={this.products}
+        paginator={true}
+        rows={5}
+        rowsPerPageOptions={[5, 10, 30]}
+      >
+        <Column field="id" header="ID" />
+        <Column field="name" header="Name" />
+        <Column field="PRice" header="Price" />
+        <Column field="place" header="place" />
+      </DataTable>
+    );
+  }
+chooseLayout()
+{
+    if (this.state.SelectedLayout == "Yearly")
+        {
+            return <this.LayoutGridYearly />
+        }
+        else if (this.state.SelectedLayout == "Quarterly")
+        {
+            return  <this.LayoutGridQuarterly />
+        }
+         else if (this.state.SelectedLayout == "Monthly")
+        {
+            return <this.LayoutGridMonthly />
+        }
+}
+
+// onChangeOption(e){
+//     if (e.detail === 0){
+//         console.log(e.target.value);
+//     }
+// }
+
+
 
   public render() {
     return (
       <div className="App">
-        <label htmlFor="LayoutType"> Countries </label>
+        <label htmlFor="LayoutType"> Layout Type </label>
         <Dropdown
           value={this.state.SelectedLayout}
           options={this.state.LayoutType}
           onChange={(e) => {
-            this.setState({ SelectedLayout: e.value });
+            this.setState(
+                { SelectedLayout: e.value }
+                ); this.chooseLayout();
           }}
           placeholder="Select a Layout"
-        />
-
+        />{" "}
+        <br />
+        
         <h3>DataTable</h3>
-        <DataTable
-          value={this.products}
-          paginator={true}
-          rows={5}
-          rowsPerPageOptions={[5, 10, 30]}
-        >
-          <Column field="id" header="ID" />
-          <Column field="name" header="Name" />
-          <Column field="PRice" header="Price" />
-          <Column field="place" header="place" />
-        </DataTable>
+         
       </div>
     );
   }
