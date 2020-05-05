@@ -101,9 +101,10 @@ interface State {
 
      /* Cell Editing */
      onEditorValueChange(props, value) {
-      let updatedCars = [...props.value];
-      updatedCars[props.rowIndex][props.field] = value;
-      this.setState({cars1: updatedCars});
+      let updatedProducts = [...props.value];
+      updatedProducts[props.rowIndex][props.field] = value;
+      debugger;
+      this.setState({products: updatedProducts});
   }
 
   inputTextEditor(props, field) {
