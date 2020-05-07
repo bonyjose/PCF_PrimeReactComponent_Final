@@ -24,7 +24,7 @@ export interface State {
         SelectedLayout: "Yearly",
     };
    
-    // this.setState({products : this.props["columns"]});
+    // this.setState({ products : this.props["columns"]});
     debugger;
 
       this.clonedProducts = {};
@@ -35,6 +35,14 @@ export interface State {
       this.requiredValidator = this.requiredValidator.bind(this);
     }
   
+    componentDidUpdate() {
+      debugger;
+      if (this.state.products !== this.props["columns"]) 
+      {
+        this.setState({products: this.props["columns"]});
+        this.render();
+    }
+   }
     render() {
       debugger;
       let products = this.state.products;

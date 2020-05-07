@@ -40,11 +40,14 @@ export class App extends React.Component<Props, State> {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  // componentDidUpdate() {
-  //   debugger;
-  //   this.setState({products: this.props.data});
-  //   // this.render();
-  // }
+  componentDidUpdate() {
+    debugger;
+    if (this.state.products !== this.props.data) 
+    {
+      this.setState({products: this.props.data});
+      this.render();
+  }
+ }
 
   handleChange(e: { originalEvent: Event; value: any }) {
     this.setState({ SelectedLayout: e.value });
