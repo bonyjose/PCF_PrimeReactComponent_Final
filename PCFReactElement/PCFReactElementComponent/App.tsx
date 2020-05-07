@@ -23,8 +23,6 @@ export interface State {
 
 export class App extends React.Component<Props, State> {
   products: any;
- 
-  //   Lists: {};
 
   constructor(props: Props) {
     super(props);
@@ -45,26 +43,23 @@ export class App extends React.Component<Props, State> {
   handleChange(e: { originalEvent: Event; value: any }) {
     this.setState({ SelectedLayout: e.value });
     debugger;
-    this.render();
-    
-    // this.chooseLayout();
   }
 
   public render() {
     debugger;
     const SelectedLayout = this.state.SelectedLayout;
-    let Div;
+    let DataTable;
     if (SelectedLayout == "Yearly")
     {
-      Div = <GridYearlyComponent {...this.products}/>;
+      DataTable = <GridYearlyComponent {...this.products}/>;
     } 
     else if (SelectedLayout == "Monthly")
     {
-      Div = <GridMonthlyComponent {...this.products}/>;
+      DataTable = <GridMonthlyComponent {...this.products}/>;
     }
     else if (SelectedLayout == "Quarterly")
     {
-      Div = <GridQuarterlyComponent/>;
+      DataTable = <GridQuarterlyComponent/>;
     }
 
 
@@ -80,8 +75,7 @@ export class App extends React.Component<Props, State> {
           placeholder="Select a Layout"
         />{" "}
         <br />
-        <h3>DataTable</h3>
-        {Div}
+        {DataTable}
       </div>
     );
   }
