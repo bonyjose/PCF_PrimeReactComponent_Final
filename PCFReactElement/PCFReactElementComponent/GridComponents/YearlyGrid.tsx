@@ -1,34 +1,30 @@
 import React  from "react";
 // import "./CSS/App.css";
-
-// import { Button } from 'primereact/button';
-import { Dropdown } from "primereact/dropdown";
-// import "./CSS/primereact.min.css";
-// import "./CSS/theme.css";
-// import "./CSS/primeicons.css";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
 import {InputText} from 'primereact/inputtext';
  
-interface Props {
+export interface Props {
   data: any;
   columns:[];
 }
-interface State {
-  LayoutType: { label: string; value: string }[];
+export interface State {
   SelectedLayout: string;
+  products:any;
 }
- export class GridYearlyComponent extends React.Component {
+ export class GridYearlyComponent extends React.Component<Props,State> {
    clonedProducts: {};
-   products: any;
+   
     constructor(props: Props) {
+      debugger;
       super(props);
       this.state = {
-       
+        products: this.props["columns"],
+        SelectedLayout: "Yearly",
     };
    
-    this.products = this.props["columns"];
+    // this.setState({products : this.props["columns"]});
     debugger;
 
       this.clonedProducts = {};
@@ -41,9 +37,10 @@ interface State {
   
     render() {
       debugger;
+      let products = this.state.products;
       return (
         <DataTable
-          value={this.products}
+          value={products}
           paginator={true}
           rows={5}
           editMode ="Cell"

@@ -26,6 +26,7 @@ export class App extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
+    debugger;
     this.state = {
       products : this.props.data,
       LayoutType: [
@@ -35,13 +36,19 @@ export class App extends React.Component<Props, State> {
       ],
       SelectedLayout: "Yearly",
     };
-    // this.products = props.data;
     // this.setState({ products : this.props.data});
     this.handleChange = this.handleChange.bind(this);
   }
 
+  // componentDidUpdate() {
+  //   debugger;
+  //   this.setState({products: this.props.data});
+  //   // this.render();
+  // }
+
   handleChange(e: { originalEvent: Event; value: any }) {
     this.setState({ SelectedLayout: e.value });
+
     debugger;
   }
 
@@ -49,7 +56,7 @@ export class App extends React.Component<Props, State> {
     debugger;
     // this.setState({ products : this.props.data});
     const SelectedLayout = this.state.SelectedLayout;
-    let products =this.state.products;
+    let products = this.state.products;
     let DataTable;
     if (SelectedLayout == "Yearly")
     {
