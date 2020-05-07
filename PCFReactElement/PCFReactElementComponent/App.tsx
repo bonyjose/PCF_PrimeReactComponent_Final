@@ -75,15 +75,20 @@ export class App extends React.Component<Props, State> {
     }
     return (
       <div className="App">
-        <label htmlFor="LayoutType"> Layout Type </label>
-        <Dropdown
+        <span className="DropDown">
+        <label htmlFor="LayoutType" > Layout Type </label> &nbsp; &nbsp;
+        <Dropdown 
+          name="LayoutType"
           value={this.state.SelectedLayout}
           options={this.state.LayoutType}
           onChange={(e) => {
             this.handleChange(e);
           }}
           placeholder="Select a Layout"
-        />{" "}
+        />
+        </span>
+       {" "}
+        <br />
         <br />
         {DataTable}
       </div>
