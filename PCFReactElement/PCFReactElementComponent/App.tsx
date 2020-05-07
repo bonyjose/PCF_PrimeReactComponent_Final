@@ -19,14 +19,15 @@ export interface Props {
 export interface State {
   LayoutType: { label: string; value: string }[];
   SelectedLayout: string;
+  products :any;
 }
 
 export class App extends React.Component<Props, State> {
-  products: any;
 
   constructor(props: Props) {
     super(props);
     this.state = {
+      products : this.props.data,
       LayoutType: [
         { label: "Yearly", value: "Yearly" },
         { label: "Monthly", value: "Monthly" },
@@ -34,11 +35,10 @@ export class App extends React.Component<Props, State> {
       ],
       SelectedLayout: "Yearly",
     };
-    this.products = props.data;
+    // this.products = props.data;
+    // this.setState({ products : this.props.data});
     this.handleChange = this.handleChange.bind(this);
   }
-
- 
 
   handleChange(e: { originalEvent: Event; value: any }) {
     this.setState({ SelectedLayout: e.value });
@@ -47,22 +47,22 @@ export class App extends React.Component<Props, State> {
 
   public render() {
     debugger;
+    // this.setState({ products : this.props.data});
     const SelectedLayout = this.state.SelectedLayout;
+    let products =this.state.products;
     let DataTable;
     if (SelectedLayout == "Yearly")
     {
-      DataTable = <GridYearlyComponent {...this.products}/>;
+      DataTable = <GridYearlyComponent {...products}/>;
     } 
     else if (SelectedLayout == "Monthly")
     {
-      DataTable = <GridMonthlyComponent {...this.products}/>;
+      DataTable = <GridMonthlyComponent {...products}/>;
     }
     else if (SelectedLayout == "Quarterly")
     {
       DataTable = <GridQuarterlyComponent/>;
     }
-
-
     return (
       <div className="App">
         <label htmlFor="LayoutType"> Layout Type </label>
@@ -81,7 +81,4 @@ export class App extends React.Component<Props, State> {
   }
 }
 
-
-
- 
 export default App;

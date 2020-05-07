@@ -20,7 +20,7 @@ interface State {
   SelectedLayout: string;
 }
  export class GridYearlyComponent extends React.Component {
-   clonedCars: {};
+   clonedProducts: {};
    products: any;
     constructor(props: Props) {
       super(props);
@@ -31,8 +31,7 @@ interface State {
     this.products = this.props["columns"];
     debugger;
 
-      this.clonedCars = {};
-
+      this.clonedProducts = {};
       this.vinEditor = this.vinEditor.bind(this);
       this.yearEditor = this.yearEditor.bind(this);
       this.brandEditor = this.brandEditor.bind(this);

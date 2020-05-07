@@ -48,7 +48,7 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
 		debugger;
-		let DSet =context.parameters.sampleDataSet;
+		this._props.data =context.parameters.sampleDataSet;
 		ReactDOM.render(
 			React.createElement(
 				App,
