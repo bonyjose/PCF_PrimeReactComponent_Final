@@ -76,7 +76,7 @@ export class App extends React.Component<Props, State> {
     return (
       <div className="App">
         <span className="DropDown">
-        <label htmlFor="LayoutType" > Layout Type </label> &nbsp; &nbsp;
+        <label htmlFor="LayoutType" > View As </label> &nbsp; &nbsp;
         <Dropdown 
           name="LayoutType"
           value={this.state.SelectedLayout}
