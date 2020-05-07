@@ -3,7 +3,7 @@ import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {App } from './App';
+import {App,Props,State } from './App';
 
 export class PCFReactElementComponent implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
@@ -11,6 +11,11 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	private theContainer: HTMLDivElement;
 	_labelElement: HTMLElement;
 
+	private _props: Props = {
+		data: [],
+		columns: []
+	
+	}
 
 	constructor()
 	{
@@ -30,7 +35,9 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 		this.notifyOutputChanged = notifyOutputChanged;
 		// this.props.numberOfFaces = context.parameters.numberOfFaces.raw || 3;
 		this.theContainer = container;
-		this._labelElement =  document.createElement("App.css");
+		// this._labelElement =  document.createElement("App.css");
+		debugger;
+		this._props.data =context.parameters.sampleDataSet;
 	}
 
 
@@ -40,10 +47,12 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	 */
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
+		debugger;
+		let DSet =context.parameters.sampleDataSet;
 		ReactDOM.render(
 			React.createElement(
-				App
-				// , document.getElementById('root')
+				App,
+				this._props
 			),
 			this.theContainer
 		);

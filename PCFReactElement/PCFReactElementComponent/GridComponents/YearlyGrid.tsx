@@ -11,65 +11,25 @@ import { Column } from "primereact/column";
 
 import {InputText} from 'primereact/inputtext';
  
-interface Props {}
+interface Props {
+  data: any;
+  columns:[];
+}
 interface State {
   LayoutType: { label: string; value: string }[];
   SelectedLayout: string;
 }
  export class GridYearlyComponent extends React.Component {
    clonedCars: {};
-   products: { id: string; name: string; place: string; price: string; }[];
+   products: any;
     constructor(props: Props) {
       super(props);
       this.state = {
        
     };
-    this.products = [
-      {
-        id: "1",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "2",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "3",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "4",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "5",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "6",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "7",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-    ]
-     
-
+   
+    this.products = this.props["columns"];
+    debugger;
 
       this.clonedCars = {};
 
@@ -81,6 +41,7 @@ interface State {
     }
   
     render() {
+      debugger;
       return (
         <DataTable
           value={this.products}
@@ -89,10 +50,10 @@ interface State {
           editMode ="Cell"
           rowsPerPageOptions={[5, 10, 30]}
         >
-          <Column field="id" header="ID"  editor={this.vinEditor} editorValidator={this.requiredValidator} style={{height: '3.5em'}}/>
-          <Column field="name" header="Name" editor={this.yearEditor} style={{height: '3.5em'}}/>
-          <Column field="Price" header="Price"   editor={this.brandEditor} style={{height: '3.5em'}} />
-          <Column field="place" header="place"  editor={this.colorEditor} style={{height: '3.5em'}} />
+          <Column field="name" header="Cash Flow Item Name"  editor={this.vinEditor} editorValidator={this.requiredValidator} style={{height: '3.5em'}}/>
+          <Column field="displayName" header="PPR" editor={this.yearEditor} style={{height: '3.5em'}}/>
+          <Column field="alias" header="Fiscal year"   editor={this.brandEditor} style={{height: '3.5em'}} />
+          <Column field="dataType" header="Line total"   editor={this.brandEditor} style={{height: '3.5em'}} />
         </DataTable>
       );
     }

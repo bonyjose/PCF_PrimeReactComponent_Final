@@ -12,14 +12,18 @@ import {GridQuarterlyComponent} from './GridComponents/QuarterlyGrid'
 import{ GridMonthlyComponent} from './GridComponents/MonthlyGrid'
 import{ GridYearlyComponent} from './GridComponents/YearlyGrid'
 
-interface Props {}
-interface State {
+export interface Props {
+  data: any;
+  columns:[];
+}
+export interface State {
   LayoutType: { label: string; value: string }[];
   SelectedLayout: string;
 }
 
 export class App extends React.Component<Props, State> {
-  products: { id: string; name: string; place: string; price: string }[];
+  products: any;
+ 
   //   Lists: {};
 
   constructor(props: Props) {
@@ -32,128 +36,31 @@ export class App extends React.Component<Props, State> {
       ],
       SelectedLayout: "Yearly",
     };
-    this.products = [
-      {
-        id: "1",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "2",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "3",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "4",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "5",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "6",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "7",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-    ];
+    this.products = props.data;
     this.handleChange = this.handleChange.bind(this);
   }
 
-  LayoutGridYearly() {
-    return (
-      <DataTable
-        value={this.products}
-        paginator={true}
-        rows={5}
-        rowsPerPageOptions={[5, 10, 30]}
-      >
-        <Column field="id" header="ID" />
-        <Column field="name" header="Name" />
-        <Column field="PRice" header="Price" />
-        <Column field="place" header="place" />
-      </DataTable>
-    );
-  }
-
-  LayoutGridMonthly() {
-    debugger;
-    return (
-      <DataTable
-        value={this.products}
-        paginator={true}
-        rows={5}
-        rowsPerPageOptions={[5, 10, 30]}
-      >
-        <Column field="id" header="ID" />
-        <Column field="name" header="Name" />
-        <Column field="PRice" header="Price" />
-        <Column field="place" header="place" />
-      </DataTable>
-    );
-  }
-
-  LayoutGridQuarterly() {
-    return (
-      <DataTable
-        value={this.products}
-        paginator={true}
-        rows={5}
-        rowsPerPageOptions={[5, 10, 30]}
-      >
-        <Column field="id" header="ID" />
-        <Column field="name" header="Name" />
-        <Column field="PRice" header="Price" />
-        <Column field="place" header="place" />
-      </DataTable>
-    );
-  }
-  chooseLayout() {
-    debugger;
-    if (this.state.SelectedLayout == "Yearly") {
-      return <this.LayoutGridYearly />;
-    } else if (this.state.SelectedLayout == "Quarterly") {
-      return <this.LayoutGridQuarterly />;
-    } else if (this.state.SelectedLayout == "Monthly") {
-      <this.LayoutGridMonthly />;
-    }
-  }
+ 
 
   handleChange(e: { originalEvent: Event; value: any }) {
     this.setState({ SelectedLayout: e.value });
     debugger;
+    this.render();
+    
     // this.chooseLayout();
   }
 
   public render() {
+    debugger;
     const SelectedLayout = this.state.SelectedLayout;
     let Div;
     if (SelectedLayout == "Yearly")
     {
-      Div = <GridYearlyComponent />;
+      Div = <GridYearlyComponent {...this.products}/>;
     } 
     else if (SelectedLayout == "Monthly")
     {
-      Div = <GridMonthlyComponent/>;
+      Div = <GridMonthlyComponent {...this.products}/>;
     }
     else if (SelectedLayout == "Quarterly")
     {
