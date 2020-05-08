@@ -20,6 +20,7 @@ export interface State {
   LayoutType: { label: string; value: string }[];
   SelectedLayout: string;
   products :any;
+  productsFomChild: any;
 }
 
 export class App extends React.Component<Props, State> {
@@ -29,6 +30,7 @@ export class App extends React.Component<Props, State> {
     debugger;
     this.state = {
       products : this.props.data,
+      productsFomChild :null,
       LayoutType: [
         { label: "Yearly", value: "Yearly" },
         { label: "Monthly", value: "Monthly" },
@@ -55,6 +57,15 @@ export class App extends React.Component<Props, State> {
     debugger;
   }
 
+  callbackFunction = (childData) => {  
+    debugger;
+    this.setState({productsFomChild: childData});
+    console.log(childData);
+  }
+  
+
+
+
   public render() {
     debugger;
     // this.setState({ products : this.props.data});
@@ -63,11 +74,11 @@ export class App extends React.Component<Props, State> {
     let DataTable;
     if (SelectedLayout == "Yearly")
     {
-      DataTable = <GridYearlyComponent {...products}/>;
+      DataTable = <GridYearlyComponent  parentCallback = {this.callbackFunction} {...products}/>;
     } 
     else if (SelectedLayout == "Monthly")
     {
-      DataTable = <GridMonthlyComponent {...products}/>;
+      DataTable = <GridMonthlyComponent parentCallback = {this.callbackFunction} {...products}/>;
     }
     else if (SelectedLayout == "Quarterly")
     {

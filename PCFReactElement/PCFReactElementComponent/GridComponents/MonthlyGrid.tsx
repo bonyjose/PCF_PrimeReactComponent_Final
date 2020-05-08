@@ -7,6 +7,7 @@ import { Column } from "primereact/column";
 export interface Props {
   data: any;
   columns: [];
+  parentCallback :any;
 }
 export interface State {
   SelectedLayout: string;
@@ -46,9 +47,17 @@ export class GridMonthlyComponent extends React.Component<Props, State> {
     if (this.state.products !== this.props["columns"]) 
     {
       this.setState({products: this.props["columns"]});
+      debugger;
+      let childproduct = this.state.products;
+      this.sendData(childproduct);
       // this.render();
   }
  }
+
+ sendData = (childproduct :any) => {
+   debugger;
+  this.props.parentCallback(childproduct);
+}
 
 
 
