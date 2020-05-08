@@ -40,7 +40,7 @@ export interface State {
       if (this.state.products !== this.props["columns"]) 
       {
         this.setState({products: this.props["columns"]});
-        this.render();
+        // this.render();
     }
    }
     render() {

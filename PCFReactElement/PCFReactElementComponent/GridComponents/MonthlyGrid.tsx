@@ -41,6 +41,17 @@ export class GridMonthlyComponent extends React.Component<Props, State> {
     this.requiredValidator = this.requiredValidator.bind(this);
   }
 
+  componentDidUpdate() {
+    debugger;
+    if (this.state.products !== this.props["columns"]) 
+    {
+      this.setState({products: this.props["columns"]});
+      // this.render();
+  }
+ }
+
+
+
   render() {
     debugger;
     let products =this.state.products;
@@ -71,79 +82,79 @@ export class GridMonthlyComponent extends React.Component<Props, State> {
           style={{ height: "3.5em" }}
         />
         <Column
-          // field="Jan"
+          field="name"
           header="Jan"
           editor={this.janEdit}
           style={{ height: "3.5em" }}
         />
         <Column
-          // field="Feb"
+          field="name"
           header="Feb"
           editor={this.febEdit}
           style={{ height: "3.5em" }}
         />
         <Column
-          // field="Mar"
+          field="name"
           header="March"
           editor={this.marEdit}
           style={{ height: "3.5em" }}
         />
         <Column
-          // field="Apr"
+          field="name"
           header="April"
           editor={this.aprEdit}
           style={{ height: "3.5em" }}
         />
         <Column
-          // field="May"
+          field="name"
           header="May"
           editor={this.mayEdit}
           style={{ height: "3.5em" }}
         />
         <Column
-          // field="Jun"
+          field="name"
           header="June"
           editor={this.junEdit}
           style={{ height: "3.5em" }}
         />
         <Column
-          // field="Jul"
+          field="name"
           header="July"
           editor={this.julEdit}
           style={{ height: "3.5em" }}
         />
         <Column
-          // field="Aug"
+          field="name"
           header="August"
           editor={this.augEdit}
           style={{ height: "3.5em" }}
         />
         <Column
-          // field="Sep"
+          field="name"
           header="September"
           editor={this.sepEdit}
           style={{ height: "3.5em" }}
         />
         <Column
-          // field="Oct"
+          field="name"
           header="October"
           editor={this.octEdit}
           style={{ height: "3.5em" }}
         />
         <Column
-          // field="Nov"
+          field="name"
           header="November"
           editor={this.novEdit}
           style={{ height: "3.5em" }}
         />
         <Column
-          // field="Dec"
+          field="name"
           header="December"
           editor={this.decEdit}
           style={{ height: "3.5em" }}
         />
         <Column
-          field="dataType"
+          field="name"
           header="Line total"
           editor={this.lineEdit}
           style={{ height: "3.5em" }}
