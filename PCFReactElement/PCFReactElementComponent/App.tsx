@@ -45,7 +45,7 @@ export class App extends React.Component<Props, State> {
     if (this.state.products !== this.props.data) 
     {
       this.setState({products: this.props.data});
-      this.render();
+      // this.render();
   }
  }
 

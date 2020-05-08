@@ -1,147 +1,229 @@
-import React  from "react";
+import React from "react";
 // import "./CSS/App.css";
-
-// import { Button } from 'primereact/button';
-import { Dropdown } from "primereact/dropdown";
-// import "./CSS/primereact.min.css";
-// import "./CSS/theme.css";
-// import "./CSS/primeicons.css";
+import { InputText } from "primereact/inputtext";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
- 
-interface Props {}
-interface State {
-  LayoutType: { label: string; value: string }[];
-  SelectedLayout: string;
+
+export interface Props {
+  data: any;
+  columns: [];
 }
- export class GridMonthlyComponent extends React.Component {
-    products: { Jan: string; Feb: string; Mar: string; Apr: string; May: string; Jun: string; Jul: string; Aug: string; Sep: string; Oct: string; Nov: string; Dec: string; }[];
-    
-    constructor(props: Props) {
-      super(props);
-      this.products = [
-        {
-          Jan: "",
-          Feb: "",
-          Mar: "",
-          Apr: "",
-          May :"",
-          Jun :"",
-          Jul:"",
-          Aug:"",
-          Sep:"",
-          Oct:"",
-          Nov:"",
-          Dec: ""
-        },
-        {
-            Jan: "",
-            Feb: "",
-            Mar: "",
-            Apr: "",
-            May :"",
-            Jun :"",
-            Jul:"",
-            Aug:"",
-            Sep:"",
-            Oct:"",
-            Nov:"",
-            Dec: ""
-        },
-        {
-            Jan: "",
-            Feb: "",
-            Mar: "",
-            Apr: "",
-            May :"",
-            Jun :"",
-            Jul:"",
-            Aug:"",
-            Sep:"",
-            Oct:"",
-            Nov:"",
-            Dec: ""
-        },
-        {
-            Jan: "",
-            Feb: "",
-            Mar: "",
-            Apr: "",
-            May :"",
-            Jun :"",
-            Jul:"",
-            Aug:"",
-            Sep:"",
-            Oct:"",
-            Nov:"",
-            Dec: ""
-        },
-        {
-            Jan: "",
-            Feb: "",
-            Mar: "",
-            Apr: "",
-            May :"",
-            Jun :"",
-            Jul:"",
-            Aug:"",
-            Sep:"",
-            Oct:"",
-            Nov:"",
-            Dec: ""
-        },
-        {
-            Jan: "",
-            Feb: "",
-            Mar: "",
-            Apr: "",
-            May :"",
-            Jun :"",
-            Jul:"",
-            Aug:"",
-            Sep:"",
-            Oct:"",
-            Nov:"",
-            Dec: ""
-        },
-        {
-            Jan: "",
-            Feb: "",
-            Mar: "",
-            Apr: "",
-            May :"",
-            Jun :"",
-            Jul:"",
-            Aug:"",
-            Sep:"",
-            Oct:"",
-            Nov:"",
-            Dec: ""
-        },
-      ];
-    }
-  
-    render() {
-      return (
-        <DataTable
-          value={this.products}
-          paginator={true}
-          rows={5}
-          rowsPerPageOptions={[5, 10, 30]}
-        >
-          <Column field="Jan" header="Jan" />
-          <Column field="Feb" header="Feb" />
-          <Column field="Mar" header="March" />
-          <Column field="Apr" header="April" />
-          <Column field="May" header="May" />
-          <Column field="Jun" header="June" />
-          <Column field="Jul" header="July" />
-          <Column field="Aug" header="August" />
-          <Column field="Sep" header="September" />
-          <Column field="Oct" header="October" />
-          <Column field="Nov" header="November" />
-          <Column field="Dec" header="December" />
-        </DataTable>
-      );
-    }
+export interface State {
+  SelectedLayout: string;
+  products: any;
+}
+export class GridMonthlyComponent extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    debugger;
+    this.state = {
+      products: this.props["columns"],
+      SelectedLayout: "Monthly",
+    };
+
+    debugger;
+    this.janEdit = this.janEdit.bind(this);
+    this.febEdit = this.febEdit.bind(this);
+    this.marEdit = this.marEdit.bind(this);
+    this.aprEdit = this.aprEdit.bind(this);
+    this.mayEdit = this.mayEdit.bind(this);
+    this.junEdit = this.junEdit.bind(this);
+    this.julEdit = this.julEdit.bind(this);
+    this.augEdit = this.augEdit.bind(this);
+    this.sepEdit = this.sepEdit.bind(this);
+    this.octEdit = this.octEdit.bind(this);
+    this.novEdit = this.novEdit.bind(this);
+    this.decEdit = this.decEdit.bind(this);
+    this.cashFlowEdit = this.cashFlowEdit.bind(this);
+    this.PPREdit = this.PPREdit.bind(this);
+    this.fiscalEdit = this.fiscalEdit.bind(this);
+    this.lineEdit = this.lineEdit.bind(this);
+    this.requiredValidator = this.requiredValidator.bind(this);
   }
+
+  render() {
+    debugger;
+    let products =this.state.products;
+    return (
+      <DataTable
+        value={products}
+        paginator={true}
+        rows={5}
+        rowsPerPageOptions={[5, 10, 30]}
+      >
+        <Column
+          field="name"
+          header="Cash Flow Item Name"
+          editor={this.cashFlowEdit}
+          editorValidator={this.requiredValidator}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          field="displayName"
+          header="PPR"
+          editor={this.PPREdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          field="alias"
+          header="Fiscal year"
+          editor={this.fiscalEdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          // field="Jan"
+          header="Jan"
+          editor={this.janEdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          // field="Feb"
+          header="Feb"
+          editor={this.febEdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          // field="Mar"
+          header="March"
+          editor={this.marEdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          // field="Apr"
+          header="April"
+          editor={this.aprEdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          // field="May"
+          header="May"
+          editor={this.mayEdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          // field="Jun"
+          header="June"
+          editor={this.junEdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          // field="Jul"
+          header="July"
+          editor={this.julEdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          // field="Aug"
+          header="August"
+          editor={this.augEdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          // field="Sep"
+          header="September"
+          editor={this.sepEdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          // field="Oct"
+          header="October"
+          editor={this.octEdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          // field="Nov"
+          header="November"
+          editor={this.novEdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          // field="Dec"
+          header="December"
+          editor={this.decEdit}
+          style={{ height: "3.5em" }}
+        />
+        <Column
+          field="dataType"
+          header="Line total"
+          editor={this.lineEdit}
+          style={{ height: "3.5em" }}
+        />
+      </DataTable>
+    );
+  }
+
+  /* Cell Editing */
+  onEditorValueChange(props, value) {
+    let updatedProducts = [...props.value];
+    updatedProducts[props.rowIndex][props.field] = value;
+    debugger;
+    this.setState({ products: updatedProducts });
+  }
+
+  inputTextEditor(props, field) {
+    return (
+      <InputText
+        type="text"
+        value={props.rowData[field]}
+        onChange={(e) => this.onEditorValueChange(props, e.currentTarget.value)}
+      />
+    );
+  }
+
+  cashFlowEdit(props) {
+    return this.inputTextEditor(props, "name");
+  }
+
+  PPREdit(props) {
+    return this.inputTextEditor(props, "name");
+  }
+
+  fiscalEdit(props) {
+    return this.inputTextEditor(props, "price");
+  }
+
+  janEdit(props) {
+    return this.inputTextEditor(props, "place");
+  }
+  febEdit(props) {
+    return this.inputTextEditor(props, "place");
+  }
+  marEdit(props) {
+    return this.inputTextEditor(props, "place");
+  }
+  aprEdit(props) {
+    return this.inputTextEditor(props, "place");
+  }
+  mayEdit(props) {
+    return this.inputTextEditor(props, "place");
+  }
+  junEdit(props) {
+    return this.inputTextEditor(props, "place");
+  }
+  julEdit(props) {
+    return this.inputTextEditor(props, "place");
+  }
+  augEdit(props) {
+    return this.inputTextEditor(props, "place");
+  }
+  sepEdit(props) {
+    return this.inputTextEditor(props, "place");
+  }
+  octEdit(props) {
+    return this.inputTextEditor(props, "place");
+  }
+  novEdit(props) {
+    return this.inputTextEditor(props, "place");
+  }
+  decEdit(props) {
+    return this.inputTextEditor(props, "place");
+  }
+  lineEdit(props) {
+    return this.inputTextEditor(props, "place");
+  }
+
+  requiredValidator(props) {
+    let value = props.rowData[props.field];
+    return value && value.length > 0;
+  }
+}
