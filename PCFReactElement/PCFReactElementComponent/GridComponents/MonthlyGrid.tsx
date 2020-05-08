@@ -3,6 +3,7 @@ import React from "react";
 import { InputText } from "primereact/inputtext";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { DialogDemo } from "./Summary/Common/popupComponent";
 
 export interface Props {
   data: any;
@@ -43,123 +44,129 @@ export class GridMonthlyComponent extends React.Component<Props, State> {
 
   componentDidUpdate() {
     debugger;
-    if (this.state.products !== this.props["columns"]) 
-    {
-      this.setState({products: this.props["columns"]});
+    if (this.state.products !== this.props["columns"]) {
+      this.setState({ products: this.props["columns"] });
       // this.render();
+    }
   }
- }
 
 
 
   render() {
     debugger;
-    let products =this.state.products;
+    let products = this.state.products;
     return (
-      <DataTable
-        value={products}
-        paginator={true}
-        rows={5}
-        rowsPerPageOptions={[5, 10, 30]}
-      >
-        <Column
-          field="name"
-          header="Cash Flow Item Name"
-          editor={this.cashFlowEdit}
-          editorValidator={this.requiredValidator}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="displayName"
-          header="PPR"
-          editor={this.PPREdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="alias"
-          header="Fiscal year"
-          editor={this.fiscalEdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="name"
-          header="Jan"
-          editor={this.janEdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="name"
-          header="Feb"
-          editor={this.febEdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="name"
-          header="March"
-          editor={this.marEdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="name"
-          header="April"
-          editor={this.aprEdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="name"
-          header="May"
-          editor={this.mayEdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="name"
-          header="June"
-          editor={this.junEdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="name"
-          header="July"
-          editor={this.julEdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="name"
-          header="August"
-          editor={this.augEdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="name"
-          header="September"
-          editor={this.sepEdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="name"
-          header="October"
-          editor={this.octEdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="name"
-          header="November"
-          editor={this.novEdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="name"
-          header="December"
-          editor={this.decEdit}
-          style={{ height: "3.5em" }}
-        />
-        <Column
-          field="name"
-          header="Line total"
-          editor={this.lineEdit}
-          style={{ height: "3.5em" }}
-        />
-      </DataTable>
+      <div>
+
+
+        <DataTable
+          value={products}
+          paginator={true}
+          rows={5}
+          rowsPerPageOptions={[5, 10, 30]}
+        >
+          <Column
+            field="name"
+            header="Cash Flow Item Name"
+            editor={this.cashFlowEdit}
+            editorValidator={this.requiredValidator}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="displayName"
+            header="PPR"
+            editor={this.PPREdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="alias"
+            header="Fiscal year"
+            editor={this.fiscalEdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="name"
+            header="Jan"
+            editor={this.janEdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="name"
+            header="Feb"
+            editor={this.febEdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="name"
+            header="March"
+            editor={this.marEdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="name"
+            header="April"
+            editor={this.aprEdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="name"
+            header="May"
+            editor={this.mayEdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="name"
+            header="June"
+            editor={this.junEdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="name"
+            header="July"
+            editor={this.julEdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="name"
+            header="August"
+            editor={this.augEdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="name"
+            header="September"
+            editor={this.sepEdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="name"
+            header="October"
+            editor={this.octEdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="name"
+            header="November"
+            editor={this.novEdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="name"
+            header="December"
+            editor={this.decEdit}
+            style={{ height: "3.5em" }}
+          />
+          <Column
+            field="name"
+            header="Line total"
+            editor={this.lineEdit}
+            style={{ height: "3.5em" }}
+          />
+        </DataTable>
+        <span>
+          <DialogDemo />
+        </span>
+      </div>
     );
   }
 

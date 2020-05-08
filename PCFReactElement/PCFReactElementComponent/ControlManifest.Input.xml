@@ -14,6 +14,7 @@
       <css path="CSS/theme.css" order="2" />
       <css path="CSS/primeicons.css" order="2" />
       <css path="CSS/App.css" order="2" />
+      <css path ="CSS/Dialog.css" order="2"/>
        <!-- <css path="../src/index.css" order="2" />
         <css path="../src/App.css" order="3" />  -->      <!-- UNCOMMENT TO ADD MORE RESOURCES
       <css path="css/PCFReactElementComponent.css" order="1" />
