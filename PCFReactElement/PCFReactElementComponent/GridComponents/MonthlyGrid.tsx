@@ -8,6 +8,7 @@ import { DialogDemo } from "./Summary/Common/popupComponent";
 export interface Props {
   data: any;
   columns: [];
+  parentCallback :any;
 }
 export interface State {
   SelectedLayout: string;
@@ -44,11 +45,20 @@ export class GridMonthlyComponent extends React.Component<Props, State> {
 
   componentDidUpdate() {
     debugger;
+
     if (this.state.products !== this.props["columns"]) {
       this.setState({ products: this.props["columns"] });
+      debugger;
+      let childproduct = this.state.products;
+      this.sendData(childproduct);
       // this.render();
     }
   }
+
+ sendData = (childproduct :any) => {
+   debugger;
+  this.props.parentCallback(childproduct);
+}
 
 
 
@@ -56,6 +66,7 @@ export class GridMonthlyComponent extends React.Component<Props, State> {
     debugger;
     let products = this.state.products;
     return (
+     
       <div>
 
 

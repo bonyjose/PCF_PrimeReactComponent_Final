@@ -8,6 +8,7 @@ import {InputText} from 'primereact/inputtext';
 export interface Props {
   data: any;
   columns:[];
+  parentCallback :any;
 }
 export interface State {
   SelectedLayout: string;
@@ -17,8 +18,9 @@ export interface State {
    clonedProducts: {};
    
     constructor(props: Props) {
-      debugger;
+     
       super(props);
+      debugger;
       this.state = {
         products: this.props["columns"],
         SelectedLayout: "Yearly",
@@ -41,8 +43,17 @@ export interface State {
       {
         this.setState({products: this.props["columns"]});
         // this.render();
+        let childproduct = this.state.products;
+        this.sendData(childproduct);
     }
    }
+
+   sendData = (childproduct :any) => {
+    debugger;
+   this.props.parentCallback(childproduct);
+ }
+
+   
     render() {
       debugger;
       let products = this.state.products;
