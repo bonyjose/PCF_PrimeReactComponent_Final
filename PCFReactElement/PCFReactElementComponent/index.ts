@@ -10,6 +10,7 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	private childData:[];
 	private notifyOutputChanged: () => void;
 	private theContainer: HTMLDivElement;	_labelElement: HTMLElement;
+	private theContext: ComponentFramework.Context<IInputs>;
 	// private props: IProps = { value : "", onChange : this.notifyChange.bind(this) };
 
 	private _props: Props = {
