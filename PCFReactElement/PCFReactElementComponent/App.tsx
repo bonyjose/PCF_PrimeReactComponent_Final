@@ -15,6 +15,8 @@ import{ GridYearlyComponent} from './GridComponents/YearlyGrid'
 export interface Props {
   data: any;
   columns:[];
+  // childData:[];
+  onChange: (value:[])=>void;
 }
 export interface State {
   LayoutType: { label: string; value: string }[];
@@ -60,7 +62,8 @@ export class App extends React.Component<Props, State> {
   callbackFunction = (childData) => {  
     debugger;
     this.setState({productsFomChild: childData});
-    console.log(childData);
+    // console.log(childData);
+    this.props.onChange(childData);
   }
   
 
