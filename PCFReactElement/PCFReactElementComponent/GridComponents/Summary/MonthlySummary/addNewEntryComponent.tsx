@@ -7,7 +7,8 @@ import { Dropdown } from 'primereact/dropdown';
 import { CarService } from '../../service/carService';
 
 type AppProps = {
-    test?: any;
+    data?: any;
+    setData? :any
 }
 
 type AppState = {
@@ -30,7 +31,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     }
 
     componentDidMount() {
-        this.carservice.getCarsSmall().then((data: any) => this.setState({ cars1: data }));
+        this.setState({cars1:this.props.data.data})
     }
 
     inputTextEditor(props: any, field: any) {
@@ -47,9 +48,9 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         let updatedCars: any[] = [...props.value];
         updatedCars[props.rowIndex][props.field] = event;
         console.log(typeof (updatedCars), typeof (this.state.cars1))
-
+        // this.props.setData(updatedCars)
         this.setState({ cars1: updatedCars });
-
+        this.props.setData(this.state.cars1);
     }
 
 
@@ -68,16 +69,18 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         let value = props.rowData[props.field];
         return value && value.length > 0;
     }
+
     render() {
+
         return (
             <div className="gridstyle">
 
                 <div className="content-section implementation">
                     <h3>New Entry</h3>
                     <DataTable  editMode="Cell" value={this.state.cars1}>
-                        <Column field="CFName" header="CFName*" editor={this.vinEditor} editorValidator={this.requiredValidator} style={{ height: '3.5em' }} />
-                        <Column field="PPR" header="PPR" editor={this.yearEditor} style={{ height: '3.5em' }} />
-                        <Column field="Year" header="Finacial Year" editor={this.vinEditor} style={{ height: '3.5em' }} />
+                        <Column field="CFName" header="CFName*" editorValidator={this.requiredValidator} style={{ height: '3.5em' }} />
+                        <Column field="PPR" header="PPR"  style={{ height: '3.5em' }} />
+                        <Column field="Year" header="Finacial Year"  style={{ height: '3.5em' }} />
                         <Column field="Jan" header="Jan" editor={this.vinEditor} style={{ height: '3.5em' }} />
                         <Column field="Feb" header="Feb" editor={this.vinEditor} editorValidator={this.requiredValidator} style={{ height: '3.5em' }} />
                         <Column field="Mar" header="Mar" editor={this.vinEditor} style={{ height: '3.5em' }} />

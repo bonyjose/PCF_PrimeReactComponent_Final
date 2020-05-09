@@ -14,8 +14,10 @@
     "@types/node": "^10.12.18",
     "@types/powerapps-component-framework": "^1.2.0",
     "axios": "^0.19.2",
+    "bootstrap": "^4.4.1",
     "classnames": "^2.2.6",
     "office-ui-fabric-react": "^6.189.0",
+    "primeicons": "^3.0.0-rc.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-transition-group": "^4.4.1"

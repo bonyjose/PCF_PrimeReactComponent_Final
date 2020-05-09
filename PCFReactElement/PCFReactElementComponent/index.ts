@@ -9,6 +9,7 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 
 	private notifyOutputChanged: () => void;
 	private theContainer: HTMLDivElement;
+	
 	_labelElement: HTMLElement;
 
 	private _props: Props = {

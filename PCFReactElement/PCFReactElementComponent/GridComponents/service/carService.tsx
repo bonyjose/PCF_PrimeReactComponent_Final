@@ -3,7 +3,7 @@ import axios from 'axios';
 export class CarService {
     
     getCarsSmall() {
-        return axios.get('./data/cars-small.json')
+        return axios.get('cars-small.json')
                 .then((res:any) => res.data.data);
     }
 
