@@ -12,7 +12,7 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	private theContainer: HTMLDivElement;
 	private theContext: ComponentFramework.Context<IInputs>;
 	_labelElement: HTMLElement;
-	// private props: IProps = { value : "", onChange : this.notifyChange.bind(this) };
+	private dataTable: HTMLTableElement;
 
 	private _props: Props = {
 		data: [],
@@ -56,8 +56,18 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	 */
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
+
+		// this._props.data =context.parameters.sampleDataSet;
+
+		// this.contextObj = context;
+
+		const dataSet = context.parameters.sampleDataSet;
 		debugger;
-		this._props.data =context.parameters.sampleDataSet;
+		let datasetColumns: any = this._columns(dataSet);
+		let dataItems: any = this._items(dataSet, datasetColumns);
+
+		console.log(dataItems);
+		this._props.data =dataItems;
 
 		const element = React.createElement(
 			App ,
@@ -71,9 +81,9 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 
 	// this event will collect the modified grid array from child react component 
 	notifyChange(value:[]){
-		debugger;
-		this.childData = value;
-		console.log(this.childData);
+		// debugger;
+		// this.childData = value;
+		// // console.log(this.childData);
 		this.notifyOutputChanged();
 	}
 
@@ -95,6 +105,7 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 		// Add code to cleanup control if necessary
 	}
 
+	
 	
 	/********** PRIVATE PROPERTIES & FUNCTIONS **********/
 

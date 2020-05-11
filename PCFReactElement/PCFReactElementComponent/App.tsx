@@ -44,14 +44,26 @@ export class App extends React.Component<Props, State> {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidUpdate() {
+  
+  static getDerivedStateFromProps(props, state) {
     debugger;
-    if (this.state.products !== this.props.data) 
+    if (state.products !== props.data) 
     {
-      this.setState({products: this.props.data});
-      // this.render();
+      return{
+        products: props.data
+      } 
+    }
+    return null;
   }
- }
+  
+//   componentDidUpdate() {
+//     debugger;
+//     if (this.state.products !== this.props.data) 
+//     {
+//       this.setState({products: this.props.data});
+//       // this.render();
+//   }
+//  }
 
   handleChange(e: { originalEvent: Event; value: any }) {
     this.setState({ SelectedLayout: e.value });

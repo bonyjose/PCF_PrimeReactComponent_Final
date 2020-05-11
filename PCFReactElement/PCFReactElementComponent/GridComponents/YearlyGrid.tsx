@@ -22,8 +22,8 @@ export interface State {
       super(props);
       debugger;
       this.state = {
-        products: this.props["columns"],
-        SelectedLayout: "Yearly",
+        products: this.props,
+        SelectedLayout: "Yearly"
     };
    
     // this.setState({ products : this.props["columns"]});
@@ -36,17 +36,72 @@ export interface State {
       this.colorEditor = this.colorEditor.bind(this);
       this.requiredValidator = this.requiredValidator.bind(this);
     }
-  
-    componentDidUpdate() {
+
+    parseResult()
+    {
+      // // let obj = {};
+      // this.state.products.forEach(item => this.clonedProducts[item.Field] = item.Value);
+      // debugger;
+      // console.log(this.clonedProducts);
       debugger;
-      if (this.state.products !== this.props["columns"]) 
-      {
-        this.setState({products: this.props["columns"]});
-        // this.render();
-        let childproduct = this.state.products;
-        this.sendData(childproduct);
+
+      for(let currentRecordId of this.state.products){
+        debugger;
+        for(let curr of currentRecordId){
+debugger;
+          let id = curr.value;
+          console.log(id);
+          this.clonedProducts = JSON.stringify(id);
+          console.log(this.clonedProducts);
+        }
+
+        
+
+      }
+
+      // this.state.products.forEach(element => {
+      //   let jsonobj =element.map((item: { [x: string]: string; }) => {
+        
+      //     Object.keys(item).map(ColumnData => {
+      //        ColumnData
+      // });
+    
+      //           //@ts-ignore
+      //           // let currValue =Number(item[ColumnData].replace( /^\D+/g, ''));
+               
+      //           console.log(jsonobj);
+              
+       
+      //   })
+
+      // })
+
+      
     }
-   }
+
+    static getDerivedStateFromProps(props, state) {
+      debugger;
+      if (state.products !== props) 
+      {
+        return{
+          products: props
+        } 
+      }
+      else{
+        return null;
+      }
+    }
+  
+  //   componentDidUpdate() {
+  //     debugger;
+  //     if (this.state.products !== this.props) 
+  //     {
+  //       this.setState({products: this.props});
+  //       // this.render();
+  //       let childproduct = this.state.products;
+  //       this.sendData(childproduct);
+  //   }
+  //  }
 
    sendData = (childproduct :any) => {
     debugger;
@@ -56,19 +111,25 @@ export interface State {
    
     render() {
       debugger;
+      this.parseResult();
       let products = this.state.products;
+      let json : any = JSON.stringify(products[0]);
+      let jsonNew = JSON.parse('{"CFNAME":"123123","PPR":"ABC-456","FiscalYear":"2020","October":"50000","November":"","December":"","January":"","February":"","March":"","April":"","May":"","June":"","July":"","August":"","September":"","LineTotal":""}' );
+      console.log(products[0]);
+      console.log(jsonNew);
+      debugger;
       return (
         <DataTable
-          value={products}
+          value={jsonNew}
           paginator={true}
           rows={5}
           editMode ="Cell"
           rowsPerPageOptions={[5, 10, 30]}
         >
-          <Column field="name" header="Cash Flow Item Name"  editor={this.vinEditor} editorValidator={this.requiredValidator} style={{height: '3.5em'}}/>
-          <Column field="displayName" header="PPR" editor={this.yearEditor} style={{height: '3.5em'}}/>
-          <Column field="alias" header="Fiscal year"   editor={this.brandEditor} style={{height: '3.5em'}} />
-          <Column field="dataType" header="Line total"   editor={this.brandEditor} style={{height: '3.5em'}} />
+          <Column field="CFNAME" header="Cash Flow Item Name"   style={{height: '3.5em'}}/>
+          <Column field="LineTotal" header="PPR" style={{height: '3.5em'}}/>
+          <Column field="December" header="Fiscal year"    style={{height: '3.5em'}} />
+          <Column field="FiscalYear" header="Line total"   style={{height: '3.5em'}} />
         </DataTable>
       );
     }
