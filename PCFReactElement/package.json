@@ -9,13 +9,14 @@
     "start": "pcf-scripts start"
   },
   "dependencies": {
+    "@types/jest": "^25.2.1",
+    "@types/mocha": "^7.0.2",
     "@types/node": "^10.12.18",
     "@types/powerapps-component-framework": "^1.2.0",
+    "linq": "^3.2.2",
     "office-ui-fabric-react": "^6.189.0",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "@types/jest": "^25.2.1",
-    "@types/mocha": "^7.0.2"
+    "react-dom": "^16.8.6"
   },
   "devDependencies": {
     "@types/react": "^16.9.34",

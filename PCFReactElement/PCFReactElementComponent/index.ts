@@ -68,7 +68,7 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 
 		console.log(dataItems);
 		this._props.data =dataItems;
-
+		this._props.columns=datasetColumns;
 		const element = React.createElement(
 			App ,
 			this._props
