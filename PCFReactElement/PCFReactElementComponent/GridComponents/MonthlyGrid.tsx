@@ -6,21 +6,27 @@ import { Column } from "primereact/column";
 import { DialogDemo } from "./Summary/Common/popupComponent";
 
 export interface Props {
-  data: any;
+  data: any[];
   columns: [];
   parentCallback :any;
+  
 }
 export interface State {
   SelectedLayout: string;
-  products: any;
+  columslist: any[],
+  products: any[],
+  parsedJson : any[]
 }
 export class GridMonthlyComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     debugger;
     this.state = {
-      products: this.props["columns"],
+      products: this.props.data,
       SelectedLayout: "Monthly",
+      columslist: this.props.columns,
+      parsedJson :this.props.data
+      
     };
 
     debugger;
@@ -43,16 +49,26 @@ export class GridMonthlyComponent extends React.Component<Props, State> {
     this.requiredValidator = this.requiredValidator.bind(this);
   }
 
-  componentDidUpdate() {
+  static getDerivedStateFromProps(props, state) {
     debugger;
+        if (state.products !== props) {
+          return {
+            products: props
+          }
+        }
+      }
 
-    if (this.state.products !== this.props["columns"]) {
-      this.setState({ products: this.props["columns"] });
-      debugger;
-      let childproduct = this.state.products;
-      this.sendData(childproduct);
-      // this.render();
-    }
+      componentDidMount(){
+
+        this.parseJson();
+        debugger;
+      }
+    
+
+  componentDidUpdate() {
+
+    this.parseJson();
+    debugger;
   }
 
  sendData = (childproduct :any) => {
@@ -60,24 +76,93 @@ export class GridMonthlyComponent extends React.Component<Props, State> {
   this.props.parentCallback(childproduct);
 }
 
+parseJson()
+{
+  debugger;
+  let product: any[] = this.state.products;
+    let columslist: any[] = this.state.columslist;
+    let uniqyear = Object.values(product).map(i => i.FinacialYear);
+    var uniqueItems = Array.from(new Set(uniqyear))
+    let result = {};
+
+
+    let ChildResultArray: any[];
+    let ResultArray: any[];
+    ResultArray = [];
+    for (let i = 0; i < uniqueItems.length - 1; i++) {
+      let data = Object.values(product);
+      const year = uniqueItems[i];
+      ChildResultArray = [];
+      let x: number = 0;
+      data.map(p => {
+        if (p.FinacialYear === year) {
+          
+          let childrenData = {
+            "key": i.toString().concat('-',x.toString()),
+            data: {             
+              "CFNAME": p.CFNAME,
+              "PPR": p.PPR,
+              "FinacialYear": p.FinacialYear,
+              "April": p.April,
+              "August": p.August,
+              "December": p.December,
+              "February": p.February,
+              "January": p.January,
+              "July": p.July,
+              "June": p.June,
+              "LineTotal": p.LineTotal,
+              "March": p.March,
+              "May": p.May,
+              "November": p.November,
+              "October": p.October,
+              "September": p.September,
+              "id": p.key
+            }}
+          x++;
+          ChildResultArray.push(childrenData)
+        }})
+
+      let resultData = {
+        key:i.toString(),
+        data:{
+          "FinacialYear": year,
+        },
+        children: ChildResultArray
+      }
+      ResultArray.push(resultData);
+      this.setState({ parsedJson : ResultArray });
+
+    }
+    debugger;
+    console.log(JSON.stringify(ResultArray));
+}
+
+
+componentWillMount()
+{
+  debugger;
+  this.parseJson();
+}
 
 
   render() {
     debugger;
-    let products = this.state.products;
+    
+    let parsed = this.state.parsedJson;
+    
     return (
      
       <div>
 
 
         <DataTable
-          value={products}
+          value={parsed}
           paginator={true}
           rows={5}
           rowsPerPageOptions={[5, 10, 30]}
         >
           <Column
-            field="name"
+            field="CFNAME"
             header="Cash Flow Item Name"
             editor={this.cashFlowEdit}
             editorValidator={this.requiredValidator}

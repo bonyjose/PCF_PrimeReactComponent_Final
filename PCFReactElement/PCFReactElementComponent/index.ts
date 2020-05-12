@@ -56,8 +56,14 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	 */
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
+		const dataSet = context.parameters.sampleDataSet;
 		debugger;
-		this._props.data =context.parameters.sampleDataSet;
+		let datasetColumns: any = this._columns(dataSet);
+		let dataItems: any = this._items(dataSet, datasetColumns);
+
+		console.log(dataItems);
+		this._props.data =dataItems;
+		this._props.columns =datasetColumns;
 
 		const element = React.createElement(
 			App ,
