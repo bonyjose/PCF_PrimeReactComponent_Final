@@ -11,7 +11,7 @@ import { Column } from "primereact/column";
 import {GridQuarterlyComponent} from './GridComponents/QuarterlyGrid'
 import{ GridMonthlyComponent} from './GridComponents/MonthlyGrid'
 import{ GridYearlyComponent} from './GridComponents/YearlyGrid'
-
+import {MonthlySummary} from './GridComponents/Summary/MonthlySummary/monthlySummaryComponent' 
 export interface Props {
   data: any;
   columns:[];
@@ -81,7 +81,8 @@ export class App extends React.Component<Props, State> {
     } 
     else if (SelectedLayout == "Monthly")
     {
-      DataTable = <GridMonthlyComponent parentCallback = {this.callbackFunction} {...products}/>;
+      // DataTable = <GridMonthlyComponent parentCallback = {this.callbackFunction} {...products}/>;
+      DataTable =<MonthlySummary/>
     }
     else if (SelectedLayout == "Quarterly")
     {

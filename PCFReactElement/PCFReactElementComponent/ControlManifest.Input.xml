@@ -21,7 +21,7 @@
       <resx path="primeicons/fonts/primeicons.svg" version="1"/>
       <resx path="primeicons/fonts/primeicons.ttf" version="1"/>
       <resx path="primeicons/fonts/primeicons.woff" version="1"/>
-      <resx path ="CSS/external-link.svg"  version="2"/>
+      <img path="CSS/external-link.svg" />
        <!-- <css path="../src/index.css" order="2" />
         <css path="../src/App.css" order="3" />  -->      <!-- UNCOMMENT TO ADD MORE RESOURCES
       <css path="css/PCFReactElementComponent.css" order="1" />

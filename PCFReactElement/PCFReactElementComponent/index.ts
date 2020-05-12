@@ -38,6 +38,7 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 		// this.props.numberOfFaces = context.parameters.numberOfFaces.raw || 3;
 		this.theContainer = container;
 		this._props.data = context.parameters.sampleDataSet;
+		let arraData=this._props.data ;
 		// const dataSet = context.parameters.sampleDataSet;
 		// let datasetColumns: any[] = this._columns(dataSet);
 		// let dataItems: any[] = this._items(dataSet, datasetColumns);

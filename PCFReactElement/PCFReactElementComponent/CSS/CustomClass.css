@@ -4,3 +4,7 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+body .p-treetable .p-treetable-tbody > tr.p-highlight_custom {
+    background-color: #a5a0a00d;
+    color: #101010;
+}
