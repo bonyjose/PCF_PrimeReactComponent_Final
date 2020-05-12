@@ -96,7 +96,8 @@ export class App extends React.Component<Props, State> {
     } 
     else if (SelectedLayout == "Monthly")
     {
-      DataTable = <GridMonthlyComponent parentCallback = {this.callbackFunction} {...products}/> ;
+      DataTable=<MonthlySummary {...products}/>
+      // DataTable = <GridMonthlyComponent parentCallback = {this.callbackFunction} {...products}/> ;
     }
     else if (SelectedLayout == "Quarterly")
     {

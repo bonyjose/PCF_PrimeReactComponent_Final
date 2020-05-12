@@ -134,70 +134,56 @@ const data = {
         }
     ]
 };
-
-const response={
-    "root": [
-          {
-            "key": "0-0",
-            "data": {
-              "CFName": "Sample",
-              "PPR": "CD1234",
-              "Year": "2020",
-              "Jan": "100 ",
-              "Feb": "",
-              "Mar": "",
-              "April": " ",
-              "Jun": "50 ",
-              "Jul": "",
-              "Aug": "",
-              "Sep": " ",
-              "Oct": " ",
-              "Nov": " ",
-              "Dec": " ",
-              "Total": "150 "
-            }
-          },
-          {
-            "key": "0-1",
-            "data": {
-              "CFName": "Sample",
-              "PPR": "CD1234",
-              "Year": "2020",
-              "Jan": " ",
-              "Feb": "",
-              "Mar": "",
-              "April": "500",
-              "Jun": " ",
-              "Jul": "",
-              "Aug": "",
-              "Sep": "10000 ",
-              "Oct": " ",
-              "Nov": " ",
-              "Dec": " ",
-              "Total": "10500 "
-            }
-          }
-    ]
-  }
 type AppMonthProps = {
-    data?: any;
+
+    data: any[];
+    columns?: any[];
 }
 type monthState = {
-    nodes: any[]
+    nodes: [],
+    sampledata: any[]
 }
 export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
-    constructor(AppMonthProps) {
-        super(AppMonthProps);
+    constructor(props: AppMonthProps) {
+        super(props);
         this.state = {
-            nodes: []
+            nodes: [],
+            sampledata: this.props.data
         };
 
     }
+    // static getDerivedStateFromProps(props, state) {
+    //     debugger
+    //         if (state.sampledata !== props) {
+    //             if(state.sampledata!=null)               
 
+    //           return {
+    //             nodes: MonthlySummary.createJsonTreestructure(props)
+    //           }
+    //         }
+    //         else{
+    //             return null;
+    //         }
+    //       }
+
+
+    componentDidUpdate(prevProps, prevState) {
+        debugger;
+        if (this.state.nodes.length==0) {
+            let data = this.createJsonTreestructure();
+            let newNodes = JSON.parse(data);
+            this.setState({ nodes: newNodes })
+        }
+
+
+    }
     componentDidMount() {
-        let newNodes = JSON.parse(JSON.stringify(data.data));
-        this.setState({ nodes: newNodes })
+        debugger;
+        // let keynodes = this.state.sampledata;;
+        // //let data=this.createJsonTreestructure();
+        // let newNodes = JSON.parse(JSON.stringify(data.data));
+        // this.setState({ nodes: newNodes })
     }
 
 
@@ -245,13 +231,76 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         return this.inputTextEditor(props, field);
     }
 
+    createJsonTreestructure = () => {
+        debugger;
+        let product: any[] = Object.values(this.props);
+
+        let uniqyear = product.map(i => i.FinacialYear);
+        var uniqueItems = Array.from(new Set(uniqyear))
+        let result = {};
+
+
+        let ChildResultArray: any[];
+        let ResultArray: any[];
+        ResultArray = [];
+        for (let i = 0; i < uniqueItems.length; i++) {
+            let data = Object.values(product);
+            const year = uniqueItems[i];
+            ChildResultArray = [];
+            let x: number = 0;
+            data.map(p => {
+                if (p.FinacialYear === year) {
+
+                    let childrenData = {
+                        "key": i.toString().concat('-', x.toString()),
+                        data: {
+                            "CFNAME": p.CFNAME,
+                            "PPR": p.PPR,
+                            "FinacialYear": p.FinacialYear,
+                            "April": p.April,
+                            "August": p.August,
+                            "December": p.December,
+                            "February": p.February,
+                            "January": p.January,
+                            "July": p.July,
+                            "June": p.June,
+                            "LineTotal": p.LineTotal,
+                            "March": p.March,
+                            "May": p.May,
+                            "November": p.November,
+                            "October": p.October,
+                            "September": p.September,
+                            "id": p.key
+                        }
+                    }
+                    x++;
+                    ChildResultArray.push(childrenData)
+                }
+            })
+
+            let resultData = {
+                key: i.toString(),
+                data: {
+                    "FinacialYear": year,
+                },
+                children: ChildResultArray
+            }
+            ResultArray.push(resultData);
+        }
+        console.log(JSON.stringify(ResultArray));
+
+        return JSON.stringify(ResultArray);
+
+    }
     render() {
+        debugger;
         return (
+
             <div>
                 <div className="content-section implementation">
                     <TreeTable value={this.state.nodes} rowClassName={this.rowClassName}>
-                        <Column field="Year" header="Year*" style={{ height: '3.5em' }} expander={true} />
-                        <Column field="CFName" header="CFN*" style={{ height: '3.5em' }} />
+                        <Column field="FinacialYear" header="Year*" style={{ height: '3.5em' }} expander={true} />
+                        <Column field="CFNAME" header="CFN*" style={{ height: '3.5em' }} />
                         <Column field="PPR" header="PPR" style={{ height: '3.5em' }} />
 
                         <Column field="Jan" header="Jan" editor={this.vinEditor} style={{ height: '3.5em' }} />
@@ -266,7 +315,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
                         <Column field="Oct" header="Oct" editor={this.vinEditor} style={{ height: '3.5em' }} />
                         <Column field="Nov" header="Nov" editor={this.vinEditor} style={{ height: '3.5em' }} />
                         <Column field="Dec" header="Dec" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Total" header="Total*" editor={this.vinEditor} style={{ height: '3.5em' }} />
+                        <Column field="LineTotal" header="Total*" editor={this.vinEditor} style={{ height: '3.5em' }} />
                     </TreeTable >
 
                     <label style={{ float: "left", color: "#ab9999" }} >Total*: Line Total</label><br />
