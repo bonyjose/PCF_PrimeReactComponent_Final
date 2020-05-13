@@ -4,6 +4,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { TreeTable } from "primereact/treetable";
 import { InputText } from "primereact/inputtext";
+import { DialogDemo } from "../GridComponents/Summary/Common/popupComponent"
  
 interface Props {
   data: any[];
@@ -223,6 +224,7 @@ vinEditor = (props: any) => {
     render() {
       debugger;
       return (
+        <div>
         <div className="content-section implementation">
                     <TreeTable value={this.state.nodes} rowClassName={this.rowClassName}>
                         <Column field="FinacialYear" header="Year*" style={{ height: '3.5em' }} expander={true} />
@@ -252,6 +254,8 @@ vinEditor = (props: any) => {
                     <label style={{ float: "left", color: "#ab9999" }} >CFN*: Cash Flow Name</label><br />
                     <label style={{ float: "left", color: "#ab9999" }} >Year*: Finacial Year</label><br />
                 </div>
+                <DialogDemo />
+              </div>
           );
       }
 } 
