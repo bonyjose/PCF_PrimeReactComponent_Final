@@ -40,7 +40,7 @@ export class App extends React.Component<Props, State> {
         { label: "Monthly", value: "Monthly" },
         { label: "Quarterly", value: "Quarterly" },
       ],
-      SelectedLayout: "Yearly",
+      SelectedLayout: "Monthly",
       columns : this.props.columns
     };
     // this.setState({ products : this.props.data});
