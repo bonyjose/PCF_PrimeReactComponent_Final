@@ -101,7 +101,7 @@ export class App extends React.Component<Props, State> {
     }
     else if (SelectedLayout == "Quarterly")
     {
-      DataTable = <GridQuarterlyComponent/>;
+      DataTable = <GridQuarterlyComponent  parentCallback = {this.callbackFunction} {...products}/>;
     }
     return (
       <div className="App">
