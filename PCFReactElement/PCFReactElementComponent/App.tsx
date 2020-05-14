@@ -8,168 +8,119 @@ import { Dropdown } from "primereact/dropdown";
 // import "./CSS/primeicons.css";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import {GridQuarterlyComponent} from './GridComponents/QuarterlyGrid'
+import{ GridMonthlyComponent} from './GridComponents/MonthlyGrid'
+import{ GridYearlyComponent} from './GridComponents/YearlyGrid'
+import {MonthlySummary} from './GridComponents/Summary/MonthlySummary/monthlySummaryComponent' 
 
-interface Props {}
-interface State {
+export interface Props {
+  data: any;
+  columns:[];
+  // childData:[];
+  onChange: (value:[])=>void;
+}
+export interface State {
   LayoutType: { label: string; value: string }[];
   SelectedLayout: string;
+  products :any;
+  productsFomChild: any;
+  columns : any;
 }
 
 export class App extends React.Component<Props, State> {
-  products: { id: string; name: string; place: string; price: string }[];
 
   constructor(props: Props) {
     super(props);
+    debugger;
     this.state = {
+      products : this.props.data,
+      productsFomChild :null,
       LayoutType: [
         { label: "Yearly", value: "Yearly" },
         { label: "Monthly", value: "Monthly" },
         { label: "Quarterly", value: "Quarterly" },
       ],
-      SelectedLayout: "",
+      SelectedLayout: "Monthly",
+      columns : this.props.columns
     };
-    this.products = [
-      {
-        id: "1",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "2",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "3",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "4",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "5",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "6",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-      {
-        id: "7",
-        name: "nijomon",
-        place: "Kply",
-        price: "30",
-      },
-    ];
-    this.increment = this.increment.bind(this);
+    // this.setState({ products : this.props.data});
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  increment() {
-    // this.setState({
-    //     count: this.state.count + 1
-    // });
+  
+  static getDerivedStateFromProps(props, state) {
+    debugger;
+    if (state.products !== props.data) 
+    {
+      return{
+        products: props.data
+      } 
+    }
+    return null;
+  }
+  
+//   componentDidUpdate() {
+//     debugger;
+//     if (this.state.products !== this.props.data) 
+//     {
+//       this.setState({products: this.props.data});
+//       // this.render();
+//   }
+//  }
+
+  handleChange(e: { originalEvent: Event; value: any }) {
+    this.setState({ SelectedLayout: e.value });
+
+    debugger;
   }
 
-  LayoutGridYearly() {
-    return (
-      <DataTable
-        value={this.products}
-        paginator={true}
-        rows={5}
-        rowsPerPageOptions={[5, 10, 30]}
-      >
-        <Column field="id" header="ID" />
-        <Column field="name" header="Name" />
-        <Column field="PRice" header="Price" />
-        <Column field="place" header="place" />
-      </DataTable>
-    );
+  callbackFunction = (childData) => {  
+    debugger;
+    this.setState({productsFomChild: childData});
+    // console.log(childData);
+    this.props.onChange(childData);
   }
-
-  LayoutGridMonthly() {
-    return (
-      <DataTable
-        value={this.products}
-        paginator={true}
-        rows={5}
-        rowsPerPageOptions={[5, 10, 30]}
-      >
-        <Column field="id" header="ID" />
-        <Column field="name" header="Name" />
-        <Column field="PRice" header="Price" />
-        <Column field="place" header="place" />
-      </DataTable>
-    );
-  }
-
-  LayoutGridQuarterly() {
-    return (
-      <DataTable
-        value={this.products}
-        paginator={true}
-        rows={5}
-        rowsPerPageOptions={[5, 10, 30]}
-      >
-        <Column field="id" header="ID" />
-        <Column field="name" header="Name" />
-        <Column field="PRice" header="Price" />
-        <Column field="place" header="place" />
-      </DataTable>
-    );
-  }
-chooseLayout()
-{
-    if (this.state.SelectedLayout == "Yearly")
-        {
-            return <this.LayoutGridYearly />
-        }
-        else if (this.state.SelectedLayout == "Quarterly")
-        {
-            return  <this.LayoutGridQuarterly />
-        }
-         else if (this.state.SelectedLayout == "Monthly")
-        {
-            return <this.LayoutGridMonthly />
-        }
-}
-
-// onChangeOption(e){
-//     if (e.detail === 0){
-//         console.log(e.target.value);
-//     }
-// }
+  
 
 
 
   public render() {
+    debugger;
+    // this.setState({ products : this.props.data});
+    const SelectedLayout = this.state.SelectedLayout;
+    let products = this.state.products;
+    let DataTable;
+    if (SelectedLayout == "Yearly")
+    {
+      DataTable = <GridYearlyComponent  parentCallback = {this.callbackFunction} {...products}/>;
+    } 
+    else if (SelectedLayout == "Monthly")
+    {
+      DataTable=<MonthlySummary {...products}/>
+      // DataTable = <GridMonthlyComponent parentCallback = {this.callbackFunction} {...products}/> ;
+    }
+    else if (SelectedLayout == "Quarterly")
+    {
+      DataTable = <GridQuarterlyComponent  parentCallback = {this.callbackFunction} {...products}/>;
+    }
     return (
       <div className="App">
-        <label htmlFor="LayoutType"> Layout Type </label>
-        <Dropdown
+        <span className="DropDown">
+        <label htmlFor="LayoutType" > View As </label> &nbsp; &nbsp;
+        <Dropdown 
+          name="LayoutType"
           value={this.state.SelectedLayout}
           options={this.state.LayoutType}
           onChange={(e) => {
-            this.setState(
-                { SelectedLayout: e.value }
-                ); this.chooseLayout();
+            this.handleChange(e);
           }}
           placeholder="Select a Layout"
-        />{" "}
+        />
+        </span>
+       {" "}
         <br />
-        
-        <h3>DataTable</h3>
-         
+        <br />
+        {DataTable}
       </div>
     );
   }

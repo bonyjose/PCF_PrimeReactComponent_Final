@@ -1,14 +1,23 @@
 import {IInputs, IOutputs} from "./generated/ManifestTypes";
+import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
+type DataSet = ComponentFramework.PropertyTypes.DataSet;
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {App } from './App';
+import {App,Props,State } from './App';
 
 export class PCFReactElementComponent implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
+	private childData:[];
 	private notifyOutputChanged: () => void;
-	private theContainer: HTMLDivElement;
-	_labelElement: HTMLElement;
+	private theContainer: HTMLDivElement;	_labelElement: HTMLElement;
+	private theContext: ComponentFramework.Context<IInputs>;
+	// private props: IProps = { value : "", onChange : this.notifyChange.bind(this) };
 
+	private _props: Props = {
+		data: [],
+		columns: [],
+		onChange : this.notifyChange.bind(this)
+	}
 
 	constructor()
 	{
@@ -28,7 +37,16 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 		this.notifyOutputChanged = notifyOutputChanged;
 		// this.props.numberOfFaces = context.parameters.numberOfFaces.raw || 3;
 		this.theContainer = container;
-		this._labelElement =  document.createElement("App.css");
+		this._props.data = context.parameters.sampleDataSet;
+		let arraData=this._props.data ;
+		// const dataSet = context.parameters.sampleDataSet;
+		// let datasetColumns: any[] = this._columns(dataSet);
+		// let dataItems: any[] = this._items(dataSet, datasetColumns);
+		// this._props.data = dataItems;
+		// this._props.columns = datasetColumns;
+		
+		debugger;
+
 	}
 
 
@@ -38,13 +56,31 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	 */
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
-		ReactDOM.render(
-			React.createElement(
-				App
-				// , document.getElementById('root')
-			),
+		const dataSet = context.parameters.sampleDataSet;
+		debugger;
+		let datasetColumns: any = this._columns(dataSet);
+		let dataItems: any = this._items(dataSet, datasetColumns);
+
+		console.log(dataItems);
+		this._props.data =dataItems;
+		this._props.columns =datasetColumns;
+
+		const element = React.createElement(
+			App ,
+			this._props
+		);
+
+		ReactDOM.render(element ,
 			this.theContainer
 		);
+	}
+
+	// this event will collect the modified grid array from child react component 
+	notifyChange(value:[]){
+		debugger;
+		this.childData = value;
+		console.log(this.childData);
+		this.notifyOutputChanged();
 	}
 
 	/** 
@@ -63,5 +99,97 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	public destroy(): void
 	{
 		// Add code to cleanup control if necessary
+	}
+
+	
+	/********** PRIVATE PROPERTIES & FUNCTIONS **********/
+
+	// Get the columns from the dataset
+	private _columns = (ds: DataSet): any[] => {
+		let dataSet = ds;
+		let iColumns: any[] = [];
+
+		for (var column of dataSet.columns) {
+			let iColumn: any = {
+				key: column.name,
+				name: column.displayName,
+				fieldName: column.alias,
+				currentWidth: column.visualSizeFactor,
+				data: { isPrimary: column.isPrimary },
+				minWidth: column.visualSizeFactor,
+				maxWidth: column.visualSizeFactor,
+				isResizable: true,
+				sortAscendingAriaLabel: 'A to Z',
+				sortDescendingAriaLabel: 'Z to A',
+				className: 'detailList-cell',
+				headerClassName: 'detailList-gridLabels',
+				isPrimary: column.isPrimary
+				
+			}
+
+			//create links for primary field and entity reference.            
+			if (column.dataType.startsWith('Lookup.') || column.isPrimary) {
+				iColumn.dataType = "Lookup";
+			}
+			else if (column.dataType === 'SingleLine.Email') {
+				iColumn.dataType = "Email";
+			}
+			else if (column.dataType === 'SingleLine.Phone') {
+				iColumn.dataType = "Phone";
+			}
+			else if ((column.dataType === 'Currency')||(column.dataType === 'Decimal') ||(column.dataType.startsWith("Whole")))
+			{
+				iColumn.dataType = "Numeric";
+			}
+			else
+			{
+				iColumn.dataType = "NA";
+			}
+
+			let isSorted = dataSet?.sorting?.findIndex(s => s.name === column.name) !== -1 || false;
+			iColumn.isSorted = isSorted;
+			if (isSorted) {
+				iColumn.isSortedDescending = dataSet?.sorting?.find(s => s.name === column.name)?.sortDirection === 1 || false;
+			}
+
+			iColumns.push(iColumn);
+		}
+		return iColumns;
+	}
+
+	// Get the items from the dataset
+	private _items = (ds: DataSet, _columns: any[]) => {
+		let dataSet = ds;
+
+		var resultSet = dataSet.sortedRecordIds.map(function (key) {
+			var record = dataSet.records[key];
+			var newRecord: any = {
+				key: record.getRecordId()
+			};
+
+			for (var column of _columns) {
+				newRecord[column.key] = record.getFormattedValue(column.key);
+				
+			}
+
+			return newRecord;
+		});
+
+		return resultSet;
+	}
+
+	private navigateToPage(pageCommand: string): void {
+		switch (pageCommand) {
+			case 'next':
+				if (this.theContext.parameters.sampleDataSet.paging.hasNextPage) {
+					this.theContext.parameters.sampleDataSet.paging.loadNextPage();
+				}
+				break;
+			case 'previous':
+				if (this.theContext.parameters.sampleDataSet.paging.hasPreviousPage) {
+					this.theContext.parameters.sampleDataSet.paging.loadPreviousPage();
+				}
+				break;
+		}
 	}
 }
