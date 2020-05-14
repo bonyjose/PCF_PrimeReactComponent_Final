@@ -16,7 +16,9 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	private _props: Props = {
 		data: [],
 		columns: [],
-		onChange : this.notifyChange.bind(this)
+		onChange : this.notifyChange.bind(this),
+		context: this.theContext,
+		IsUpdated:false
 	}
 
 	constructor()
@@ -64,7 +66,7 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 		console.log(dataItems);
 		this._props.data =dataItems;
 		this._props.columns =datasetColumns;
-
+		this._props.context=context;
 		const element = React.createElement(
 			App ,
 			this._props
@@ -82,7 +84,9 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 		console.log(this.childData);
 		this.notifyOutputChanged();
 	}
-
+	ContextSetChange(){
+	return this.theContext;
+	}
 	/** 
 	 * It is called by the framework prior to a control receiving new data. 
 	 * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”

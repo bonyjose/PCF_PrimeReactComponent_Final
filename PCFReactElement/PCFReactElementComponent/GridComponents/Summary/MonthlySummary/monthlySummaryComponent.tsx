@@ -3,17 +3,22 @@ import { TreeTable } from 'primereact/treetable';
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { DialogDemo } from "../Common/popupComponent";
-
+import { IInputs, IOutputs } from "../../../generated/ManifestTypes"
 
 
 type AppMonthProps = {
 
     data: any[];
     columns?: any[];
+    context: ComponentFramework.Context<IInputs>;
+    IsUpdated:boolean
 }
 type monthState = {
     nodes: [],
-    sampledata: any[]
+    sampledata: any[],
+    conext: ComponentFramework.Context<IInputs>
+    IsUpdated:boolean
+
 }
 export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
@@ -21,34 +26,29 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         super(props);
         this.state = {
             nodes: [],
-            sampledata: this.props.data
+            sampledata: this.props.data,
+            conext: this.props.context,
+            IsUpdated:this.props.IsUpdated
         };
 
     }
-    // static getDerivedStateFromProps(props, state) {
-    //     debugger
-    //         if (state.sampledata !== props) {
-    //             if(state.sampledata!=null)               
-
-    //           return {
-    //             nodes: MonthlySummary.createJsonTreestructure(props)
-    //           }
-    //         }
-    //         else{
-    //             return null;
-    //         }
-    //       }
-
 
     componentDidUpdate(prevProps, prevState) {
         debugger;
-        if (this.state.nodes.length==0) {
+        if ((this.props.IsUpdated) && (!this.state.IsUpdated)) {
+            let data = this.createJsonTreestructure();
+            let newNodes = JSON.parse(data);
+            this.setState({ nodes: newNodes });
+            this.setState({ IsUpdated: this.props.IsUpdated });
+        }
+    }
+    componentDidMount() {
+        debugger;
+        if (!this.state.IsUpdated||this.props.data.length>0) {
             let data = this.createJsonTreestructure();
             let newNodes = JSON.parse(data);
             this.setState({ nodes: newNodes })
         }
-
-
     }
 
     onEditorValueChange(props: any, value: any) {
@@ -94,15 +94,13 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         return this.inputTextEditor(props, field);
     }
 
-    createJsonTreestructure = () => {
-        debugger;
-        let product: any[] = Object.values(this.props);
 
+
+    createJsonTreestructure = () => {
+        let product: any[] = Object.values(this.props.data);
         let uniqyear = product.map(i => i.FinacialYear);
         var uniqueItems = Array.from(new Set(uniqyear))
         let result = {};
-
-
         let ChildResultArray: any[];
         let ResultArray: any[];
         ResultArray = [];

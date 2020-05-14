@@ -5,15 +5,19 @@ import { Column } from "primereact/column";
 import { TreeTable } from "primereact/treetable";
 import { InputText } from "primereact/inputtext";
 import { DialogDemo } from "../GridComponents/Summary/Common/popupComponent"
- 
+import { IInputs, IOutputs } from "../generated/ManifestTypes"
 interface Props {
   data: any[];
   columns?: any[];
+  context: ComponentFramework.Context<IInputs>;
+  IsUpdated:boolean
+ 
 }
 interface State {
   SelectedLayout: string;
   nodes: [],
-  sampledata: any
+  sampledata: any,
+  IsUpdated:boolean
 }
  export class GridQuarterlyComponent extends React.Component<Props,State> {
     
@@ -23,13 +27,14 @@ interface State {
         nodes: [],
         sampledata: this.props,
         SelectedLayout: "Quarterly",
+        IsUpdated:this.props.IsUpdated
       };
     }
 
     ParseToQuarter()
     {
       debugger;
-      let product: any[] = Object.values(this.props);
+      let product: any[] = Object.values(this.props.data);
       let data = Object.values(product);
       let i=0;
       for (let columns of data) {
@@ -53,7 +58,19 @@ interface State {
     
     componentDidUpdate(prevProps, prevState) {
       debugger;
-      if (this.state.nodes.length==0) {
+      if ((this.props.IsUpdated) && (!this.state.IsUpdated))  {
+          // this.setState({sampledata : this.props});
+          let QuarterData = this.ParseToQuarter();
+          debugger;
+          let data = this.createJsonTreestructure(QuarterData);
+          debugger;
+          let newNodes = JSON.parse(data);
+          this.setState({ nodes: newNodes });
+          this.setState({ IsUpdated: this.props.IsUpdated });
+      }
+    }
+    componentDidMount() {
+      if (!this.state.IsUpdated||this.props.data.length>0) {
           // this.setState({sampledata : this.props});
           let QuarterData = this.ParseToQuarter();
           debugger;

@@ -12,10 +12,13 @@ import {GridQuarterlyComponent} from './GridComponents/QuarterlyGrid'
 import{ GridMonthlyComponent} from './GridComponents/MonthlyGrid'
 import{ GridYearlyComponent} from './GridComponents/YearlyGrid'
 import {MonthlySummary} from './GridComponents/Summary/MonthlySummary/monthlySummaryComponent' 
-
+import{RecordOverviewProps} from './GridComponents/interface/contextInterface'
+import {IInputs, IOutputs} from "../PCFReactElementComponent/generated/ManifestTypes"
 export interface Props {
   data: any;
   columns:[];
+  context: ComponentFramework.Context<IInputs>;
+  IsUpdated:boolean;
   // childData:[];
   onChange: (value:[])=>void;
 }
@@ -24,7 +27,9 @@ export interface State {
   SelectedLayout: string;
   products :any;
   productsFomChild: any;
-  columns : any;
+  columns : any,
+  context:ComponentFramework.Context<IInputs>;
+  IsUpdated:boolean;
 }
 
 export class App extends React.Component<Props, State> {
@@ -41,7 +46,9 @@ export class App extends React.Component<Props, State> {
         { label: "Quarterly", value: "Quarterly" },
       ],
       SelectedLayout: "Monthly",
-      columns : this.props.columns
+      columns : this.props.columns,
+      context:this.props.context,
+      IsUpdated:false
     };
     // this.setState({ products : this.props.data});
     this.handleChange = this.handleChange.bind(this);
@@ -53,7 +60,11 @@ export class App extends React.Component<Props, State> {
     if (state.products !== props.data) 
     {
       return{
-        products: props.data
+        products: props.data,
+        columns : props.columns,
+        context:  props.context,
+        IsUpdated:true
+
       } 
     }
     return null;
@@ -86,9 +97,17 @@ export class App extends React.Component<Props, State> {
 
   public render() {
     debugger;
+    let inputData={
+      data: this.state.products,
+      columns: this.state.columns,
+      context:this.state.context,
+      IsUpdated:this.state.IsUpdated
+    }
     // this.setState({ products : this.props.data});
     const SelectedLayout = this.state.SelectedLayout;
     let products = this.state.products;
+
+
     let DataTable;
     if (SelectedLayout == "Yearly")
     {
@@ -96,12 +115,12 @@ export class App extends React.Component<Props, State> {
     } 
     else if (SelectedLayout == "Monthly")
     {
-      DataTable=<MonthlySummary {...products}/>
+      DataTable=<MonthlySummary {...inputData}/>
       // DataTable = <GridMonthlyComponent parentCallback = {this.callbackFunction} {...products}/> ;
     }
     else if (SelectedLayout == "Quarterly")
     {
-      DataTable = <GridQuarterlyComponent  parentCallback = {this.callbackFunction} {...products}/>;
+      DataTable = <GridQuarterlyComponent  {...inputData}/>;
     }
     return (
       <div className="App">

@@ -83,7 +83,6 @@ export class DialogDemo extends Component<AppProps, AppState>{
     setData=(data)=>{
         let updatedDatas: any[] = data;
         this.setState({ updatedData: updatedDatas });
-        //this.setState(......)
     }
 
     render() {
