@@ -4,7 +4,6 @@ type DataSet = ComponentFramework.PropertyTypes.DataSet;
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {App,Props,State } from './App';
-
 export class PCFReactElementComponent implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
 	private childData:[];

@@ -79,7 +79,6 @@ export interface State {
      onEditorValueChange(props, value) {
       let updatedProducts = [...props.value];
       updatedProducts[props.rowIndex][props.field] = value;
-      debugger;
       this.setState({products: updatedProducts});
   }
 

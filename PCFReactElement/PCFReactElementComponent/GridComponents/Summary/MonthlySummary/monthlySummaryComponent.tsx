@@ -111,10 +111,12 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             let x: number = 0;
             data.map(p => {
                 if (p.FinacialYear === year) {
+       
 
                     let childrenData = {
                         "key": i.toString().concat('-', x.toString()),
                         data: {
+                           // [a]: p[a],
                             "CFNAME": p.CFNAME,
                             "PPR": p.PPR,
                             "FinacialYear": p.FinacialYear,
