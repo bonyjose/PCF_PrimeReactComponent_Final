@@ -53,7 +53,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
 
     onClick(name: string) {
-        debugger;
+
         let state = {
             [`${name}`]: true
         };
@@ -66,7 +66,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
     }
     onSave(name: string) {
-        debugger;
+
         let updatedDatas: any[] = this.state.updatedData;
         
         this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))

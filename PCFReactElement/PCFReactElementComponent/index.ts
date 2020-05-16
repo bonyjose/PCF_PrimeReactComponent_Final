@@ -59,7 +59,7 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
 		const dataSet = context.parameters.sampleDataSet;
-		debugger;
+
 		let datasetColumns: any = this._columns(dataSet);
 		let dataItems: any = this._items(dataSet, datasetColumns);
 
@@ -79,7 +79,7 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 
 	// this event will collect the modified grid array from child react component 
 	notifyChange(value:[]){
-		debugger;
+
 		this.childData = value;
 		console.log(this.childData);
 		this.notifyOutputChanged();

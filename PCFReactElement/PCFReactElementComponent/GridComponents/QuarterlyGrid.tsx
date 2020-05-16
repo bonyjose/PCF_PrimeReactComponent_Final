@@ -33,7 +33,7 @@ interface State {
 
     ParseToQuarter()
     {
-      debugger;
+
       let product: any[] = Object.values(this.props.data);
       let data = Object.values(product);
       let i=0;
@@ -51,19 +51,19 @@ interface State {
       }
       // this.setState({sampledata : data});
       return data;
-      debugger;
+
     }
 
 
     
     componentDidUpdate(prevProps, prevState) {
-      debugger;
+
       if ((this.props.IsUpdated) && (!this.state.IsUpdated))  {
           // this.setState({sampledata : this.props});
           let QuarterData = this.ParseToQuarter();
-          debugger;
+
           let data = this.createJsonTreestructure(QuarterData);
-          debugger;
+
           let newNodes = JSON.parse(data);
           this.setState({ nodes: newNodes });
           this.setState({ IsUpdated: this.props.IsUpdated });
@@ -73,9 +73,9 @@ interface State {
       if (!this.state.IsUpdated||this.props.data.length>0) {
           // this.setState({sampledata : this.props});
           let QuarterData = this.ParseToQuarter();
-          debugger;
+
           let data = this.createJsonTreestructure(QuarterData);
-          debugger;
+
           let newNodes = JSON.parse(data);
           this.setState({ nodes: newNodes });
         
@@ -83,7 +83,7 @@ interface State {
     }
 
     createJsonTreestructure = (QuarterData : any) => {
-      debugger;
+
       let product: any[] = Object.values(QuarterData);
 
       let uniqyear = product.map(i => i.FinacialYear);
@@ -152,7 +152,7 @@ interface State {
 
 
     createJsonForAPI= () => {
-      debugger;
+
       let product: any[] = Object.values(this.props);
       let result = {};
 
@@ -187,7 +187,7 @@ interface State {
                   ChildResultArray.push(childrenData)
           })
           ResultArray.push(ChildResultArray);
-          debugger;
+
           console.log(JSON.stringify(ResultArray));
           return JSON.stringify(ResultArray);
 }
@@ -204,7 +204,7 @@ onEditorValueChange(props: any, value: any) {
 }
 
 findNodeByKey(nodes: any, key: any) {
-  debugger;
+
   let path = key.split('-');
   let node;
 
@@ -239,11 +239,12 @@ vinEditor = (props: any) => {
 
   
     render() {
-      debugger;
+
       return (
         <div>
         <div className="content-section implementation">
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName}>
+        <DialogDemo />
+                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName}  paginator={true} rows={1}>
                         <Column field="FinacialYear" header="Year*" style={{ height: '3.5em' }} expander={true} />
                         <Column field="CFNAME" header="CFN*" style={{ height: '3.5em' }} />
                         <Column field="PPR" header="PPR" style={{ height: '3.5em' }} />
@@ -271,7 +272,7 @@ vinEditor = (props: any) => {
                     <label style={{ float: "left", color: "#ab9999" }} >CFN*: Cash Flow Name</label><br />
                     <label style={{ float: "left", color: "#ab9999" }} >Year*: Finacial Year</label><br />
                 </div>
-                <DialogDemo />
+
               </div>
           );
       }

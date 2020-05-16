@@ -1,14 +1,22 @@
 
 .p-button.p-component.addnewBtn.p-button-text-icon-left{
-    float: left;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    float: right;
+    margin-top: 0px;
+    z-index: 1;
+    margin-bottom: 7px;
 }
 body .p-treetable .p-treetable-tbody > tr.p-highlight_custom {
     background-color: #a5a0a00d;
     color: #101010;
+    pointer-events: none;
+    opacity: 2.1;
+    transition-delay: 0s;
 }
 .p-treetable table{
     table-layout: fixed !important;
     word-wrap: break-word !important;
+}
+
+body .p-treetable .p-treetable-tbody > tr > td .p-treetable-toggler{
+    pointer-events: visible;
 }

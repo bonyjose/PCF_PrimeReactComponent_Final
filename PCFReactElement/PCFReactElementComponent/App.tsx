@@ -14,6 +14,8 @@ import{ GridYearlyComponent} from './GridComponents/YearlyGrid'
 import {MonthlySummary} from './GridComponents/Summary/MonthlySummary/monthlySummaryComponent' 
 import{RecordOverviewProps} from './GridComponents/interface/contextInterface'
 import {IInputs, IOutputs} from "../PCFReactElementComponent/generated/ManifestTypes"
+import {TabView,TabPanel} from 'primereact/tabview';
+
 export interface Props {
   data: any;
   columns:[];
@@ -36,7 +38,7 @@ export class App extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    debugger;
+
     this.state = {
       products : this.props.data,
       productsFomChild :null,
@@ -56,7 +58,7 @@ export class App extends React.Component<Props, State> {
 
   
   static getDerivedStateFromProps(props, state) {
-    debugger;
+
     if (state.products !== props.data) 
     {
       return{
@@ -82,11 +84,11 @@ export class App extends React.Component<Props, State> {
   handleChange(e: { originalEvent: Event; value: any }) {
     this.setState({ SelectedLayout: e.value });
 
-    debugger;
+
   }
 
   callbackFunction = (childData) => {  
-    debugger;
+
     this.setState({productsFomChild: childData});
     // console.log(childData);
     this.props.onChange(childData);
@@ -96,7 +98,7 @@ export class App extends React.Component<Props, State> {
 
 
   public render() {
-    debugger;
+
     let inputData={
       data: this.state.products,
       columns: this.state.columns,
@@ -124,22 +126,17 @@ export class App extends React.Component<Props, State> {
     }
     return (
       <div className="App">
-        <span className="DropDown">
-        <label htmlFor="LayoutType" > View As </label> &nbsp; &nbsp;
-        <Dropdown 
-          name="LayoutType"
-          value={this.state.SelectedLayout}
-          options={this.state.LayoutType}
-          onChange={(e) => {
-            this.handleChange(e);
-          }}
-          placeholder="Select a Layout"
-        />
-        </span>
-       {" "}
-        <br />
-        <br />
-        {DataTable}
+                    <TabView renderActiveOnly={false}>
+                        <TabPanel header="Year">
+                        <GridYearlyComponent  parentCallback = {this.callbackFunction} {...products}/>;
+                        </TabPanel>
+                        <TabPanel header="Month" >
+                        <MonthlySummary {...inputData}/>
+                        </TabPanel>
+                        <TabPanel header="Quater" >
+                        <GridQuarterlyComponent  {...inputData}/>;
+                        </TabPanel>
+                  </TabView>
       </div>
     );
   }

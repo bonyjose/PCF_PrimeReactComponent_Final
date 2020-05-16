@@ -34,7 +34,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     componentDidUpdate(prevProps, prevState) {
-        debugger;
+
         if ((this.props.IsUpdated) && (!this.state.IsUpdated)) {
             let data = this.createJsonTreestructure();
             let newNodes = JSON.parse(data);
@@ -43,7 +43,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
     }
     componentDidMount() {
-        debugger;
+
         if (!this.state.IsUpdated||this.props.data.length>0) {
             let data = this.createJsonTreestructure();
             let newNodes = JSON.parse(data);
@@ -62,7 +62,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     findNodeByKey(nodes: any, key: any) {
-        debugger;
+
         let path = key.split('-');
         let node;
 
@@ -154,12 +154,12 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     }
     render() {
-        debugger;
         return (
 
             <div>
-                <div className="content-section implementation">
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName}>
+                <div className="content-section implementation"> 
+                <DialogDemo />
+                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={1}>
                         <Column field="FinacialYear" header="Year*" style={{ height: '3.5em' }} expander={true} />
                         <Column field="CFNAME" header="CFN*" style={{ height: '3.5em' }} />
                         <Column field="PPR" header="PPR" style={{ height: '3.5em' }} />
@@ -189,7 +189,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
 
                 </div>
-                <DialogDemo />
+
             </div>
 
         )
