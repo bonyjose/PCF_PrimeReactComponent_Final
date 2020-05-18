@@ -194,13 +194,28 @@ interface State {
 
 
 onEditorValueChange(props: any, value: any) {
+  debugger;
 
+  let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
   let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
   let editedNode = this.findNodeByKey(newNodes, props.node.key);
   editedNode.data[props.field] = value;
   this.setState({
       nodes: newNodes
   });
+  this.props.context.webAPI.createRecord(gridEntity, editedNode).then(this.successCallback, this.errorCallback);
+  debugger;
+}
+
+
+successCallback()
+{
+  console.log("api create success");
+}
+
+errorCallback()
+{
+  console.log("api create failed");
 }
 
 findNodeByKey(nodes: any, key: any) {
