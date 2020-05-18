@@ -50,13 +50,55 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     onEditorValueChange(props: any, value: any) {
-
+        let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
         editedNode.data[props.field] = value;
         this.setState({
             nodes: newNodes
         });
+        debugger;
+        let ChildResultArray: any[] =[];
+        let objc  = { m360_cashflowitemname: "2020",m360_decamount: "0",m360_febamount: "0",m360_fiscalyear: "2020"}
+        Object.entries(editedNode.data).forEach(
+            ([key, value]) =>
+            {
+                if (key=="CFNAME")
+                {
+                    ChildResultArray.push(["m360_cashflowitemname",value])
+                }
+                else if(key=="December")
+                {
+                    ChildResultArray.push(["m360_decamount",value])
+                }
+                else if (key=="January")
+                {
+                    ChildResultArray.push(["m360_janamount",value]);
+                }
+                else if (key=="FinacialYear")
+                {
+                    ChildResultArray.push(["m360_fiscalyear",value]);
+                }
+                
+        //  return ChildResultArray;
+                }
+            );
+            debugger;
+            // ChildResultArray.forEach(item => obj[item.key] = item.Value);
+            console.log(editedNode);
+        console.log(objc);
+        this.props.context.webAPI.createRecord(gridEntity, objc).then(this.successCallback, this.errorCallback);
+        
+    }
+
+    successCallback()
+    {
+    console.log("api create success");
+    }
+
+    errorCallback()
+    {
+    console.log("api create failed");
     }
 
     findNodeByKey(nodes: any, key: any) {
