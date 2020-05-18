@@ -7,17 +7,16 @@ import { IInputs, IOutputs } from "../../../generated/ManifestTypes"
 
 
 type AppMonthProps = {
-
     data: any[];
-    columns?: any[];
+    columns: any[];
     context: ComponentFramework.Context<IInputs>;
-    IsUpdated:boolean
+    IsUpdated: boolean
 }
 type monthState = {
     nodes: [],
     sampledata: any[],
-    conext: ComponentFramework.Context<IInputs>
-    IsUpdated:boolean
+    IsUpdated: boolean,
+    coldef: any[]
 
 }
 export class MonthlySummary extends Component<AppMonthProps, monthState>{
@@ -27,10 +26,9 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         this.state = {
             nodes: [],
             sampledata: this.props.data,
-            conext: this.props.context,
-            IsUpdated:this.props.IsUpdated
+            IsUpdated: this.props.IsUpdated,
+            coldef: []
         };
-
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -44,7 +42,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
     componentDidMount() {
 
-        if (!this.state.IsUpdated||this.props.data.length>0) {
+        if (!this.state.IsUpdated || this.props.data.length > 0) {
             let data = this.createJsonTreestructure();
             let newNodes = JSON.parse(data);
             this.setState({ nodes: newNodes })
@@ -65,24 +63,28 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
         let path = key.split('-');
         let node;
-
         while (path.length) {
             let list = node ? node.children : nodes;
             node = list[parseInt(path[0], 10)];
             path.shift();
         }
-
         return node;
     }
 
     inputTextEditor = (props: any, field: any) => {
+        if (!props.expander) {
+            return <InputText type="text" value={props.node.data[field] ? props.node.data[field] : ""} onChange={(
+                ev: React.ChangeEvent<HTMLInputElement>): void => {
 
-        return <InputText type="text" value={props.node.data[field] ? props.node.data[field] : ""} onChange={(
-            ev: React.ChangeEvent<HTMLInputElement>): void => {
-
-            this.onEditorValueChange
-                (props, ev.target.value.toString())
-        }} />;
+                this.onEditorValueChange
+                    (props, ev.target.value.toString())
+            }} />;
+        }
+        else {
+            return <label >
+                {props.node.data[field] ? props.node.data[field] : ""}
+            </label>
+        }
     }
     rowClassName(node) {
 
@@ -94,53 +96,90 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         return this.inputTextEditor(props, field);
     }
 
+    createColDefinition() {
+        debugger;
+        let resultData = {};
+        let cols: any[];
+        cols = [];
+        Object.values(this.props.columns).map(p => {
+            let expander: boolean = false;
+            if (p.fieldName == "FinacialYear") {
+                resultData = {
+                    field: p.fieldName, header: "Year*", expander: true
+                }
+            }
+            else if (p.fieldName == "CFNAME") {
+                resultData = {
+                    field: p.fieldName, header: "CFN*", expander: expander
+                }
+            }
+            else if (p.fieldName == "LineTotal") {
+                resultData = {
+                    field: p.fieldName, header: "Total*", expander: expander
+                }
+            }
+            else if (p.name.length > 2) {
+                let name = p.name.replace(/\w+/g,
+                    function (w) { return w[0].toUpperCase() + w.slice(1).toLowerCase(); });
+                resultData = {
+                    field: p.fieldName, header: name.substring(0, 3), expander: expander
+                }
+            }
+            else {
+                resultData = {
+                    field: p.fieldName, header: p.name, expander: expander
+                }
+            }
+            cols.push(resultData);
 
-
+        });
+        let datas = this.sortByKey(Object.values(cols), 'expander');
+        this.setState({ coldef: datas });
+    }
+    sortByKey(array, key) {
+        return array.sort(function (a, b) {
+            var x = a[key]; var y = b[key];
+            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+        });
+    }
     createJsonTreestructure = () => {
+        this.createColDefinition()
         let product: any[] = Object.values(this.props.data);
+        let field = Object.values(this.props.columns).map(p => p.fieldName);
         let uniqyear = product.map(i => i.FinacialYear);
         var uniqueItems = Array.from(new Set(uniqyear))
         let result = {};
         let ChildResultArray: any[];
         let ResultArray: any[];
-        ResultArray = [];
+        let sampleArray: any[];
+        ResultArray = [], sampleArray = [];
         for (let i = 0; i < uniqueItems.length; i++) {
             let data = Object.values(product);
+            let column = Object.values(field);
+            var currentKey;
+            var currentVal;
             const year = uniqueItems[i];
             ChildResultArray = [];
             let x: number = 0;
+            let childrenData: any[];
+            let result = {};
             data.map(p => {
                 if (p.FinacialYear === year) {
-       
+                    for (let k = 0; k <= column.length; k++) {
+                        currentKey = column[k];
+                        currentVal = p[currentKey];
+                        result[currentKey] = currentVal;
+                    }
 
                     let childrenData = {
-                        "key": i.toString().concat('-', x.toString()),
-                        data: {
-                           // [a]: p[a],
-                            "CFNAME": p.CFNAME,
-                            "PPR": p.PPR,
-                            "FinacialYear": p.FinacialYear,
-                            "April": p.April,
-                            "August": p.August,
-                            "December": p.December,
-                            "February": p.February,
-                            "January": p.January,
-                            "July": p.July,
-                            "June": p.June,
-                            "LineTotal": p.LineTotal,
-                            "March": p.March,
-                            "May": p.May,
-                            "November": p.November,
-                            "October": p.October,
-                            "September": p.September,
-                            "id": p.key
-                        }
+                        key: i.toString().concat('-', x.toString()),
+                        data: result,
+                        nodeKey: p.key
                     }
                     x++;
                     ChildResultArray.push(childrenData)
                 }
-            })
-
+            });
             let resultData = {
                 key: i.toString(),
                 data: {
@@ -150,48 +189,24 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             }
             ResultArray.push(resultData);
         }
-        console.log(JSON.stringify(ResultArray));
-
         return JSON.stringify(ResultArray);
-
     }
     render() {
+        const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
+            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={this.vinEditor} style={{ height: '3.5em' }} headerClassName="p-col-d" />;
+        });
         return (
 
             <div>
-                <div className="content-section implementation"> 
-                <DialogDemo />
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={1}>
-                        <Column field="FinacialYear" header="Year*" style={{ height: '3.5em' }} expander={true} />
-                        <Column field="CFNAME" header="CFN*" style={{ height: '3.5em' }} />
-                        <Column field="PPR" header="PPR" style={{ height: '3.5em' }} />
-
-                        <Column field="Jan" header="Jan" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Feb" header="Feb" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Mar" header="Mar" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="April" header="April" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="May" header="May" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Jun" header="Jun" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Jul" header="Jul" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Aug" header="Aug" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Sep" header="Sep" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Oct" header="Oct" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Nov" header="Nov" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Dec" header="Dec" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="LineTotal" header="Total*" editor={this.vinEditor} style={{ height: '3.5em' }} />
+                <div className="content-section implementation monthlyGrid">
+                    <DialogDemo />
+                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} resizableColumns={true} scrollable={true} scrollHeight="200px">
+                        {dynamicColumns}
                     </TreeTable >
-
                     <label style={{ float: "left", color: "#ab9999" }} >Total*: Line Total</label><br />
-
-
                     <label style={{ float: "left", color: "#ab9999" }} >CFN*: Cash Flow Name</label><br />
-
                     <label style={{ float: "left", color: "#ab9999" }} >Year*: Finacial Year</label><br />
-
-
-
                 </div>
-
             </div>
 
         )
