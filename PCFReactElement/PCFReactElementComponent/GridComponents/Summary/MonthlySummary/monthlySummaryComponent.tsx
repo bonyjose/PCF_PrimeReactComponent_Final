@@ -17,7 +17,7 @@ type monthState = {
     sampledata: any[],
     IsUpdated: boolean,
     coldef: any[]
-
+    
 }
 export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
@@ -29,6 +29,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             IsUpdated: this.props.IsUpdated,
             coldef: []
         };
+        this.vinEditor=this.vinEditor.bind(this);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -72,7 +73,13 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     inputTextEditor = (props: any, field: any) => {
-        if (!props.expander) {
+        if (props.expander) {
+            return <label >
+                {props.node.data[field] ? props.node.data[field] : ""}
+            </label>
+            
+        }
+        else {
             return <InputText type="text" value={props.node.data[field] ? props.node.data[field] : ""} onChange={(
                 ev: React.ChangeEvent<HTMLInputElement>): void => {
 
@@ -80,30 +87,26 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
                     (props, ev.target.value.toString())
             }} />;
         }
-        else {
-            return <label >
-                {props.node.data[field] ? props.node.data[field] : ""}
-            </label>
-        }
     }
     rowClassName(node) {
 
         return { 'p-highlight_custom': (node.children && node.children.length > 0) };
     }
-    vinEditor = (props: any) => {
-
+    vinEditor  (props: any)  {
+debugger;
         let field = props.field
         return this.inputTextEditor(props, field);
     }
 
     createColDefinition() {
+        let expandYear=this.context.parameters.expandYear!=null?this.context.parameters.expandYear:"FinacialYear";
         debugger;
         let resultData = {};
         let cols: any[];
         cols = [];
         Object.values(this.props.columns).map(p => {
             let expander: boolean = false;
-            if (p.fieldName == "FinacialYear") {
+            if (p.fieldName == "expandYear") {
                 resultData = {
                     field: p.fieldName, header: "Year*", expander: true
                 }
@@ -143,11 +146,14 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         });
     }
     createJsonTreestructure = () => {
+        debugger;
+        let expandYear=this.context.parameters.expandYear!=null?this.context.parameters.expandYear:"FinacialYear";
+        
         this.createColDefinition()
         let product: any[] = Object.values(this.props.data);
         let field = Object.values(this.props.columns).map(p => p.fieldName);
-        let uniqyear = product.map(i => i.FinacialYear);
-        var uniqueItems = Array.from(new Set(uniqyear))
+        let uniqYear = product.map(i => i[expandYear]);
+        var uniqueItems = Array.from(new Set(uniqYear))
         let result = {};
         let ChildResultArray: any[];
         let ResultArray: any[];
@@ -164,7 +170,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             let childrenData: any[];
             let result = {};
             data.map(p => {
-                if (p.FinacialYear === year) {
+                if (p[expandYear] === year) {
                     for (let k = 0; k <= column.length; k++) {
                         currentKey = column[k];
                         currentVal = p[currentKey];
@@ -193,14 +199,14 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
     render() {
         const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
-            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={this.vinEditor} style={{ height: '3.5em' }} headerClassName="p-col-d" />;
+            return <Column key={col.field} field={col.field} header={col.header}  expander={col.expander} editor={this.vinEditor} style={{ height: '3.5em' }} headerClassName="p-col-d" />;
         });
         return (
 
-            <div>
+            <div className="scrollbar scrollbar-primary"> 
                 <div className="content-section implementation monthlyGrid">
                     <DialogDemo />
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} resizableColumns={true} scrollable={true} scrollHeight="200px">
+                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5}  scrollable scrollHeight="200px">
                         {dynamicColumns}
                     </TreeTable >
                     <label style={{ float: "left", color: "#ab9999" }} >Total*: Line Total</label><br />
