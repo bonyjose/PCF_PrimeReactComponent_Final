@@ -8,6 +8,7 @@
       <property-set name="samplePropertySet" display-name-key="Property_Display_Key" description-key="Property_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
       -->
     </data-set>
+	 <property name="expandYear" display-name-key="RowGroupParam" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
     <resources>
       <code path="index.ts" order="1"/>
       <css path="CSS/primereact.min.css" order="2" />
