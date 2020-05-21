@@ -99,7 +99,7 @@ debugger;
     }
 
     createColDefinition() {
-        let expandYear=this.context.parameters.expandYear!=null?this.context.parameters.expandYear:"FinacialYear";
+        let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
         debugger;
         let resultData = {};
         let cols: any[];
@@ -147,7 +147,7 @@ debugger;
     }
     createJsonTreestructure = () => {
         debugger;
-        let expandYear=this.context.parameters.expandYear!=null?this.context.parameters.expandYear:"FinacialYear";
+        let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
         
         this.createColDefinition()
         let product: any[] = Object.values(this.props.data);
