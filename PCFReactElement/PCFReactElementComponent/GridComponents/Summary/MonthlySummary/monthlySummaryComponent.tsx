@@ -50,7 +50,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
     }
 
-    onEditorValueChange = (props:any) => {
+    onEditorValueChange = (props: any) => {
         debugger;
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
@@ -73,8 +73,8 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     inputTextEditor = (props: any, field: any) => {
-       return <InputText type="text" value={props.node.data[field]}
-        onChange={(e) => this.onEditorValueChange(props)} />
+        return <InputText type="text" value={props.node.data[field]}
+            onChange={(e) => this.onEditorValueChange(props)} />
         // if (props.expander) {
         //     return <label >
         //         {props.node.data[field] ? props.node.data[field] : ""}
@@ -97,8 +97,8 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
         return { 'p-highlight_custom': (node.children && node.children.length > 0) };
     }
+
     vinEditor(props: any) {
-        debugger;
         let field = props.field
         return this.inputTextEditor(props, field);
     }
@@ -218,7 +218,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
     render() {
         const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
-            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={this.vinEditor}  style={{ height: '3.5em' }} headerClassName="p-col-d" />;
+            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={this.vinEditor} style={{ height: '3.5em' }} headerClassName="p-col-d" />;
         });
         return (
 

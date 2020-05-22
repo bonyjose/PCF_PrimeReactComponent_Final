@@ -47,7 +47,7 @@ export class App extends React.Component<Props, State> {
         { label: "Monthly", value: "Monthly" },
         { label: "Quarterly", value: "Quarterly" },
       ],
-      SelectedLayout: "Monthly",
+      SelectedLayout: "Quarterly",
       columns : this.props.columns,
       context:this.props.context,
       IsUpdated:false
@@ -130,9 +130,9 @@ export class App extends React.Component<Props, State> {
                         <TabPanel header="Year">
                         <GridYearlyComponent  parentCallback = {this.callbackFunction} {...products}/>;
                         </TabPanel>
-                        <TabPanel header="Month" >
+                        {/* <TabPanel header="Month" >
                         <MonthlySummary {...inputData}/>
-                        </TabPanel>
+                        </TabPanel> */}
                         <TabPanel header="Quater" >
                         <GridQuarterlyComponent  {...inputData}/>;
                         </TabPanel>
