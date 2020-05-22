@@ -63,7 +63,6 @@ interface State {
           let QuarterData = this.ParseToQuarter();
 
           let data = this.createJsonTreestructure(QuarterData);
-
           let newNodes = JSON.parse(data);
           this.setState({ nodes: newNodes });
           this.setState({ IsUpdated: this.props.IsUpdated });
@@ -75,7 +74,6 @@ interface State {
           let QuarterData = this.ParseToQuarter();
 
           let data = this.createJsonTreestructure(QuarterData);
-
           let newNodes = JSON.parse(data);
           this.setState({ nodes: newNodes });
         
@@ -199,12 +197,51 @@ onEditorValueChange(props: any, value: any) {
   let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
   let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
   let editedNode = this.findNodeByKey(newNodes, props.node.key);
+  debugger;
   editedNode.data[props.field] = value;
+  let editedObject = this.buildUpdateNode(editedNode.data);
+  console.log(editedObject);
   this.setState({
       nodes: newNodes
   });
   this.props.context.webAPI.createRecord(gridEntity, editedNode).then(this.successCallback, this.errorCallback);
   debugger;
+}
+
+buildUpdateNode(editNode : any)
+{
+  debugger;
+  let Q1Split = Number(editNode["Q1"])/4;
+  let Q2Split = Number(editNode["Q2"])/4;
+  let Q3Split = Number(editNode["Q3"])/4;
+  let q4Split = Number(editNode["Q4"])/4;
+
+  editNode["January"]= Q1Split;
+  editNode["February"]= Q1Split;
+  editNode["March"]= Q1Split;
+  editNode["April"]= Q2Split
+  editNode["May"]= Q2Split;
+  editNode["June"]= Q2Split;
+  editNode["July"]= Q3Split;
+  editNode["August"]= Q3Split;
+  editNode["September"]= Q3Split;
+  editNode["October"]= q4Split;
+  editNode["November"]= q4Split;
+  editNode["December"]= q4Split;
+
+  return editNode;
+
+//   var entity = {};
+//   // @ts-ignore 
+// entity.m360_apramount = Number(parseFloat(25).toFixed(0));
+// // @ts-ignore 
+// entity.m360_cashflowitemname = "Test API";
+// // @ts-ignore 
+// entity.m360_janamount = Number(parseFloat(250).toFixed(0));
+// // @ts-ignore 
+// entity.m360_fiscalyear = 555080001;
+// // @ts-ignore 
+// entity.m360_novamount = Number(parseFloat(500).toFixed(0));
 }
 
 
@@ -219,7 +256,7 @@ errorCallback()
 }
 
 findNodeByKey(nodes: any, key: any) {
-
+  debugger;
   let path = key.split('-');
   let node;
 

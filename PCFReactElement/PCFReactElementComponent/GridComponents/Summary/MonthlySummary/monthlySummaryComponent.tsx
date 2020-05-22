@@ -92,8 +92,9 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
         return { 'p-highlight_custom': (node.children && node.children.length > 0) };
     }
+
     vinEditor  (props: any)  {
-debugger;
+        debugger;
         let field = props.field
         return this.inputTextEditor(props, field);
     }
