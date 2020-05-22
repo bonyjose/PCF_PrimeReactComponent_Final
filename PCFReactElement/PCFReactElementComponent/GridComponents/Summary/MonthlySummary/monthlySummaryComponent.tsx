@@ -17,7 +17,7 @@ type monthState = {
     sampledata: any[],
     IsUpdated: boolean,
     coldef: any[]
-    
+
 }
 export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
@@ -29,7 +29,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             IsUpdated: this.props.IsUpdated,
             coldef: []
         };
-        this.vinEditor=this.vinEditor.bind(this);
+        this.vinEditor = this.vinEditor.bind(this);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -50,11 +50,11 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
     }
 
-    onEditorValueChange(props: any, value: any) {
-
+    onEditorValueChange = (props:any) => {
+        debugger;
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
-        editedNode.data[props.field] = value;
+        editedNode.data[props.field] = "event.target.value";
         this.setState({
             nodes: newNodes
         });
@@ -73,40 +73,54 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     inputTextEditor = (props: any, field: any) => {
-        if (props.expander) {
-            return <label >
-                {props.node.data[field] ? props.node.data[field] : ""}
-            </label>
-            
-        }
-        else {
-            return <InputText type="text" value={props.node.data[field] ? props.node.data[field] : ""} onChange={(
-                ev: React.ChangeEvent<HTMLInputElement>): void => {
+       return <InputText type="text" value={props.node.data[field]}
+        onChange={(e) => this.onEditorValueChange(props)} />
+        // if (props.expander) {
+        //     return <label >
+        //         {props.node.data[field] ? props.node.data[field] : ""}
+        //     </label>
 
-                this.onEditorValueChange
-                    (props, ev.target.value.toString())
-            }} />;
-        }
+        // }
+        // else {
+
+        //     return <InputText type="text" value={props.node.data[field] ? props.node.data[field] : ""}
+        //         onChange={(
+        //             ev: React.ChangeEvent<HTMLInputElement>): void => {
+
+        //             this.onEditorValueChange
+        //                 (props, ev.target.value.toString())
+        //         }} />;
+        // }
     }
+
     rowClassName(node) {
 
         return { 'p-highlight_custom': (node.children && node.children.length > 0) };
     }
-    vinEditor  (props: any)  {
-debugger;
+    vinEditor(props: any) {
+        debugger;
         let field = props.field
         return this.inputTextEditor(props, field);
     }
 
     createColDefinition() {
-        let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
+        debugger;
+        let expandYear = "";
+        if (typeof (this.context.parameters) !== 'undefined') {
+            expandYear = this.context.parameters.expandYear.raw.toString();
+        }
+        else {
+            expandYear = "FinacialYear";
+        }
+        // let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
+
         debugger;
         let resultData = {};
         let cols: any[];
         cols = [];
         Object.values(this.props.columns).map(p => {
             let expander: boolean = false;
-            if (p.fieldName == "expandYear") {
+            if (p.fieldName == expandYear) {
                 resultData = {
                     field: p.fieldName, header: "Year*", expander: true
                 }
@@ -147,8 +161,13 @@ debugger;
     }
     createJsonTreestructure = () => {
         debugger;
-        let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
-        
+        let expandYear = "";
+        if (typeof (this.context.parameters) !== 'undefined') {
+            expandYear = this.context.parameters.expandYear.raw.toString();
+        }
+        else {
+            expandYear = "FinacialYear";
+        }
         this.createColDefinition()
         let product: any[] = Object.values(this.props.data);
         let field = Object.values(this.props.columns).map(p => p.fieldName);
@@ -199,14 +218,14 @@ debugger;
     }
     render() {
         const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
-            return <Column key={col.field} field={col.field} header={col.header}  expander={col.expander} editor={this.vinEditor} style={{ height: '3.5em' }} headerClassName="p-col-d" />;
+            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={this.vinEditor}  style={{ height: '3.5em' }} headerClassName="p-col-d" />;
         });
         return (
 
-            <div className="scrollbar scrollbar-primary"> 
+            <div className="scrollbar scrollbar-primary">
                 <div className="content-section implementation monthlyGrid">
                     <DialogDemo />
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5}  scrollable scrollHeight="200px">
+                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable scrollHeight="200px">
                         {dynamicColumns}
                     </TreeTable >
                     <label style={{ float: "left", color: "#ab9999" }} >Total*: Line Total</label><br />
