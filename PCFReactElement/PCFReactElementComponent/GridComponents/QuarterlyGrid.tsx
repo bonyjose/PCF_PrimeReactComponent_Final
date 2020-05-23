@@ -10,7 +10,8 @@ interface Props {
   data: any[];
   columns?: any[];
   context: ComponentFramework.Context<IInputs>;
-  IsUpdated:boolean
+  IsUpdated:boolean;
+  // parentCallback :any;
  
 }
 interface State {
@@ -29,6 +30,7 @@ interface State {
         SelectedLayout: "Quarterly",
         IsUpdated:this.props.IsUpdated
       };
+      
     }
 
     ParseToQuarter()
@@ -67,6 +69,7 @@ interface State {
           this.setState({ nodes: newNodes });
           this.setState({ IsUpdated: this.props.IsUpdated });
       }
+      // this.props.parentCallback;
     }
     componentDidMount() {
       if (!this.state.IsUpdated||this.props.data.length>0) {
@@ -192,44 +195,78 @@ interface State {
 
 
 onEditorValueChange(props: any, value: any) {
-  debugger;
-
   let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
   let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
   let editedNode = this.findNodeByKey(newNodes, props.node.key);
   debugger;
   editedNode.data[props.field] = value;
-  let editedObject = this.buildUpdateNode(editedNode.data);
-  console.log(editedObject);
-  this.setState({
-      nodes: newNodes
-  });
-  this.props.context.webAPI.createRecord(gridEntity, editedNode).then(this.successCallback, this.errorCallback);
+  let editedField = props.field;
+  let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
   debugger;
+  console.clear();
+  console.log(editedObject);
+  // this.setState({
+  //     nodes: newNodes
+  // });
+  // this.props.context.webAPI.createRecord(gridEntity, editedNode).then(this.successCallback, this.errorCallback);
+  this.props.context.webAPI.updateRecord(gridEntity,editedNode.data["id"],editedObject).then(this.successCallback,this.errorCallback);
+  try{
+      this.props.context.parameters.sampleDataSet.refresh();
+  }
+  catch (Error)   
+  {  
+    console.log(Error.message);  
+  }  
+  debugger;
+  // this.props.parentCallback;
 }
 
-buildUpdateNode(editNode : any)
+createApiUpdateRequest(editNode : any,editedField : string)
 {
   debugger;
-  let Q1Split = Number(editNode["Q1"])/4;
-  let Q2Split = Number(editNode["Q2"])/4;
-  let Q3Split = Number(editNode["Q3"])/4;
-  let q4Split = Number(editNode["Q4"])/4;
+  var entity = {};
+  for(let Column in editNode)
+  {
+    if ((Column == editedField) && Column =="Q1" )
+    {
+        // editNode["January"] = Number(editNode[editedField])/3;
+        // editNode["February"] = Number(editNode[editedField])/3;
+        // editNode["March"] = Number(editNode[editedField])/3;
+        entity["January"] = Number(editNode[editedField])/3;
+        entity["February"] = Number(editNode[editedField])/3;
+        entity["March"] = Number(editNode[editedField])/3;
 
-  editNode["January"]= Q1Split;
-  editNode["February"]= Q1Split;
-  editNode["March"]= Q1Split;
-  editNode["April"]= Q2Split
-  editNode["May"]= Q2Split;
-  editNode["June"]= Q2Split;
-  editNode["July"]= Q3Split;
-  editNode["August"]= Q3Split;
-  editNode["September"]= Q3Split;
-  editNode["October"]= q4Split;
-  editNode["November"]= q4Split;
-  editNode["December"]= q4Split;
+    }
+    else if ((Column == editedField) && Column =="Q2" )
+    {
+        // editNode["April"] = Number(editNode[editedField])/3;
+        // editNode["May"] = Number(editNode[editedField])/3;
+        // editNode["June"] = Number(editNode[editedField])/3;
+        entity["April"] = Number(editNode[editedField])/3;
+        entity["May"] = Number(editNode[editedField])/3;
+        entity["June"] = Number(editNode[editedField])/3;
+    }
+    else if ((Column == editedField) && Column =="Q3" )
+    {
+        // editNode["July"] = Number(editNode[editedField])/3;
+        // editNode["August"] = Number(editNode[editedField])/3;
+        // editNode["September"] = Number(editNode[editedField])/3;
+        entity["July"] = Number(editNode[editedField])/3;
+        entity["August"] = Number(editNode[editedField])/3;
+        entity["September"] = Number(editNode[editedField])/3;
+    }
+    else if ((Column == editedField) && Column =="Q4" )
+    {
+        // editNode["October"] = Number(editNode[editedField])/3;
+        // editNode["November"] = Number(editNode[editedField])/3;
+        // editNode["December"] = Number(editNode[editedField])/3;
+        entity["October"] = Number(editNode[editedField])/3;
+        entity["November"] = Number(editNode[editedField])/3;
+        entity["December"] = Number(editNode[editedField])/3;
+    }
+  }
 
-  return editNode;
+  return entity;
 
 //   var entity = {};
 //   // @ts-ignore 
@@ -247,12 +284,13 @@ buildUpdateNode(editNode : any)
 
 successCallback()
 {
-  console.log("api create success");
+  // console.log("api create success");
+  console.log("api update success");
 }
 
 errorCallback()
 {
-  console.log("api create failed");
+  console.log("api update failed");
 }
 
 findNodeByKey(nodes: any, key: any) {
