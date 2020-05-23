@@ -205,9 +205,9 @@ onEditorValueChange(props: any, value: any) {
   debugger;
   console.clear();
   console.log(editedObject);
-  // this.setState({
-  //     nodes: newNodes
-  // });
+  this.setState({
+      nodes: newNodes
+  });
   // this.props.context.webAPI.createRecord(gridEntity, editedNode).then(this.successCallback, this.errorCallback);
   this.props.context.webAPI.updateRecord(gridEntity,editedNode.data["id"],editedObject).then(this.successCallback,this.errorCallback);
   try{
@@ -217,6 +217,7 @@ onEditorValueChange(props: any, value: any) {
   {  
     console.log(Error.message);  
   }  
+  this.forceUpdate();
   debugger;
   // this.props.parentCallback;
 }
@@ -338,19 +339,6 @@ vinEditor = (props: any) => {
                         <Column field="FinacialYear" header="Year*" style={{ height: '3.5em' }} expander={true} />
                         <Column field="CFNAME" header="CFN*" style={{ height: '3.5em' }} />
                         <Column field="PPR" header="PPR" style={{ height: '3.5em' }} />
-{/* 
-                        <Column field="January" header="Jan" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="February" header="Feb" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="March" header="Mar" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="April" header="April" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="May" header="May" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="June" header="Jun" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="July" header="Jul" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="August" header="Aug" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="September" header="Sep" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="October" header="Oct" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="November" header="Nov" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="December" header="Dec" editor={this.vinEditor} style={{ height: '3.5em' }} /> */}
 
                         <Column field="Q1" header="Quarter 1" editor={this.vinEditor} style={{ height: '3.5em' }} />
                         <Column field="Q2" header="Quarter 2" editor={this.vinEditor} style={{ height: '3.5em' }} />
