@@ -52,13 +52,51 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     onEditorValueChange = (props: any, event) => {
         debugger;
+        let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
         editedNode.data[props.field] = event.target.value;
         this.setState({
             nodes: newNodes
         });
+
+        let editedField = props.field;
+        let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
+        this.props.context.webAPI.updateRecord(gridEntity,editedNode.nodeKey,editedObject).then(this.successCallback,this.errorCallback);
+        try{
+            this.props.context.parameters.sampleDataSet.refresh();
+        }
+        catch (Error)   
+        {  
+          console.log(Error.message);  
+        }  
+        this.forceUpdate();
     }
+
+    createApiUpdateRequest(editNode : any,editedField : string)
+    {
+    debugger;
+    var entity = {};
+    for(let Column in editNode)
+    {
+        if ((Column == editedField))
+        {
+            entity[Column] = Number(editNode[editedField]);
+        }
+    }
+    return entity;
+    }
+
+successCallback()
+{
+  // console.log("api create success");
+  console.log("api update success");
+}
+
+errorCallback()
+{
+  console.log("api update failed");
+}
 
     findNodeByKey(nodes: any, key: any) {
 
@@ -137,6 +175,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         let datas = this.sortByKey(Object.values(cols), 'expander');
         this.setState({ coldef: datas });
     }
+    
     sortByKey(array, key) {
         return array.sort(function (a, b) {
             var x = a[key]; var y = b[key];
