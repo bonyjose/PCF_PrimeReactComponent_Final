@@ -230,9 +230,6 @@ createApiUpdateRequest(editNode : any,editedField : string)
   {
     if ((Column == editedField) && Column =="Q1" )
     {
-        // editNode["January"] = Number(editNode[editedField])/3;
-        // editNode["February"] = Number(editNode[editedField])/3;
-        // editNode["March"] = Number(editNode[editedField])/3;
         entity["January"] = Number(editNode[editedField])/3;
         entity["February"] = Number(editNode[editedField])/3;
         entity["March"] = Number(editNode[editedField])/3;
@@ -240,27 +237,18 @@ createApiUpdateRequest(editNode : any,editedField : string)
     }
     else if ((Column == editedField) && Column =="Q2" )
     {
-        // editNode["April"] = Number(editNode[editedField])/3;
-        // editNode["May"] = Number(editNode[editedField])/3;
-        // editNode["June"] = Number(editNode[editedField])/3;
         entity["April"] = Number(editNode[editedField])/3;
         entity["May"] = Number(editNode[editedField])/3;
         entity["June"] = Number(editNode[editedField])/3;
     }
     else if ((Column == editedField) && Column =="Q3" )
     {
-        // editNode["July"] = Number(editNode[editedField])/3;
-        // editNode["August"] = Number(editNode[editedField])/3;
-        // editNode["September"] = Number(editNode[editedField])/3;
         entity["July"] = Number(editNode[editedField])/3;
         entity["August"] = Number(editNode[editedField])/3;
         entity["September"] = Number(editNode[editedField])/3;
     }
     else if ((Column == editedField) && Column =="Q4" )
     {
-        // editNode["October"] = Number(editNode[editedField])/3;
-        // editNode["November"] = Number(editNode[editedField])/3;
-        // editNode["December"] = Number(editNode[editedField])/3;
         entity["October"] = Number(editNode[editedField])/3;
         entity["November"] = Number(editNode[editedField])/3;
         entity["December"] = Number(editNode[editedField])/3;
