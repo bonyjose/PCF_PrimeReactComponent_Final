@@ -50,11 +50,11 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
     }
 
-    onEditorValueChange = (props: any) => {
+    onEditorValueChange = (props: any, event) => {
         debugger;
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
-        editedNode.data[props.field] = "event.target.value";
+        editedNode.data[props.field] = event.target.value;
         this.setState({
             nodes: newNodes
         });
@@ -74,23 +74,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     inputTextEditor = (props: any, field: any) => {
         return <InputText type="text" value={props.node.data[field]}
-            onChange={(e) => this.onEditorValueChange(props)} />
-        // if (props.expander) {
-        //     return <label >
-        //         {props.node.data[field] ? props.node.data[field] : ""}
-        //     </label>
-
-        // }
-        // else {
-
-        //     return <InputText type="text" value={props.node.data[field] ? props.node.data[field] : ""}
-        //         onChange={(
-        //             ev: React.ChangeEvent<HTMLInputElement>): void => {
-
-        //             this.onEditorValueChange
-        //                 (props, ev.target.value.toString())
-        //         }} />;
-        // }
+            onChange={(e) => this.onEditorValueChange(props,e)} />
     }
 
     rowClassName(node) {
@@ -218,14 +202,14 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
     render() {
         const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
-            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={this.vinEditor} style={{ height: '3.5em' }} headerClassName="p-col-d" />;
+            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.expander ? undefined : this.vinEditor} style={{width:'100px'}} headerClassName="p-col-d" />;
         });
         return (
 
             <div className="scrollbar scrollbar-primary">
                 <div className="content-section implementation monthlyGrid">
                     <DialogDemo />
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable scrollHeight="200px">
+                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{width: '1000px'}}  scrollHeight="400px">
                         {dynamicColumns}
                     </TreeTable >
                     <label style={{ float: "left", color: "#ab9999" }} >Total*: Line Total</label><br />
