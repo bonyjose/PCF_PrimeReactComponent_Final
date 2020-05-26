@@ -144,7 +144,7 @@ errorCallback()
             let expander: boolean = false;
             if (p.fieldName == expandYear) {
                 resultData = {
-                    field: p.fieldName, header: "Year*", expander: true
+                    field: p.fieldName, header: "Year", expander: true
                 }
             }
             else {
@@ -235,12 +235,8 @@ errorCallback()
                 <div className="content-section implementation monthlyGrid">
                     <DialogDemo />
                     <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{width: '1000px'}}  scrollHeight="300px">
-                        {dynamicColumns}
-                        <Column rowEditor={true} style={{'width': '70px', 'textAlign': 'center'}}></Column>
-                    </TreeTable >
-                    <label style={{ float: "left", color: "#ab9999" }} >Total*: Line Total</label><br />
-                    <label style={{ float: "left", color: "#ab9999" }} >CFN*: Cash Flow Name</label><br />
-                    <label style={{ float: "left", color: "#ab9999" }} >Year*: Finacial Year</label><br />
+                        {dynamicColumns}                      
+                    </TreeTable >                  
                 </div>
             </div>
 
