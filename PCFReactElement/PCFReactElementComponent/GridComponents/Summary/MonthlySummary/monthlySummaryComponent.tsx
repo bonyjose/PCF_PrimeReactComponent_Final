@@ -52,7 +52,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     onEditorValueChange = (props: any, event) => {
         debugger;
-        //let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
         editedNode.data[props.field] = event.target.value;
@@ -60,17 +60,17 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             nodes: newNodes
         });
 
-        // let editedField = props.field;
-        // let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
-        // this.props.context.webAPI.updateRecord(gridEntity,editedNode.nodeKey,editedObject).then(this.successCallback,this.errorCallback);
-        // try{
-        //     this.props.context.parameters.sampleDataSet.refresh();
-        // }
-        // catch (Error)   
-        // {  
-        //   console.log(Error.message);  
-        // }  
-        // this.forceUpdate();
+        let editedField = props.field;
+        let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
+        this.props.context.webAPI.updateRecord(gridEntity,editedNode.nodeKey,editedObject).then(this.successCallback,this.errorCallback);
+        try{
+            this.props.context.parameters.sampleDataSet.refresh();
+        }
+        catch (Error)   
+        {  
+          console.log(Error.message);  
+        }  
+        this.forceUpdate();
     }
 
     createApiUpdateRequest(editNode : any,editedField : string)
