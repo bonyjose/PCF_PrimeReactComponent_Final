@@ -113,10 +113,12 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 		let iColumns: any[] = [];
 
 		for (var column of dataSet.columns) {
+
 			let iColumn: any = {
 				key: column.name,
 				name: column.displayName,
 				fieldName: column.alias,
+				dataType:column.dataType,
 				currentWidth: column.visualSizeFactor,
 				data: { isPrimary: column.isPrimary },
 				minWidth: column.visualSizeFactor,
@@ -130,12 +132,9 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 				
 			}
 
-			//create links for primary field and entity reference.            
-			if (column.dataType.startsWith('Lookup.') || column.isPrimary) {
-				iColumn.dataType = "Lookup";
-			}
-			else if (column.dataType === 'SingleLine.Email') {
-				iColumn.dataType = "Email";
+
+			 if (column.dataType === 'SingleLine.Text') {
+				iColumn.dataType = "Number";
 			}
 			else if (column.dataType === 'SingleLine.Phone') {
 				iColumn.dataType = "Phone";
@@ -146,7 +145,7 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 			}
 			else
 			{
-				iColumn.dataType = "NA";
+				iColumn.dataType = "column.dataType";
 			}
 
 			let isSorted = dataSet?.sorting?.findIndex(s => s.name === column.name) !== -1 || false;

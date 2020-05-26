@@ -29,7 +29,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             IsUpdated: this.props.IsUpdated,
             coldef: []
         };
-        this.vinEditor = this.vinEditor.bind(this);
+
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -52,7 +52,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     onEditorValueChange = (props: any, event) => {
         debugger;
-        let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        //let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
         editedNode.data[props.field] = event.target.value;
@@ -60,17 +60,17 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             nodes: newNodes
         });
 
-        let editedField = props.field;
-        let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
-        this.props.context.webAPI.updateRecord(gridEntity,editedNode.nodeKey,editedObject).then(this.successCallback,this.errorCallback);
-        try{
-            this.props.context.parameters.sampleDataSet.refresh();
-        }
-        catch (Error)   
-        {  
-          console.log(Error.message);  
-        }  
-        this.forceUpdate();
+        // let editedField = props.field;
+        // let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
+        // this.props.context.webAPI.updateRecord(gridEntity,editedNode.nodeKey,editedObject).then(this.successCallback,this.errorCallback);
+        // try{
+        //     this.props.context.parameters.sampleDataSet.refresh();
+        // }
+        // catch (Error)   
+        // {  
+        //   console.log(Error.message);  
+        // }  
+        // this.forceUpdate();
     }
 
     createApiUpdateRequest(editNode : any,editedField : string)
@@ -120,16 +120,16 @@ errorCallback()
         return { 'p-highlight_custom': (node.children && node.children.length > 0) };
     }
 
-    vinEditor(props: any) {
+    vinEditor=(props: any) =>{
         let field = props.field
         return this.inputTextEditor(props, field);
     }
 
     createColDefinition() {
         debugger;
-        let expandYear = "";
-        if (typeof (this.context.parameters) !== 'undefined') {
-            expandYear = this.context.parameters.expandYear.raw.toString();
+        let expandYear;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            expandYear = this.props.context.parameters.expandYear.raw;
         }
         else {
             expandYear = "FinacialYear";
@@ -145,23 +145,6 @@ errorCallback()
             if (p.fieldName == expandYear) {
                 resultData = {
                     field: p.fieldName, header: "Year*", expander: true
-                }
-            }
-            else if (p.fieldName == "CFNAME") {
-                resultData = {
-                    field: p.fieldName, header: "CFN*", expander: expander
-                }
-            }
-            else if (p.fieldName == "LineTotal") {
-                resultData = {
-                    field: p.fieldName, header: "Total*", expander: expander
-                }
-            }
-            else if (p.name.length > 2) {
-                let name = p.name.replace(/\w+/g,
-                    function (w) { return w[0].toUpperCase() + w.slice(1).toLowerCase(); });
-                resultData = {
-                    field: p.fieldName, header: name.substring(0, 3), expander: expander
                 }
             }
             else {
@@ -184,13 +167,15 @@ errorCallback()
     }
     createJsonTreestructure = () => {
         debugger;
-        let expandYear = "";
-        if (typeof (this.context.parameters) !== 'undefined') {
-            expandYear = this.context.parameters.expandYear.raw.toString();
+
+        let expandYear ;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            expandYear = this.props.context.parameters.expandYear.raw;
         }
         else {
             expandYear = "FinacialYear";
         }
+        const yearHead=expandYear.toString();
         this.createColDefinition()
         let product: any[] = Object.values(this.props.data);
         let field = Object.values(this.props.columns).map(p => p.fieldName);
@@ -231,7 +216,7 @@ errorCallback()
             let resultData = {
                 key: i.toString(),
                 data: {
-                    "FinacialYear": year,
+                    [expandYear] : year,
                 },
                 children: ChildResultArray
             }
@@ -239,17 +224,19 @@ errorCallback()
         }
         return JSON.stringify(ResultArray);
     }
+
     render() {
         const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
-            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.expander ? undefined : this.vinEditor} style={{width:'100px'}} headerClassName="p-col-d" />;
+            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander}   editor={col.expander ? undefined : this.vinEditor}  style={{width:'100px'}} headerClassName="p-col-d" />;
         });
         return (
 
             <div className="scrollbar scrollbar-primary">
                 <div className="content-section implementation monthlyGrid">
                     <DialogDemo />
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{width: '1000px'}}  scrollHeight="400px">
+                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{width: '1000px'}}  scrollHeight="300px">
                         {dynamicColumns}
+                        <Column rowEditor={true} style={{'width': '70px', 'textAlign': 'center'}}></Column>
                     </TreeTable >
                     <label style={{ float: "left", color: "#ab9999" }} >Total*: Line Total</label><br />
                     <label style={{ float: "left", color: "#ab9999" }} >CFN*: Cash Flow Name</label><br />
