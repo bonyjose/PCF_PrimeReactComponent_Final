@@ -225,6 +225,7 @@ errorCallback()
         }
         console.log([expandYear]);
         console.log(ResultArray);
+        console.log("Data:",product);
         return JSON.stringify(ResultArray);
     }
 
