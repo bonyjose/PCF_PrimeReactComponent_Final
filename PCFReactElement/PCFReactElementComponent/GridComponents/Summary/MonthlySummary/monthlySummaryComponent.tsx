@@ -157,6 +157,7 @@ errorCallback()
         });
         let datas = this.sortByKey(Object.values(cols), 'expander');
         this.setState({ coldef: datas });
+        console.log(datas);
     }
     
     sortByKey(array, key) {
@@ -222,6 +223,8 @@ errorCallback()
             }
             ResultArray.push(resultData);
         }
+        console.log([expandYear]);
+        console.log(ResultArray);
         return JSON.stringify(ResultArray);
     }
 
