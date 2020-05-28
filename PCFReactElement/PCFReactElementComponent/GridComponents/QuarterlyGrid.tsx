@@ -8,7 +8,7 @@ import { DialogDemo } from "../GridComponents/Summary/Common/popupComponent"
 import { IInputs, IOutputs } from "../generated/ManifestTypes"
 interface Props {
   data: any[];
-  columns?: any[];
+  columns: any[];
   context: ComponentFramework.Context<IInputs>;
   IsUpdated:boolean;
   // parentCallback :any;
@@ -18,7 +18,8 @@ interface State {
   SelectedLayout: string;
   nodes: [],
   sampledata: any,
-  IsUpdated:boolean
+  IsUpdated:boolean,
+  coldef: any[]
 }
  export class GridQuarterlyComponent extends React.Component<Props,State> {
     
@@ -28,14 +29,15 @@ interface State {
         nodes: [],
         sampledata: this.props,
         SelectedLayout: "Quarterly",
-        IsUpdated:this.props.IsUpdated
+        IsUpdated:this.props.IsUpdated,
+        coldef: []
       };
       
     }
 
     ParseToQuarter()
     {
-
+      debugger;
       let product: any[] = Object.values(this.props.data);
       let data = Object.values(product);
       let i=0;
@@ -52,7 +54,25 @@ interface State {
         i++;
       }
       // this.setState({sampledata : data});
+      debugger;
       return data;
+
+    }
+    createQuarterColumnDef()
+    {
+      debugger;
+      let columnsProps: any[] = Object.values(this.props.columns);
+      let columns = Object.values(columnsProps);
+      let i=0;
+      for (i=0;i<4;i++) {
+
+        let row =  {} ;
+        row["fieldName"] = "Q" + Number(i+1);
+        row["name"] = "Q" + Number(i+1);
+        columns.push(row);
+      }
+      // this.setState({sampledata : data});
+      return columns;
 
     }
 
@@ -83,115 +103,150 @@ interface State {
       }
     }
 
-    createJsonTreestructure = (QuarterData : any) => {
+ 
+  createJsonTreestructure = (QuarterData : any[]) => {
+    debugger;
+    let expandYear ;
+    if (typeof (this.props.context.parameters) !== 'undefined') {
+        expandYear = this.props.context.parameters.expandYear.raw;
+    }
+    else {
+        expandYear = "FinacialYear";
+    }
+    const yearHead=expandYear.toString();
+    this.createColDefinition()
+    let product: any[] = Object.values(QuarterData);
+    debugger;
+    let cols = this.createfieldDef();
+    debugger;
+    let field = Object.values(cols).map(p => p.fieldName);
+    let uniqYear = product.map(i => i[expandYear]);
+    var uniqueItems = Array.from(new Set(uniqYear))
+    let result = {};
+    let ChildResultArray: any[];
+    let ResultArray: any[];
+    let sampleArray: any[];
+    ResultArray = [], sampleArray = [];
+    for (let i = 0; i < uniqueItems.length; i++) {
+        let data = Object.values(product);
+        let column = Object.values(field);
+        var currentKey;
+        var currentVal;
+        const year = uniqueItems[i];
+        ChildResultArray = [];
+        let x: number = 0;
+        let childrenData: any[];
+        let result = {};
+        data.map(p => {
+            if (p[expandYear] === year) {
+                for (let k = 0; k <= column.length; k++) {
+                    currentKey = column[k];
+                    currentVal = p[currentKey];
+                    result[currentKey] = currentVal;
+                }
 
-      let product: any[] = Object.values(QuarterData);
-
-      let uniqyear = product.map(i => i.FinacialYear);
-      var uniqueItems = Array.from(new Set(uniqyear))
-      let result = {};
-
-
-      let ChildResultArray: any[];
-      let ResultArray: any[];
-      ResultArray = [];
-      for (let i = 0; i < uniqueItems.length; i++) {
-          let data = Object.values(product);
-          const year = uniqueItems[i];
-          ChildResultArray = [];
-          let x: number = 0;
-          data.map(p => {
-              if (p.FinacialYear === year) {
-
-                  let childrenData = {
-                      "key": i.toString().concat('-', x.toString()),
-                      data: {
-                          "CFNAME": p.CFNAME,
-                          "PPR": p.PPR,
-                          "FinacialYear": p.FinacialYear,
-                          "April": p.April,
-                          "August": p.August,
-                          "December": p.December,
-                          "February": p.February,
-                          "January": p.January,
-                          "July": p.July,
-                          "June": p.June,
-                          "LineTotal": p.LineTotal,
-                          "March": p.March,
-                          "May": p.May,
-                          "November": p.November,
-                          "October": p.October,
-                          "September": p.September,
-                          "id": p.key,
-                          "Q1": p.Q1,
-                          "Q2": p.Q2,
-                          "Q3": p.Q3,
-                          "Q4": p.Q4
-
-                      }
-                  }
-                  x++;
-                  ChildResultArray.push(childrenData)
-              }
-          })
-
-          let resultData = {
-              key: i.toString(),
-              data: {
-                  "FinacialYear": year,
-              },
-              children: ChildResultArray
-          }
-          ResultArray.push(resultData);
-      }
-      // console.log(JSON.stringify(ResultArray));
-
-      return JSON.stringify(ResultArray);
-
-  }
-      
-
-
-    createJsonForAPI= () => {
-
-      let product: any[] = Object.values(this.props);
-      let result = {};
-
-
-      let ChildResultArray: any[];
-      let ResultArray: any[];
-      ResultArray = [];
-      let data = Object.values(product);
-
-          ChildResultArray = [];
-          let x: number = 0;
-          data.map(p => {
-            let childrenData = {
-                          "CFNAME": p.CFNAME,
-                          "PPR": p.PPR,
-                          "FinacialYear": p.FinacialYear,
-                          "April": p.April,
-                          "August": p.August,
-                          "December": p.December,
-                          "February": p.February,
-                          "January": p.January,
-                          "July": p.July,
-                          "June": p.June,
-                          "LineTotal": p.LineTotal,
-                          "March": p.March,
-                          "May": p.May,
-                          "November": p.November,
-                          "October": p.October,
-                          "September": p.September,
-                          "id": p.key
-                      }
-                  ChildResultArray.push(childrenData)
-          })
-          ResultArray.push(ChildResultArray);
-
-          console.log(JSON.stringify(ResultArray));
-          return JSON.stringify(ResultArray);
+                let childrenData = {
+                    key: i.toString().concat('-', x.toString()),
+                    data: result,
+                    nodeKey: p.key
+                }
+                x++;
+                ChildResultArray.push(childrenData)
+            }
+        });
+        let resultData = {
+            key: i.toString(),
+            data: {
+                "FinacialYear": year,
+            },
+            children: ChildResultArray
+        }
+        ResultArray.push(resultData);
+    }
+    debugger;
+    return JSON.stringify(ResultArray);
 }
+
+createfieldDef()
+{
+  debugger;
+  let cols: any[] = Object.values(this.props.columns);
+  let data = Object.values(cols);
+  let i=0;
+  for (i=0;i<4;i++) {
+
+    let row =  {} ;
+    row["fieldName"] = "Q" + Number(i+1);
+    cols.push(row);
+  }
+  // this.setState({sampledata : data});
+  debugger;
+  return cols;
+
+}
+
+createColDefinition() {
+  debugger;
+  let expandYear = "";
+  if (typeof (this.context.parameters) !== 'undefined') {
+      expandYear = this.context.parameters.expandYear.raw.toString();
+  }
+  else {
+      expandYear = "FinacialYear";
+  }
+  // let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
+
+  debugger;
+  let resultData = {};
+  let cols: any[];
+  cols = [];
+  let columnDef = this.createQuarterColumnDef();
+  Object.values(columnDef).map(p => {
+      let expander: boolean = false;
+      if (p.fieldName == expandYear) {
+          resultData = {
+              field: p.fieldName, header: "Year*", expander: true
+          }
+      }
+      else if (p.fieldName == "CFNAME") {
+          resultData = {
+              field: p.fieldName, header: "CFN*", expander: expander
+          }
+      }
+      else if (p.fieldName == "LineTotal") {
+          resultData = {
+              field: p.fieldName, header: "Total*", expander: expander
+          }
+      }
+      else if (p.name.length > 2) {
+          let name = p.name.replace(/\w+/g,
+              function (w) { return w[0].toUpperCase() + w.slice(1).toLowerCase(); });
+          resultData = {
+              field: p.fieldName, header: name.substring(0, 3), expander: expander
+          }
+      }
+      else {
+          resultData = {
+              field: p.fieldName, header: p.name, expander: expander
+          }
+      }
+      cols.push(resultData);
+
+  });
+  let datas = this.sortByKey(Object.values(cols), 'expander');
+
+  debugger;
+  this.setState({ coldef: datas });
+}
+
+sortByKey(array, key) {
+  return array.sort(function (a, b) {
+      var x = a[key]; var y = b[key];
+      return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+  });
+}
+
+
 
 
 onEditorValueChange(props: any, value: any) {
@@ -318,28 +373,25 @@ vinEditor = (props: any) => {
 
   
     render() {
+      debugger;
 
-      return (
-        <div>
-        <div className="content-section implementation">
-        <DialogDemo />
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName}  paginator={true} rows={1}>
-                        <Column field="FinacialYear" header="Year*" style={{ height: '3.5em' }} expander={true} />
-                        <Column field="CFNAME" header="CFN*" style={{ height: '3.5em' }} />
-                        <Column field="PPR" header="PPR" style={{ height: '3.5em' }} />
+      const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
+        return <Column key={col.field} field={col.field} header={col.header}  expander={col.expander} editor={col.expander ? undefined : this.vinEditor} style={{width:'100px'}} headerClassName="p-col-d" />;
+    });
+    return (
 
-                        <Column field="Q1" header="Quarter 1" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Q2" header="Quarter 2" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Q3" header="Quarter 3" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Q4" header="Quarter 4" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="LineTotal" header="Total*" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                    </TreeTable >
-                    <label style={{ float: "left", color: "#ab9999" }} >Total*: Line Total</label><br />
-                    <label style={{ float: "left", color: "#ab9999" }} >CFN*: Cash Flow Name</label><br />
-                    <label style={{ float: "left", color: "#ab9999" }} >Year*: Finacial Year</label><br />
-                </div>
+        <div className="scrollbar scrollbar-primary">
+            <div className="content-section implementation monthlyGrid">
+                <DialogDemo />
+                <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{width: '1000px'}}  scrollHeight="400px">
+                    {dynamicColumns}
+                </TreeTable >
+                <label style={{ float: "left", color: "#ab9999" }} >Total*: Line Total</label><br />
+                <label style={{ float: "left", color: "#ab9999" }} >CFN*: Cash Flow Name</label><br />
+                <label style={{ float: "left", color: "#ab9999" }} >Year*: Finacial Year</label><br />
+            </div>
+        </div>
 
-              </div>
-          );
+    )
       }
 } 
