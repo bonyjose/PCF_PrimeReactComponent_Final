@@ -28,7 +28,7 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom {
 body .p-treetable .p-treetable-tbody > tr.p-highlight_custom > td .p-treetable-toggler{
     pointer-events: visible;
     background-color: #a5a0a00d;
-    color: #101010;
+    color: #848484;;
 
     opacity: 2.1 !important;
     transition-delay: 0s !important;

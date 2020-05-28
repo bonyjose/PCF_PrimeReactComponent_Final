@@ -15,6 +15,7 @@ import {MonthlySummary} from './GridComponents/Summary/MonthlySummary/monthlySum
 import{RecordOverviewProps} from './GridComponents/interface/contextInterface'
 import {IInputs, IOutputs} from "../PCFReactElementComponent/generated/ManifestTypes"
 import {TabView,TabPanel} from 'primereact/tabview';
+import {YearlyComponent} from './GridComponents/Summary/YearlySummary/yearlySummaryComponent';
 
 export interface Props {
   data: any;
@@ -113,7 +114,10 @@ export class App extends React.Component<Props, State> {
     let DataTable;
     if (SelectedLayout == "Yearly")
     {
-      DataTable = <GridYearlyComponent  parentCallback = {this.callbackFunction} {...products}/>;
+      debugger;
+      DataTable=<YearlyComponent {...inputData}/>
+      
+     
     } 
     else if (SelectedLayout == "Monthly")
     {
@@ -128,7 +132,7 @@ export class App extends React.Component<Props, State> {
       <div className="App">
                     <TabView renderActiveOnly={false}>
                         <TabPanel header="Year">
-                        <GridYearlyComponent  parentCallback = {this.callbackFunction} {...products}/>;
+                        <YearlyComponent {...inputData} />;
                         </TabPanel>
                         <TabPanel header="Month" >
                         <MonthlySummary {...inputData}/>

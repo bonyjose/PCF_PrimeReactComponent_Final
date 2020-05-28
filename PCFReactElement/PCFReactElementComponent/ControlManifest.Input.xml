@@ -9,8 +9,10 @@
       -->
     
     </data-set>
-      <property name="expandYear" display-name-key="RowGroupParam" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
-	 
+      <property name="expandYear" display-name-key="ExpandYear" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
+	    <property name="ppr" display-name-key="PPR"  description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
+      <property name="lineTotal" display-name-key="LineTotal" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
+      <property name="cashFlow" display-name-key="CashFlow" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
     <resources>
       <code path="index.ts" order="1"/>
       <css path="CSS/primereact.min.css" order="2" />

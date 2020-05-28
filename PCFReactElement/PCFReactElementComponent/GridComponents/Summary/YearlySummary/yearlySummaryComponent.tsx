@@ -19,7 +19,7 @@ type monthState = {
     coldef: any[]
 
 }
-export class MonthlySummary extends Component<AppMonthProps, monthState>{
+export class YearlyComponent extends Component<AppMonthProps, monthState>{
 
     constructor(props: AppMonthProps) {
         super(props);
@@ -28,7 +28,6 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             sampledata: this.props.data,
             IsUpdated: this.props.IsUpdated,
             coldef: []
-
         };
 
     }
@@ -53,7 +52,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     onEditorValueChange = (props: any, event) => {
         debugger;
-        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
         editedNode.data[props.field] = event.target.value;
@@ -62,41 +61,42 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         });
 
         let editedField = props.field;
-        let editedObject = this.createApiUpdateRequest(editedNode.data, editedField);
-        this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(this.successCallback, this.errorCallback);
-
-
-        try {
-
+        let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
+        this.props.context.webAPI.updateRecord(gridEntity,editedNode.nodeKey,editedObject).then(this.successCallback,this.errorCallback);
+        try{
             this.props.context.parameters.sampleDataSet.refresh();
         }
-        catch (Error) {
-            console.log(Error.message);
-        }
+        catch (Error)   
+        {  
+          console.log(Error.message);  
+        }  
         this.forceUpdate();
     }
 
-    createApiUpdateRequest(editNode: any, editedField: string) {
-        debugger;
-
-        var entity = {};
-
-        for (let Column in editNode) {
-            if ((Column == editedField)) {
-                entity[Column] = Number(editNode[editedField]);
-            }
+    createApiUpdateRequest(editNode : any,editedField : string)
+    {
+    debugger;
+    var entity = {};
+    for(let Column in editNode)
+    {
+        if ((Column == editedField))
+        {
+            entity[Column] = Number(editNode[editedField]);
         }
-        return entity;
+    }
+    return entity;
     }
 
-    successCallback() {
-        // console.log("api create success");
-        console.log("api update success");
-    }
+successCallback()
+{
+  // console.log("api create success");
+  console.log("api update success");
+}
 
-    errorCallback() {
-        console.log("api update failed");
-    }
+errorCallback()
+{
+  console.log("api update failed");
+}
 
     findNodeByKey(nodes: any, key: any) {
 
@@ -112,7 +112,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     inputTextEditor = (props: any, field: any) => {
         return <InputText type="text" value={props.node.data[field]}
-            onChange={(e) => this.onEditorValueChange(props, e)} />
+            onChange={(e) => this.onEditorValueChange(props,e)} />
     }
 
     rowClassName(node) {
@@ -120,15 +120,14 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         return { 'p-highlight_custom': (node.children && node.children.length > 0) };
     }
 
-    vinEditor = (props: any) => {
+    vinEditor=(props: any) =>{
         let field = props.field
         return this.inputTextEditor(props, field);
     }
 
     createColDefinition() {
         debugger;
-
-        let expandYear, ppr, lineTotal, cashFlow;
+        let expandYear,ppr,lineTotal,cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
@@ -146,44 +145,40 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         cols = [];
         Object.values(this.props.columns).map(p => {
             let expander: boolean = false;
-            switch (p.fieldName) {
+            switch(p.fieldName){
                 case expandYear:
-                    resultData = {
-                        field: p.fieldName, header: "Year", expander: true
-                    }
-                    cols.push(resultData);
-                    break;
+                resultData = {
+                    field: p.fieldName, header: "Year", expander: true
+                }
+                cols.push(resultData);
+                break;
                 case cashFlow:
                     resultData = {
                         field: p.fieldName, header: "Cash Flow", expander: expander
                     }
-                    cols.push(resultData);
-                    break;
+                 cols.push(resultData);
+                break;
                 case ppr:
                     resultData = {
                         field: p.fieldName, header: "PPR", expander: expander
                     }
-                    cols.push(resultData);
-                    break;
+                cols.push(resultData);
+                break;
                 case lineTotal:
                     resultData = {
                         field: p.fieldName, header: "Total", expander: expander
                     }
-                    cols.push(resultData);
-                    break;
-                default:
-                    resultData = {
-                        field: p.fieldName, header: p.name, expander: expander
-                    }
-                    cols.push(resultData);
-                    break;
+                cols.push(resultData);
+                break;
+
             }
+
         });
         let datas = this.sortByKey(Object.values(cols), 'expander');
         this.setState({ coldef: datas });
         console.log(datas);
     }
-
+    
     sortByKey(array, key) {
         return array.sort(function (a, b) {
             var x = a[key]; var y = b[key];
@@ -193,14 +188,14 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     createJsonTreestructure = () => {
         debugger;
 
-        let expandYear;
+        let expandYear ;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
         }
         else {
             expandYear = "FinacialYear";
         }
-        const yearHead = expandYear.toString();
+        const yearHead=expandYear.toString();
         this.createColDefinition()
         let product: any[] = Object.values(this.props.data);
         let field = Object.values(this.props.columns).map(p => p.fieldName);
@@ -241,7 +236,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             let resultData = {
                 key: i.toString(),
                 data: {
-                    [expandYear]: year,
+                    [expandYear] : year,
                 },
                 children: ChildResultArray
             }
@@ -249,24 +244,22 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
         console.log([expandYear]);
         console.log(ResultArray);
-        console.log("Data:", product);
+        console.log("Data:",product);
         return JSON.stringify(ResultArray);
     }
 
-
     render() {
         const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
-            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.expander ? undefined : this.vinEditor} style={{ width: '100px' }} headerClassName="p-col-d" />;
+            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander}   editor={col.expander ? undefined : this.vinEditor}  style={{width:'100px'}} headerClassName="p-col-d" />;
         });
         return (
 
             <div className="scrollbar scrollbar-primary">
                 <div className="content-section implementation monthlyGrid">
                     <DialogDemo />
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: '73vw' }} scrollHeight="50vh">
-                        {dynamicColumns}
-                    </TreeTable >
-
+                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{width: '72vw'}}  scrollHeight="50vh">
+                        {dynamicColumns}                      
+                    </TreeTable >                  
                 </div>
             </div>
 
