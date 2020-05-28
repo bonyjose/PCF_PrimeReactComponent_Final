@@ -221,7 +221,6 @@ createColDefinition() {
     else{
       cols.push(resultData);
     }
-    // cols.push(resultData);
 
 });
   let datas = this.sortByKey(Object.values(cols), 'expander');
@@ -263,6 +262,9 @@ onEditorValueChange(props: any, value: any) {
   {  
     console.log(Error.message);  
   }  
+  let result = this.props.context.webAPI.retrieveMultipleRecords(gridEntity,).then();
+  console.log(result);
+  // this.setState({ nodes: newNodes });
   this.forceUpdate();
   debugger;
   // this.props.parentCallback;
@@ -303,17 +305,6 @@ createApiUpdateRequest(editNode : any,editedField : string)
 
   return entity;
 
-//   var entity = {};
-//   // @ts-ignore 
-// entity.m360_apramount = Number(parseFloat(25).toFixed(0));
-// // @ts-ignore 
-// entity.m360_cashflowitemname = "Test API";
-// // @ts-ignore 
-// entity.m360_janamount = Number(parseFloat(250).toFixed(0));
-// // @ts-ignore 
-// entity.m360_fiscalyear = 555080001;
-// // @ts-ignore 
-// entity.m360_novamount = Number(parseFloat(500).toFixed(0));
 }
 
 
