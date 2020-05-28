@@ -200,39 +200,30 @@ createColDefinition() {
   let resultData = {};
   let cols: any[];
   cols = [];
+  let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   let columnDef = this.createQuarterColumnDef();
   Object.values(columnDef).map(p => {
-      let expander: boolean = false;
-      if (p.fieldName == expandYear) {
-          resultData = {
-              field: p.fieldName, header: "Year*", expander: true
-          }
-      }
-      else if (p.fieldName == "CFNAME") {
-          resultData = {
-              field: p.fieldName, header: "CFN*", expander: expander
-          }
-      }
-      else if (p.fieldName == "LineTotal") {
-          resultData = {
-              field: p.fieldName, header: "Total*", expander: expander
-          }
-      }
-      else if (p.name.length > 2) {
-          let name = p.name.replace(/\w+/g,
-              function (w) { return w[0].toUpperCase() + w.slice(1).toLowerCase(); });
-          resultData = {
-              field: p.fieldName, header: name.substring(0, 3), expander: expander
-          }
-      }
-      else {
-          resultData = {
-              field: p.fieldName, header: p.name, expander: expander
-          }
-      }
-      cols.push(resultData);
+    let expander: boolean = false;
+    if (p.fieldName == expandYear) {
+        resultData = {
+            field: p.fieldName, header: "Year", expander: true
+        }
+    }
+    else {
+        resultData = {
+            field: p.fieldName, header: p.name, expander: expander
+        }
+    }
+    if(months.includes(resultData["field"]))
+    {
 
-  });
+    }
+    else{
+      cols.push(resultData);
+    }
+    // cols.push(resultData);
+
+});
   let datas = this.sortByKey(Object.values(cols), 'expander');
 
   debugger;
@@ -264,7 +255,7 @@ onEditorValueChange(props: any, value: any) {
       nodes: newNodes
   });
   // this.props.context.webAPI.createRecord(gridEntity, editedNode).then(this.successCallback, this.errorCallback);
-  this.props.context.webAPI.updateRecord(gridEntity,editedNode.data["id"],editedObject).then(this.successCallback,this.errorCallback);
+  this.props.context.webAPI.updateRecord(gridEntity,editedNode.nodeKey,editedObject).then(this.successCallback,this.errorCallback);
   try{
       this.props.context.parameters.sampleDataSet.refresh();
   }
