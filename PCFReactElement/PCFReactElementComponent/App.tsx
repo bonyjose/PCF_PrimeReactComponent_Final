@@ -33,6 +33,7 @@ export interface State {
   columns : any,
   context:ComponentFramework.Context<IInputs>;
   IsUpdated:boolean;
+  activeIndex:number
 }
 
 export class App extends React.Component<Props, State> {
@@ -48,10 +49,11 @@ export class App extends React.Component<Props, State> {
         { label: "Monthly", value: "Monthly" },
         { label: "Quarterly", value: "Quarterly" },
       ],
-      SelectedLayout: "Quarterly",
+      SelectedLayout: "Month",
       columns : this.props.columns,
       context:this.props.context,
-      IsUpdated:false
+      IsUpdated:false,
+      activeIndex: 1
     };
     // this.setState({ products : this.props.data});
     this.handleChange = this.handleChange.bind(this);
@@ -82,10 +84,12 @@ export class App extends React.Component<Props, State> {
 //   }
 //  }
 
-  handleChange(e: { originalEvent: Event; value: any }) {
-    this.setState({ SelectedLayout: e.value });
-
-
+  handleChange(e) {
+    debugger
+   // this.setState({ SelectedLayout: e.originalEvent.va });
+  let selectedItem=e.originalEvent.target.innerText;
+  this.setState({ SelectedLayout: selectedItem })
+  this.setState({activeIndex: e.index})
   }
 
   callbackFunction = (childData) => {  
@@ -99,7 +103,7 @@ export class App extends React.Component<Props, State> {
 
 
   public render() {
-
+debugger;
     let inputData={
       data: this.state.products,
       columns: this.state.columns,
@@ -107,30 +111,32 @@ export class App extends React.Component<Props, State> {
       IsUpdated:this.state.IsUpdated
     }
     // this.setState({ products : this.props.data});
-    const SelectedLayout = this.state.SelectedLayout;
+    const layout = this.state.SelectedLayout;
     let products = this.state.products;
 
 
     let DataTable;
-    if (SelectedLayout == "Yearly")
+    if (layout ==="Year")
     {
-      debugger;
+
       DataTable=<YearlyComponent {...inputData}/>
       
      
     } 
-    else if (SelectedLayout == "Monthly")
+    else if (layout === "Month")
     {
       DataTable=<MonthlySummary {...inputData}/>
       // DataTable = <GridMonthlyComponent parentCallback = {this.callbackFunction} {...products}/> ;
     }
-    else if (SelectedLayout == "Quarterly")
+    else if (layout ==="Quater")
     {
       DataTable = <GridQuarterlyComponent  {...inputData}/>;
     }
+   
+
     return (
       <div className="App">
-                    <TabView renderActiveOnly={false}>
+                    <TabView activeIndex={this.state.activeIndex} renderActiveOnly={false} onTabChange={(e) => this.handleChange(e)}>
                         <TabPanel header="Year">
                         <YearlyComponent {...inputData} />;
                         </TabPanel>

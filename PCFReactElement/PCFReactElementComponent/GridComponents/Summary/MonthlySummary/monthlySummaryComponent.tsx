@@ -4,7 +4,7 @@ import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { DialogDemo } from "../Common/popupComponent";
 import { IInputs, IOutputs } from "../../../generated/ManifestTypes"
-
+import { useState, useEffect, useRef } from 'react'
 
 type AppMonthProps = {
     data: any[];
@@ -16,18 +16,22 @@ type monthState = {
     nodes: [],
     sampledata: any[],
     IsUpdated: boolean,
-    coldef: any[]
+    coldef: any[] ,
+    isSaved:boolean
 
 }
+
 export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
+    
     constructor(props: AppMonthProps) {
         super(props);
         this.state = {
             nodes: [],
             sampledata: this.props.data,
-            IsUpdated: this.props.IsUpdated,
-            coldef: []
+            IsUpdated: false,
+            coldef: [],
+            isSaved:false
 
         };
 
@@ -39,10 +43,20 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             let data = this.createJsonTreestructure();
             let newNodes = JSON.parse(data);
             this.setState({ nodes: newNodes });
-            this.setState({ IsUpdated: this.props.IsUpdated });
+            this.setState({ IsUpdated: true });
+            return
+        }
+        else{
+            if(this.state.IsUpdated&& this.state.isSaved){
+                let data = this.createJsonTreestructure();
+                let newNodes = JSON.parse(data);
+                this.setState({ nodes: newNodes });
+                this.setState({ IsUpdated: true,isSaved:false });
+            }
         }
     }
     componentDidMount() {
+
 
         if (!this.state.IsUpdated || this.props.data.length > 0) {
             let data = this.createJsonTreestructure();
@@ -50,6 +64,21 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             this.setState({ nodes: newNodes })
         }
     }
+    getBound() {
+        debugger;
+        const component = document.querySelector("content-section implementation monthlyGrid");
+        if (!component) { 
+          return {};
+        }
+        const rect = component.getBoundingClientRect();
+        return {
+          left: rect.left,
+          top: rect.top + window.scrollY,
+          width: rect.width || rect.right - rect.left,
+          height: rect.height || rect.bottom - rect.top
+        };
+      }
+
 
     onEditorValueChange = (props: any, event) => {
         debugger;
@@ -58,7 +87,8 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
         editedNode.data[props.field] = event.target.value;
         this.setState({
-            nodes: newNodes
+            nodes: newNodes,
+            isSaved:true
         });
 
         let editedField = props.field;
@@ -263,7 +293,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             <div className="scrollbar scrollbar-primary">
                 <div className="content-section implementation monthlyGrid">
                     <DialogDemo />
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: '73vw' }} scrollHeight="50vh">
+                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: '100vw' }} scrollHeight="50vh">
                         {dynamicColumns}
                     </TreeTable >
 
