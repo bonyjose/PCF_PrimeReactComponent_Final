@@ -280,6 +280,8 @@ createApiUpdateRequest(editNode : any,editedField : string)
   let Q2 = ["April","May","June"];
   let Q3 = ["July","August","September"];
   let Q4 = ["October","November","December"];
+  let currentSum = 0;
+  let newSum = 0;
   for(let Column in editNode)
   {
     if(Column == editedField)
@@ -289,6 +291,8 @@ createApiUpdateRequest(editNode : any,editedField : string)
         for (var i = 0; i < Q1.length; i++) 
         {
           entity[Q1[i]] = Number(editNode[editedField])/3;
+          currentSum += Number(editNode[Q1[i]]);
+          newSum +=entity[Q1[i]];
         }
       }
       else if ( Column =="Q2" )
@@ -297,6 +301,8 @@ createApiUpdateRequest(editNode : any,editedField : string)
           for (var i = 0; i < Q2.length; i++) 
         {
           entity[Q2[i]] = Number(editNode[editedField])/3;
+          currentSum += Number(editNode[Q2[i]]);
+          newSum +=entity[Q3[i]];
         }
       }
       else if (Column =="Q3" )
@@ -304,6 +310,8 @@ createApiUpdateRequest(editNode : any,editedField : string)
         for (var i = 0; i < Q3.length; i++) 
         {
           entity[Q3[i]] = Number(editNode[editedField])/3;
+          currentSum += Number(editNode[Q3[i]]);
+          newSum +=entity[Q3[i]];
         }
       }
       else if (Column =="Q4" )
@@ -311,6 +319,8 @@ createApiUpdateRequest(editNode : any,editedField : string)
         for (var i = 0; i < Q4.length; i++) 
         {
           entity[Q4[i]] = Number(editNode[editedField])/3;
+          currentSum += Number(editNode[Q4[i]]);
+          newSum +=entity[Q4[i]];
         }
       }
     }
@@ -319,6 +329,7 @@ createApiUpdateRequest(editNode : any,editedField : string)
         entity["LineTotal"] += Number(editNode[Column]);
       }
   }
+  entity["LineTotal"] = entity["LineTotal"] - currentSum + newSum;
   return entity;
 }
 
