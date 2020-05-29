@@ -274,37 +274,52 @@ createApiUpdateRequest(editNode : any,editedField : string)
 {
   debugger;
   var entity = {};
+  entity["LineTotal"] = 0;
+  let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  let Q1 = ["January","February","March"];
+  let Q2 = ["April","May","June"];
+  let Q3 = ["July","August","September"];
+  let Q4 = ["October","November","December"];
   for(let Column in editNode)
   {
-    if ((Column == editedField) && Column =="Q1" )
+    if(Column == editedField)
     {
-        entity["January"] = Number(editNode[editedField])/3;
-        entity["February"] = Number(editNode[editedField])/3;
-        entity["March"] = Number(editNode[editedField])/3;
-
+      if ( Column =="Q1" )
+      {
+        for (var i = 0; i < Q1.length; i++) 
+        {
+          entity[Q1[i]] = Number(editNode[editedField])/3;
+        }
+      }
+      else if ( Column =="Q2" )
+      {
+          // entity["April"] = Math.round( ( ( (Number(editNode[editedField])/3) * 100) / 100) );
+          for (var i = 0; i < Q2.length; i++) 
+        {
+          entity[Q2[i]] = Number(editNode[editedField])/3;
+        }
+      }
+      else if (Column =="Q3" )
+      {
+        for (var i = 0; i < Q3.length; i++) 
+        {
+          entity[Q3[i]] = Number(editNode[editedField])/3;
+        }
+      }
+      else if (Column =="Q4" )
+      {
+        for (var i = 0; i < Q4.length; i++) 
+        {
+          entity[Q4[i]] = Number(editNode[editedField])/3;
+        }
+      }
     }
-    else if ((Column == editedField) && Column =="Q2" )
-    {
-        entity["April"] = Number(editNode[editedField])/3;
-        entity["May"] = Number(editNode[editedField])/3;
-        entity["June"] = Number(editNode[editedField])/3;
-    }
-    else if ((Column == editedField) && Column =="Q3" )
-    {
-        entity["July"] = Number(editNode[editedField])/3;
-        entity["August"] = Number(editNode[editedField])/3;
-        entity["September"] = Number(editNode[editedField])/3;
-    }
-    else if ((Column == editedField) && Column =="Q4" )
-    {
-        entity["October"] = Number(editNode[editedField])/3;
-        entity["November"] = Number(editNode[editedField])/3;
-        entity["December"] = Number(editNode[editedField])/3;
-    }
+      if(months.includes(Column))
+      {
+        entity["LineTotal"] += Number(editNode[Column]);
+      }
   }
-
   return entity;
-
 }
 
 
