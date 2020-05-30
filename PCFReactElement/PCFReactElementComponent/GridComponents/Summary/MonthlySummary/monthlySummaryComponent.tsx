@@ -16,14 +16,15 @@ type monthState = {
     nodes: [],
     sampledata: any[],
     IsUpdated: boolean,
-    coldef: any[] ,
-    isSaved:boolean
+    coldef: any[],
+    isSaved: boolean,
+    gridResponsiveWidth: number;
 
 }
 
 export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
-    
+
     constructor(props: AppMonthProps) {
         super(props);
         this.state = {
@@ -31,8 +32,8 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             sampledata: this.props.data,
             IsUpdated: false,
             coldef: [],
-            isSaved:false
-
+            isSaved: false,
+            gridResponsiveWidth: 0
         };
 
     }
@@ -40,18 +41,26 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     componentDidUpdate(prevProps, prevState) {
 
         if ((this.props.IsUpdated) && (!this.state.IsUpdated)) {
+            if(this.state.gridResponsiveWidth==0){
+                this.resizeGrid();
+            }
+            
             let data = this.createJsonTreestructure();
             let newNodes = JSON.parse(data);
             this.setState({ nodes: newNodes });
             this.setState({ IsUpdated: true });
             return
         }
-        else{
-            if(this.state.IsUpdated&& this.state.isSaved){
+        else {
+
+            if (this.state.IsUpdated && this.state.isSaved) {
+                if(this.state.gridResponsiveWidth==0){
+                    this.resizeGrid();
+                }
                 let data = this.createJsonTreestructure();
                 let newNodes = JSON.parse(data);
                 this.setState({ nodes: newNodes });
-                this.setState({ IsUpdated: true,isSaved:false });
+                this.setState({ IsUpdated: true, isSaved: false });
             }
         }
     }
@@ -59,26 +68,51 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
 
         if (!this.state.IsUpdated || this.props.data.length > 0) {
+            if(this.state.gridResponsiveWidth==0){
+                this.resizeGrid();
+            }
             let data = this.createJsonTreestructure();
             let newNodes = JSON.parse(data);
             this.setState({ nodes: newNodes })
         }
     }
-    getBound() {
-        debugger;
-        const component = document.querySelector("content-section implementation monthlyGrid");
-        if (!component) { 
-          return {};
-        }
-        const rect = component.getBoundingClientRect();
-        return {
-          left: rect.left,
-          top: rect.top + window.scrollY,
-          width: rect.width || rect.right - rect.left,
-          height: rect.height || rect.bottom - rect.top
-        };
-      }
 
+    resizeGrid = () => {
+        debugger;
+        const maincomponent = document.querySelector(".control-pane");
+
+        if (!maincomponent) {
+            return {};
+        }
+        const mainrect = maincomponent.getBoundingClientRect();
+        const mainDivwidth = mainrect.width
+        const mainDivheight = mainrect.height
+        const containerDiv = document.querySelector(".control-container");
+        if (!containerDiv) {
+            return {};
+        }
+        const containerrect = maincomponent.getBoundingClientRect();
+        const containerDivwidth = containerrect.width
+        const containerDivheight = containerrect.height
+        const tabDiv = document.querySelector(".p-tabview-panels")
+        if (!tabDiv) {
+            return {};
+        }
+        const tabDivrect = maincomponent.getBoundingClientRect();
+        const tabDivwidth = tabDivrect.width
+        const tabDivDivheight = tabDivrect.height
+
+        var extraWidth = 60;
+
+        var tableWidth = tabDivwidth;
+        var pageTableWidth = mainDivwidth - extraWidth;
+        if (tableWidth > pageTableWidth) {
+
+            var pageContainerWidth = containerDivwidth;
+            this.setState({ gridResponsiveWidth: tableWidth })
+
+        }
+    }
 
     onEditorValueChange = (props: any, event) => {
         debugger;
@@ -88,7 +122,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         editedNode.data[props.field] = event.target.value;
         this.setState({
             nodes: newNodes,
-            isSaved:true
+            isSaved: true
         });
 
         let editedField = props.field;
@@ -291,9 +325,9 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         return (
 
             <div className="scrollbar scrollbar-primary">
-                <div className="content-section implementation monthlyGrid">
+                <div className="content-section implementation monthlyGrid month">
                     <DialogDemo />
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: '100vw' }} scrollHeight="50vh">
+                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: this.state.gridResponsiveWidth + "px" }} scrollHeight="50vh">
                         {dynamicColumns}
                     </TreeTable >
 
