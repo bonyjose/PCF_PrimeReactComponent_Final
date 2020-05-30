@@ -87,10 +87,10 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
     render() {
         return (
-            <div>
 
 
-                <div>
+
+                <div className="addNewButton">
  
                     <Button label="AddNew" className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
 
@@ -100,7 +100,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     </Dialog>
 
                 </div>
-            </div>
+
         )
     }
 }

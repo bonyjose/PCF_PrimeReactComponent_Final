@@ -80,29 +80,37 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
         const mainrect = maincomponent.getBoundingClientRect();
         const mainDivwidth = mainrect.width
-        const mainDivheight = mainrect.height
         const containerDiv = document.querySelector(".control-container");
         if (!containerDiv) {
             return {};
         }
         const containerrect = maincomponent.getBoundingClientRect();
         const containerDivwidth = containerrect.width
-        const containerDivheight = containerrect.height
         const tabDiv = document.querySelector(".p-tabview-panels")
         if (!tabDiv) {
             return {};
         }
         const tabDivrect = maincomponent.getBoundingClientRect();
         const tabDivwidth = tabDivrect.width
-        const tabDivDivheight = tabDivrect.height
-
-        var extraWidth = 60;
+        const addnewDiv = document.querySelector(".addNewButton")
+        if (!addnewDiv) {
+            return {};
+        }
+        const addnewDivrect = maincomponent.getBoundingClientRect();
+        const addnewDivwidth = addnewDivrect.width
+        var extraWidth = 58;
 
         var tableWidth = tabDivwidth;
         var pageTableWidth = mainDivwidth - extraWidth;
         if (tableWidth > pageTableWidth) {
 
-            var pageContainerWidth = containerDivwidth;
+            var pageContainerWidth = (mainDivwidth-containerDivwidth)+extraWidth;
+            tableWidth=tableWidth-pageContainerWidth;
+            let diffaddnewDivwidth=mainDivwidth-addnewDivwidth;
+            let difftableWidth=mainDivwidth-tableWidth;
+            if(diffaddnewDivwidth!=difftableWidth){
+                tableWidth=addnewDivwidth-extraWidth;
+            }
             this.setState({ gridResponsiveWidth: tableWidth })
 
         }
