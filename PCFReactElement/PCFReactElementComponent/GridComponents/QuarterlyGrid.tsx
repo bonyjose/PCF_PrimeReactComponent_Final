@@ -239,21 +239,49 @@ sortByKey(array, key) {
 
 
 
-onEditorValueChange(props: any, value: any) {
+onEditorValueChange(props: any, event) {
+  debugger;
+  if (event.key === "Enter" || event.nativeEvent ==="blur") 
+        {
+        let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
+        let editedNode = this.findNodeByKey(newNodes, props.node.key);
+        editedNode.data[props.field] = event.target.value;
+        this.setState({
+            nodes: newNodes
+        });
+
+        let editedField = props.field;
+        let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
+        this.props.context.webAPI.updateRecord(gridEntity,editedNode.nodeKey,editedObject).then(this.successCallback,this.errorCallback);
+        try{
+            this.props.context.parameters.sampleDataSet.refresh();
+        }
+        catch (Error)   
+        {  
+          console.log(Error.message);  
+        }  
+        // let result = this.props.context.webAPI.retrieveMultipleRecords(gridEntity,).then();
+        // console.log(result);
+        // this.setState({ nodes: newNodes });
+        this.forceUpdate();
+        debugger;
+      }
+  // this.props.parentCallback;
+}
+
+onBlur = (props: any, event) => {
+  debugger;
   let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
   let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
   let editedNode = this.findNodeByKey(newNodes, props.node.key);
-  debugger;
-  editedNode.data[props.field] = value;
-  let editedField = props.field;
-  let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
-  debugger;
-  console.clear();
-  console.log(editedObject);
+  editedNode.data[props.field] = event.target.value;
   this.setState({
       nodes: newNodes
   });
-  // this.props.context.webAPI.createRecord(gridEntity, editedNode).then(this.successCallback, this.errorCallback);
+
+  let editedField = props.field;
+  let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
   this.props.context.webAPI.updateRecord(gridEntity,editedNode.nodeKey,editedObject).then(this.successCallback,this.errorCallback);
   try{
       this.props.context.parameters.sampleDataSet.refresh();
@@ -262,12 +290,7 @@ onEditorValueChange(props: any, value: any) {
   {  
     console.log(Error.message);  
   }  
-  let result = this.props.context.webAPI.retrieveMultipleRecords(gridEntity,).then();
-  console.log(result);
-  // this.setState({ nodes: newNodes });
   this.forceUpdate();
-  debugger;
-  // this.props.parentCallback;
 }
 
 createApiUpdateRequest(editNode : any,editedField : string)
@@ -360,13 +383,10 @@ findNodeByKey(nodes: any, key: any) {
 }
 
 inputTextEditor = (props: any, field: any) => {
-
-  return <InputText type="text" value={props.node.data[field] ? props.node.data[field] : ""} onChange={(
-      ev: React.ChangeEvent<HTMLInputElement>): void => {
-
-      this.onEditorValueChange
-          (props, ev.target.value.toString())
-  }} />;
+  return <InputText type="text" defaultValue={props.node.data[field]}
+      onBlur={(e) => this.onBlur(props,e)} onKeyDown={(e) =>
+           this.onEditorValueChange(props,e)}
+            />
 }
 rowClassName(node) {
 
