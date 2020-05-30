@@ -72,103 +72,78 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     resizeGrid = () => {
-        debugger;
-        const maincomponent = document.querySelector(".control-pane");
 
-        if (!maincomponent) {
-            return {};
-        }
-        const mainrect = maincomponent.getBoundingClientRect();
-        const mainDivwidth = mainrect.width
-        const containerDiv = document.querySelector(".control-container");
-        if (!containerDiv) {
-            return {};
-        }
-        const containerrect = maincomponent.getBoundingClientRect();
-        const containerDivwidth = containerrect.width
         const tabDiv = document.querySelector(".p-tabview-panels")
         if (!tabDiv) {
             return {};
         }
-        const tabDivrect = maincomponent.getBoundingClientRect();
-        const tabDivwidth = tabDivrect.width
+        const tabDivrect = tabDiv.getBoundingClientRect();
+        let tabDivwidth = tabDivrect.width
         const addnewDiv = document.querySelector(".addNewButton")
         if (!addnewDiv) {
             return {};
         }
-        const addnewDivrect = maincomponent.getBoundingClientRect();
+        const addnewDivrect = tabDiv.getBoundingClientRect();
         const addnewDivwidth = addnewDivrect.width
-        var extraWidth = 58;
+        var extraWidth = 12;
 
-        var tableWidth = tabDivwidth;
-        var pageTableWidth = mainDivwidth - extraWidth;
-        if (tableWidth > pageTableWidth) {
+        let diffaddnewDivwidth = addnewDivwidth - extraWidth;
 
-            var pageContainerWidth = (mainDivwidth-containerDivwidth)+extraWidth;
-            tableWidth=tableWidth-pageContainerWidth;
-            let diffaddnewDivwidth=mainDivwidth-addnewDivwidth;
-            let difftableWidth=mainDivwidth-tableWidth;
-            if(diffaddnewDivwidth!=difftableWidth){
-                tableWidth=addnewDivwidth-extraWidth;
-            }
-            this.setState({ gridResponsiveWidth: tableWidth })
 
-        }
+        this.setState({ gridResponsiveWidth: (diffaddnewDivwidth) })
+
     }
 
     onEditorValueChange(props: any, event) {
         debugger;
-        if (event.key === "Enter" || event.nativeEvent ==="blur") 
-              {
-              let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-              let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
-              let editedNode = this.findNodeByKey(newNodes, props.node.key);
-              editedNode.data[props.field] = event.target.value;
-              this.setState({
-                  nodes: newNodes
-              });
-      
-              let editedField = props.field;
-              let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
-              this.props.context.webAPI.updateRecord(gridEntity,editedNode.nodeKey,editedObject).then(this.successCallback,this.errorCallback);
-              try{
-                  this.props.context.parameters.sampleDataSet.refresh();
-              }
-              catch (Error)   
-              {  
-                console.log(Error.message);  
-              }  
-              // let result = this.props.context.webAPI.retrieveMultipleRecords(gridEntity,).then();
-              // console.log(result);
-              // this.setState({ nodes: newNodes });
-              this.forceUpdate();
-              debugger;
+        if (event.key === "Enter" || event.nativeEvent === "blur") {
+            let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+            let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
+            let editedNode = this.findNodeByKey(newNodes, props.node.key);
+            editedNode.data[props.field] = event.target.value;
+            this.setState({
+                nodes: newNodes
+            });
+
+            let editedField = props.field;
+            let editedObject = this.createApiUpdateRequest(editedNode.data, editedField);
+            this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(this.successCallback, this.errorCallback);
+            try {
+                this.props.context.parameters.sampleDataSet.refresh();
             }
+            catch (Error) {
+                console.log(Error.message);
+            }
+            // let result = this.props.context.webAPI.retrieveMultipleRecords(gridEntity,).then();
+            // console.log(result);
+            // this.setState({ nodes: newNodes });
+            this.forceUpdate();
+            debugger;
+        }
         // this.props.parentCallback;
-      }
-      
-      onBlur = (props: any, event) => {
+    }
+
+    onBlur = (props: any, event) => {
         debugger;
-        let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
         editedNode.data[props.field] = event.target.value;
         this.setState({
             nodes: newNodes
         });
-      
+
         let editedField = props.field;
-        let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
-        this.props.context.webAPI.updateRecord(gridEntity,editedNode.nodeKey,editedObject).then(this.successCallback,this.errorCallback);
-        try{
+        let editedObject = this.createApiUpdateRequest(editedNode.data, editedField);
+        this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(this.successCallback, this.errorCallback);
+        try {
             this.props.context.parameters.sampleDataSet.refresh();
         }
-        catch (Error)   
-        {  
-          console.log(Error.message);  
-        }  
+        catch (Error) {
+            console.log(Error.message);
+        }
         this.forceUpdate();
-      }
+    }
 
     createApiUpdateRequest(editNode: any, editedField: string) {
         debugger;
@@ -206,10 +181,10 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     inputTextEditor = (props: any, field: any) => {
         return <InputText type="text" defaultValue={props.node.data[field]}
-            onBlur={(e) => this.onBlur(props,e)} onKeyDown={(e) =>
-                 this.onEditorValueChange(props,e)}
-                  />
-      }
+            onBlur={(e) => this.onBlur(props, e)} onKeyDown={(e) =>
+                this.onEditorValueChange(props, e)}
+        />
+    }
 
     rowClassName(node) {
 
@@ -359,7 +334,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             <div className="scrollbar scrollbar-primary">
                 <div className="content-section implementation monthlyGrid month">
                     <DialogDemo />
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: this.state.gridResponsiveWidth + "px" }} scrollHeight="50vh">
+                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: this.state.gridResponsiveWidth + "px" }} scrollHeight="55vh">
                         {dynamicColumns}
                     </TreeTable >
 
