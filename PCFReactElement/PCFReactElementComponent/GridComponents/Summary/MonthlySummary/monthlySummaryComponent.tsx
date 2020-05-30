@@ -19,11 +19,9 @@ type monthState = {
     coldef: any[],
     isSaved: boolean,
     gridResponsiveWidth: number;
-
 }
 
 export class MonthlySummary extends Component<AppMonthProps, monthState>{
-
 
     constructor(props: AppMonthProps) {
         super(props);
@@ -35,32 +33,28 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             isSaved: false,
             gridResponsiveWidth: 0
         };
-
     }
 
     componentDidUpdate(prevProps, prevState) {
 
         if ((this.props.IsUpdated) && (!this.state.IsUpdated)) {
-            if(this.state.gridResponsiveWidth==0){
+            if (this.state.gridResponsiveWidth == 0) {
                 this.resizeGrid();
             }
-            
             let data = this.createJsonTreestructure();
             let newNodes = JSON.parse(data);
-            this.setState({ nodes: newNodes });
-            this.setState({ IsUpdated: true });
+            this.setState({ nodes: newNodes, IsUpdated: true });
             return
         }
         else {
 
             if (this.state.IsUpdated && this.state.isSaved) {
-                if(this.state.gridResponsiveWidth==0){
+                if (this.state.gridResponsiveWidth == 0) {
                     this.resizeGrid();
                 }
                 let data = this.createJsonTreestructure();
                 let newNodes = JSON.parse(data);
-                this.setState({ nodes: newNodes });
-                this.setState({ IsUpdated: true, isSaved: false });
+                this.setState({ nodes: newNodes, IsUpdated: true, isSaved: false });
             }
         }
     }
@@ -68,7 +62,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
 
         if (!this.state.IsUpdated || this.props.data.length > 0) {
-            if(this.state.gridResponsiveWidth==0){
+            if (this.state.gridResponsiveWidth == 0) {
                 this.resizeGrid();
             }
             let data = this.createJsonTreestructure();
