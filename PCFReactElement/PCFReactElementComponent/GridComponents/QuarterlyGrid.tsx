@@ -241,7 +241,7 @@ sortByKey(array, key) {
 
 onEditorValueChange(props: any, event) {
   debugger;
-  if (event.key === "Enter" || event.nativeEvent ==="blur") 
+  if (event.key === "Enter" ) 
         {
         let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
@@ -402,6 +402,12 @@ vinEditor = (props: any) => {
   
     render() {
       debugger;
+      let inputData={
+        // data: this.state.products,
+        // columns: this.state.columns,
+        context:this.props.context,
+        IsUpdated:this.state.IsUpdated
+      }
 
       const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
         return <Column key={col.field} field={col.field} header={col.header}  expander={col.expander} editor={col.expander ? undefined : this.vinEditor} style={{width:'100px'}} headerClassName="p-col-d" />;
@@ -410,7 +416,7 @@ vinEditor = (props: any) => {
 
         <div className="scrollbar scrollbar-primary">
             <div className="content-section implementation monthlyGrid">
-                <DialogDemo />
+                <DialogDemo {...inputData} />
                 <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{width: '1000px'}}  scrollHeight="400px">
                     {dynamicColumns}
                 </TreeTable >

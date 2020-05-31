@@ -147,7 +147,12 @@ componentWillMount()
 
   render() {
     debugger;
-    
+    let inputData={
+      // data: this.state.products,
+      // columns: this.state.columns,
+      // context:this.props.context,
+      // IsUpdated:this.state.IsUpdated
+    }
     let parsed = this.state.parsedJson;
     
     return (
@@ -260,7 +265,7 @@ componentWillMount()
           />
         </DataTable>
         <span>
-          <DialogDemo />
+          {/* <DialogDemo /> */}
         </span>
       </div>
     );

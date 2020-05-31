@@ -76,23 +76,24 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             <div className="gridstyle">
 
                 <div className="content-section implementation">
-                    <h3>New Entry</h3>
+                    {/* <h3>New Entry</h3> */}
                     <DataTable  editMode="Cell" value={this.state.cars1}>
-                        <Column field="CFName" header="CFName*" editorValidator={this.requiredValidator} style={{ height: '3.5em' }} />
-                        <Column field="PPR" header="PPR"  style={{ height: '3.5em' }} />
-                        <Column field="Year" header="Finacial Year"  style={{ height: '3.5em' }} />
-                        <Column field="Jan" header="Jan" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Feb" header="Feb" editor={this.vinEditor} editorValidator={this.requiredValidator} style={{ height: '3.5em' }} />
-                        <Column field="Mar" header="Mar" editor={this.vinEditor} style={{ height: '3.5em' }} />
+                        <Column field="CFNAME" header="CFName*" editor={this.vinEditor}  editorValidator={this.requiredValidator} style={{ height: '3.5em' }} />
+                        <Column field="PPR" header="PPR"  editor={this.vinEditor}  style={{ height: '3.5em' }} />
+                        <Column field="FinacialYear" header="Finacial Year"  editor={this.vinEditor}  style={{ height: '3.5em' }} />
+                        <Column field="January" header="Jan" editor={this.vinEditor} style={{ height: '3.5em' }} />
+                        <Column field="February" header="Feb" editor={this.vinEditor} editorValidator={this.requiredValidator} style={{ height: '3.5em' }} />
+                        <Column field="March" header="Mar" editor={this.vinEditor} style={{ height: '3.5em' }} />
                         <Column field="April" header="April" editor={this.vinEditor} style={{ height: '3.5em' }} />
                         <Column field="May" header="May" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Jun" header="Jun" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Jul" header="Jul" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Aug" header="Aug" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Sep" header="Sep" editor={this.vinEditor} editorValidator={this.requiredValidator} style={{ height: '3.5em' }} />
-                        <Column field="Oct" header="Oct" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Nov" header="Nov" editor={this.vinEditor} style={{ height: '3.5em' }} />
-                        <Column field="Dec" header="Dec" editor={this.vinEditor} style={{ height: '3.5em' }} />                  
+                        <Column field="June" header="Jun" editor={this.vinEditor} style={{ height: '3.5em' }} />
+                        <Column field="July" header="Jul" editor={this.vinEditor} style={{ height: '3.5em' }} />
+                        <Column field="August" header="Aug" editor={this.vinEditor} style={{ height: '3.5em' }} />
+                        <Column field="September" header="Sep" editor={this.vinEditor} editorValidator={this.requiredValidator} style={{ height: '3.5em' }} />
+                        <Column field="October" header="Oct" editor={this.vinEditor} style={{ height: '3.5em' }} />
+                        <Column field="November" header="Nov" editor={this.vinEditor} style={{ height: '3.5em' }} />
+                        <Column field="December" header="Dec" editor={this.vinEditor} style={{ height: '3.5em' }} />      
+                        <Column field="LineTotal" header="LineTotal" editor={this.vinEditor} style={{ height: '3.5em' }} />              
                    </DataTable>
                 </div>
             </div>

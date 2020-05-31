@@ -87,18 +87,16 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         const addnewDivwidth = addnewDivrect.width
         var extraWidth = 27;
 
-        let diffaddnewDivwidth =tabDivwidth-addnewDivwidth;
+        let diffaddnewDivwidth = tabDivwidth-addnewDivwidth;
 
-        if(diffaddnewDivwidth==0){
-            diffaddnewDivwidth=extraWidth
-        }
+
         this.setState({ gridResponsiveWidth: (diffaddnewDivwidth) })
 
     }
 
     onEditorValueChange(props: any, event) {
         debugger;
-        if (event.key === "Enter" || event.nativeEvent === "blur") {
+        if (event.key === "Enter" ) {
             let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
             let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
             let editedNode = this.findNodeByKey(newNodes, props.node.key);
@@ -137,6 +135,8 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
         let editedField = props.field;
         let editedObject = this.createApiUpdateRequest(editedNode.data, editedField);
+        console.clear();
+        console.log(editedObject);
         this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(this.successCallback, this.errorCallback);
         try {
             this.props.context.parameters.sampleDataSet.refresh();
@@ -149,12 +149,18 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     createApiUpdateRequest(editNode: any, editedField: string) {
         debugger;
-
+        let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         var entity = {};
+        entity["LineTotal"] = 0;
+        
 
         for (let Column in editNode) {
             if ((Column == editedField)) {
                 entity[Column] = Number(editNode[editedField]);
+            }
+            if(months.includes(Column))
+            {
+              entity["LineTotal"] += Number(editNode[Column]);
             }
         }
         return entity;
@@ -328,6 +334,13 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
 
     render() {
+
+        let inputData={
+            // data: this.state.products,
+            // columns: this.state.columns,
+            context:this.props.context,
+            IsUpdated:this.state.IsUpdated
+          }
         const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
             return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.expander ? undefined : this.vinEditor} style={{ width: '100px' }} headerClassName="p-col-d" />;
         });
@@ -335,7 +348,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
             <div className="scrollbar scrollbar-primary">
                 <div className="content-section implementation monthlyGrid month">
-                    <DialogDemo />
+                    <DialogDemo {...inputData} />
                     <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: this.state.gridResponsiveWidth + "px" }} scrollHeight="55vh">
                         {dynamicColumns}
                     </TreeTable >

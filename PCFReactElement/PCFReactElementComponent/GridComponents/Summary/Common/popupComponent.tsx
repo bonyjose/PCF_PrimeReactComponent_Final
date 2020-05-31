@@ -4,8 +4,11 @@ import { Dialog } from 'primereact/dialog';
 
 import { Button } from 'primereact/button';
 import { DataTableAddNew } from '../MonthlySummary/addNewEntryComponent'
+import { IInputs } from '../../../generated/ManifestTypes';
 type AppProps = {
     test?: any;
+    context: ComponentFramework.Context<IInputs>;
+    IsUpdated:boolean;
 }
 
 type AppState = {
@@ -26,9 +29,9 @@ interface inputData{
 const data={
     data: [
         {
-            "CFName": "Sample", "PPR": "CD1234", "Year": "2020", "Jan": " ",
-            "Feb": "", "Mar": "", "April": " ", "Jun": " ","Jul": "", "Aug": "", "Sep": " ", "Oct": " ",
-            "Nov": " ","Dec": " ","Total": " "        
+            "CFNAME": "", "PPR": "", "January": " ",
+            "February": "", "March": "", "April": " ","May" : "", "June": " ","July": "", "August": "", "September": " ", "October": " ",
+            "November": " ","December": " ","LineTotal": " "        
         }]
     };
 export class DialogDemo extends Component<AppProps, AppState>{
@@ -62,15 +65,62 @@ export class DialogDemo extends Component<AppProps, AppState>{
     }
 
     onHide(name: string) {
+        debugger;
 
         this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
     }
     onSave(name: string) {
+        debugger;
 
         let updatedDatas: any[] = this.state.updatedData;
         
-        this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
+        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+            let editedObject = this.createApiUpdateRequest(updatedDatas[0]);
+            console.log(editedObject);
+            try {
+                this.props.context.webAPI.createRecord(gridEntity,  editedObject).then(this.successCallback, this.errorCallback);
+                this.props.context.parameters.sampleDataSet.refresh();
+                this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
+            }
+            catch (Error) {
+                console.log(Error.message);
+            }
+            this.forceUpdate();
+            debugger;
     }
+
+    createApiUpdateRequest(editNode: any) {
+        debugger;
+        let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        var entity = {};
+        entity["LineTotal"] = 0;
+        
+        debugger;
+        for (let Column in editNode) {
+            if(months.includes(Column))
+            {
+              entity["LineTotal"] += Number(editNode[Column]);
+              entity[Column] = Number(editNode[Column]);
+            }
+            else{
+                entity[Column] = editNode[Column];
+            }
+        }
+        entity["LineTotal"] = Number(entity["LineTotal"]);
+        return entity;
+    }
+
+    
+    successCallback() {
+        // console.log("api create success");
+        console.log("api update success");
+    }
+
+    errorCallback() {
+        console.log("api update failed");
+    }
+
+    
     renderFooter(name: string) {
         return (
             <div>
@@ -94,7 +144,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
  
                     <Button label="AddNew" className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
 
-                    <Dialog header="Godfather Casting" visible={this.state.displayBasic2} style={{ width: '90vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
+                    <Dialog header="Add New Record" visible={this.state.displayBasic2} style={{ width: '90vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
                         <DataTableAddNew  data={data} setData={this.setData} />
                         <label style={{float:"left",color:"#ab9999"}} >CFName*: Cash Flow Item Name</label>
                     </Dialog>
