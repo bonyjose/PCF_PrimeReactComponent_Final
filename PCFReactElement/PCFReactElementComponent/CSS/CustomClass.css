@@ -4,6 +4,7 @@
     margin-top: 0px;
     z-index: 1;
     margin-bottom: 7px;
+    margin-right: 22px;
 }
 body .p-treetable .p-treetable-tbody > tr.p-highlight_custom {
     background-color: #a5a0a00d;
@@ -19,7 +20,9 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom {
     opacity: 2.1 !important;
     transition-delay: 0s !important;
 }
-
+body .p-tabview .p-tabview-panels{
+    width:75vw;
+}
 .p-treetable table{
     table-layout: fixed !important;
     word-wrap: break-word !important;

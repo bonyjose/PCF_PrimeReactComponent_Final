@@ -90,7 +90,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         let diffaddnewDivwidth = addnewDivwidth - extraWidth;
 
 
-        this.setState({ gridResponsiveWidth: (diffaddnewDivwidth) })
+        this.setState({ gridResponsiveWidth: (71) })
 
     }
 
@@ -351,7 +351,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             <div className="scrollbar scrollbar-primary">
                 <div className="content-section implementation monthlyGrid month">
                     <DialogDemo {...inputData} />
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: this.state.gridResponsiveWidth + "px" }} scrollHeight="55vh">
+                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: this.state.gridResponsiveWidth + "vw" }} scrollHeight="55vh">
                         {dynamicColumns}
                     </TreeTable >
 

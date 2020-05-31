@@ -264,7 +264,7 @@ errorCallback()
             <div className="scrollbar scrollbar-primary">
                 <div className="content-section implementation monthlyGrid">
                     <DialogDemo {...inputData}  />
-                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{width: '72vw'}}  scrollHeight="50vh">
+                    <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{width: '71vw'}}  scrollHeight="50vh">
                         {dynamicColumns}                      
                     </TreeTable >                  
                 </div>
