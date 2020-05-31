@@ -185,6 +185,8 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             path.shift();
         }
         return node;
+
+        
     }
 
     inputTextEditor = (props: any, field: any) => {
