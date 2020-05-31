@@ -151,7 +151,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         debugger;
         let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         var entity = {};
-        entity["LineTotal"] = 0;
+        entity["m360_linetotal"] = 0;
         
 
         for (let Column in editNode) {
@@ -160,7 +160,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             }
             if(months.includes(Column))
             {
-              entity["LineTotal"] += Number(editNode[Column]);
+              entity["m360_linetotal"] += Number(editNode[Column]);
             }
         }
         return entity;
@@ -186,7 +186,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
         return node;
 
-        
+
     }
 
     inputTextEditor = (props: any, field: any) => {

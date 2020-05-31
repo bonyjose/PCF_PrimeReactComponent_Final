@@ -297,7 +297,7 @@ createApiUpdateRequest(editNode : any,editedField : string)
 {
   debugger;
   var entity = {};
-  entity["LineTotal"] = 0;
+  entity["m360_linetotal"] = 0;
   let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   let Q1 = ["January","February","March"];
   let Q2 = ["April","May","June"];
@@ -349,10 +349,10 @@ createApiUpdateRequest(editNode : any,editedField : string)
     }
       if(months.includes(Column))
       {
-        entity["LineTotal"] += Number(editNode[Column]);
+        entity["m360_linetotal"] += Number(editNode[Column]);
       }
   }
-  entity["LineTotal"] = entity["LineTotal"] - currentSum + newSum;
+  entity["m360_linetotal"] = entity["m360_linetotal"] - currentSum + newSum;
   return entity;
 }
 
