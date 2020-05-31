@@ -102,8 +102,13 @@ export class DialogDemo extends Component<AppProps, AppState>{
               entity["LineTotal"] += Number(editNode[Column]);
               entity[Column] = Number(editNode[Column]);
             }
+            else if(Column == "PPR")
+            {
+                entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
+            }
             else{
                 entity[Column] = editNode[Column];
+                
             }
         }
         entity["LineTotal"] = Number(entity["LineTotal"]);
