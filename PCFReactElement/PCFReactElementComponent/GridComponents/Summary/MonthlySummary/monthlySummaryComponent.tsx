@@ -85,11 +85,13 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
         const addnewDivrect = tabDiv.getBoundingClientRect();
         const addnewDivwidth = addnewDivrect.width
-        var extraWidth = 12;
+        var extraWidth = 27;
 
-        let diffaddnewDivwidth = addnewDivwidth - extraWidth;
+        let diffaddnewDivwidth =tabDivwidth-addnewDivwidth;
 
-
+        if(diffaddnewDivwidth==0){
+            diffaddnewDivwidth=extraWidth
+        }
         this.setState({ gridResponsiveWidth: (diffaddnewDivwidth) })
 
     }
