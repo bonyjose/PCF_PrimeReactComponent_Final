@@ -5,6 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { DialogDemo } from "../Common/popupComponent";
 import { IInputs, IOutputs } from "../../../generated/ManifestTypes"
 import { useState, useEffect, useRef } from 'react'
+import { Button } from 'primereact/button';
 
 type AppMonthProps = {
     data: any[];
@@ -19,6 +20,8 @@ type monthState = {
     coldef: any[],
     isSaved: boolean,
     gridResponsiveWidth: number;
+    rowEditedKey: [],
+    rowEditedData : []
 }
 
 export class MonthlySummary extends Component<AppMonthProps, monthState>{
@@ -31,7 +34,9 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             IsUpdated: false,
             coldef: [],
             isSaved: false,
-            gridResponsiveWidth: 0
+            gridResponsiveWidth: 0,
+            rowEditedKey : [],
+            rowEditedData :[]
         };
     }
 
@@ -95,87 +100,94 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     onEditorValueChange(props: any, event) {
-
-        if (props.node.data[props.field] != event.target.value) {
-            let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-            let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
-            let editedNode = this.findNodeByKey(newNodes, props.node.key);
-            editedNode.data[props.field] = event.target.value;
-            let editedField = props.field;
-            let editedObject = this.createApiUpdateRequest(editedNode.data, editedField);
-            let context:ComponentFramework.Context<IInputs>;
-            context=this.props.context;
-            this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(
-                function(result) {
-                    debugger;
-                    context.parameters.sampleDataSet.refresh();                  
-                  
-                  },
-                  function(result) {
-                    context.parameters.sampleDataSet.refresh();
-                    alert("Error Occured");
-                  })
-                  this.setState({ isSaved: true });
-        }
-    }
-
-    onBlur = (props: any, event) => {
-
-        if (!event.currentTarget.contains(document.activeElement)) {
-            debugger;
-            console.log('table blurred');
-        }
-
-        // let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-        // let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
-        // let editedNode = this.findNodeByKey(newNodes, props.node.key);
-        // editedNode.data[props.field] = event.target.value;
+        debugger;
+        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
+        let editedNode = this.findNodeByKey(newNodes, props.node.key);
+        editedNode.data[props.field] = event.target.value;
         // this.setState({
         //     nodes: newNodes
         // });
 
-        // let editedField = props.field;
-        // let editedObject = this.createApiUpdateRequest(editedNode.data, editedField);
+     
 
-        // this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(this.successCallback, this.errorCallback);
-        // try {
-        //     this.props.context.parameters.sampleDataSet.refresh();
-        // }
-        // catch (Error) {
-        //     console.log(Error.message);
-        // }
+        var rowEdited =Array();
+        rowEdited  = this.state.rowEditedKey ;
+        rowEdited.push(props.node.nodeKey);
+
+        
+        console.log(this.state.rowEditedKey);
+        debugger;
+        editedNode.data[props.field] = event.target.value;
+        let editedField = props.field;
+        let editedObject = this.createApiUpdateRequest(editedNode.data, editedField);
+        var newStateArray =Array();
+         newStateArray = this.state.rowEditedData;
+        newStateArray.push(editedObject);
+        this.setState({
+            nodes: newNodes
+        });
+        this.setState({ rowEditedKey : rowEdited as any})
+        this.setState({ rowEditedData : newStateArray as any})
+        console.log(this.state.rowEditedData);
+        debugger;
         // this.forceUpdate();
+        // this.props.parentCallback;
+    }
+
+    onBlur = (props: any, event) => {
+        debugger;
+        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
+        let editedNode = this.findNodeByKey(newNodes, props.node.key);
+        editedNode.data[props.field] = event.target.value;
+        this.setState({
+            nodes: newNodes
+        });
+
+        let editedField = props.field;
+        let editedObject = this.createApiUpdateRequest(editedNode.data, editedField);
+        console.clear();
+        console.log(editedObject);
+        this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(this.successCallback, this.errorCallback);
+        try {
+            this.props.context.parameters.sampleDataSet.refresh();
+        }
+        catch (Error) {
+            console.log(Error.message);
+        }
+        this.forceUpdate();
     }
 
     createApiUpdateRequest(editNode: any, editedField: string) {
         debugger;
+        let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         var entity = {};
         let lineTotal;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             lineTotal = this.props.context.parameters.lineTotal.raw;
         }
-        entity[editedField] = Number(editNode[editedField]);
-        let total = Number(editNode[lineTotal]);
-        let editedvalue = Number(editNode[editedField]);
-        let diffinTotal = Number(total - editedvalue);
-        entity[lineTotal] = diffinTotal;
+        for (let Column in editNode) {
+            if ((Column == editedField)) {
+                entity[Column] = Number(editNode[editedField]);
+            }
+            entity[lineTotal] =0;
+            if(months.includes(Column))
+            {
+              entity[lineTotal] += Number(editNode[Column]);
+            }
+        }
         return entity;
     }
 
-    // successCallback(this) {
-    //     debugger;
-    //     this.props.context.parameters.sampleDataSet.refresh();
-    //     this.setState({ isSaved: true });
-    // }
+    successCallback() {
+        // console.log("api create success");
+        console.log("api update success");
+    }
 
-    // errorCallback(this) {
-    //     debugger;
-    //     context.parameters.sampleDataSet.refresh();
-    //     this.setState({
-    //         isSaved: false
-    //       });
-    //       //this.forceUpdate();
-    // }
+    errorCallback() {
+        console.log("api update failed");
+    }
 
     findNodeByKey(nodes: any, key: any) {
 
@@ -192,8 +204,10 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     inputTextEditor = (props: any, field: any) => {
-        return <InputText type="text" value={props.node.data[field]}
-            onChange={(e) => this.onEditorValueChange(props, e)}
+        return <InputText type="text" defaultValue={props.node.data[field]}
+            
+            onChange={(e) =>
+                this.onEditorValueChange(props, e)}
         />
     }
 
@@ -211,7 +225,6 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         debugger;
 
         let expandYear, ppr, lineTotal, cashFlow;
-
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
@@ -337,6 +350,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
 
+
     render() {
 
         let inputData = {
@@ -356,10 +370,24 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
                     <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: this.state.gridResponsiveWidth + "vw" }} scrollHeight="55vh">
                         {dynamicColumns}
                     </TreeTable >
+                    <Button label="Save" className="addnewBtn" icon="pi pi-external-link" onClick={() => this.saveGrid()} iconPos="left" />
 
                 </div>
             </div>
 
         )
+    }
+    saveGrid(): void {
+        debugger;
+        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridrowKey = this.state.rowEditedKey;
+        let gridrowKeyData = this.state.rowEditedData;
+        for (let i = 0; i < gridrowKey.length; i++)
+        {
+            let rowKey = gridrowKey[i];
+            let rowkeyData =  gridrowKeyData[i];
+            this.props.context.webAPI.updateRecord(gridEntity, rowKey, rowkeyData).then(this.successCallback, this.errorCallback);
+        }
+
     }
 }
