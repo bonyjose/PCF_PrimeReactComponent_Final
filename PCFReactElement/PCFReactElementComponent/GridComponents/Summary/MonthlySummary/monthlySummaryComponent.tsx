@@ -388,6 +388,11 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             let rowkeyData =  gridrowKeyData[i];
             this.props.context.webAPI.updateRecord(gridEntity, rowKey, rowkeyData).then(this.successCallback, this.errorCallback);
         }
-
+        try {
+            this.props.context.parameters.sampleDataSet.refresh();
+        }
+        catch (Error) {
+            console.log(Error.message);
+        }
     }
 }
