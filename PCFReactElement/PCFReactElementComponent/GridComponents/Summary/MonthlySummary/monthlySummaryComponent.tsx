@@ -95,7 +95,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         let diffaddnewDivwidth = addnewDivwidth - extraWidth;
 
 
-        this.setState({ gridResponsiveWidth: (71) })
+        this.setState({ gridResponsiveWidth: (76) })
 
     }
 
