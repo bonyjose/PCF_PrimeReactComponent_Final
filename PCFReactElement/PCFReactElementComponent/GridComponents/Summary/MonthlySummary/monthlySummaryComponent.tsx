@@ -382,17 +382,25 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let gridrowKey = this.state.rowEditedKey;
         let gridrowKeyData = this.state.rowEditedData;
+
+        let context:ComponentFramework.Context<IInputs>;
+        context=this.props.context;
+
         for (let i = 0; i < gridrowKey.length; i++)
         {
             let rowKey = gridrowKey[i];
             let rowkeyData =  gridrowKeyData[i];
-            this.props.context.webAPI.updateRecord(gridEntity, rowKey, rowkeyData).then(this.successCallback, this.errorCallback);
+            this.props.context.webAPI.updateRecord(gridEntity, rowKey, rowkeyData).then(function(result) {
+                    debugger;
+                    context.parameters.sampleDataSet.refresh();                  
+                  
+                  },
+                  function(result) {
+                    // context.parameters.sampleDataSet.refresh();
+                    alert("Error Occured");
+                  })
+                  this.setState({ isSaved: true });
         }
-        try {
-            this.props.context.parameters.sampleDataSet.refresh();
-        }
-        catch (Error) {
-            console.log(Error.message);
-        }
+ 
     }
 }
