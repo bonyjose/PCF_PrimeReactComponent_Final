@@ -76,13 +76,28 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
          colDefition = colDefition.map((col,i) => {
             return <Column key={col.field} field={col.field} header={col.header} />;
         });
-        let colData = colDefition;
+        let colData :any [] = this.state.colDef;
+        let cols: any[];
+        cols = [];
+        let resultData : any[];
+        resultData =[];
+        for (let i = 0; i < colData.length; i++) 
+        {
+            let data = Object.values(colData);
+            let childrenData = {
+                [data[i].field] : ""
+        }
+        cols.push(childrenData);
+        resultData = Object.values((cols));
+        console.log(resultData)
+        }
+        debugger;
         return (
             <div className="gridstyle">
 
                 <div className="content-section implementation">
                     {/* <h3>New Entry</h3> */}
-                    <DataTable  editMode="Cell" >
+                    <DataTable  editMode="Cell" value={resultData} >
                     {colDefition}
                     
                    </DataTable>
