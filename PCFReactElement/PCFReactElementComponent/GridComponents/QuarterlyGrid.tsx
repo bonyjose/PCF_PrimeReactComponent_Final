@@ -402,12 +402,11 @@ vinEditor = (props: any) => {
   
     render() {
       debugger;
-      let inputData={
-        // data: this.state.products,
-        // columns: this.state.columns,
-        context:this.props.context,
-        IsUpdated:this.state.IsUpdated
-      }
+      let inputData = {
+        columns: this.state.coldef,
+        context: this.props.context,
+        IsUpdated: this.state.IsUpdated
+    }
 
       const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
         return <Column key={col.field} field={col.field} header={col.header}  expander={col.expander} editor={col.expander ? undefined : this.vinEditor} style={{width:'100px'}} headerClassName="p-col-d" />;

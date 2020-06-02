@@ -354,8 +354,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     render() {
 
         let inputData = {
-            // data: this.state.products,
-            // columns: this.state.columns,
+            columns: this.state.coldef,
             context: this.props.context,
             IsUpdated: this.state.IsUpdated
         }
