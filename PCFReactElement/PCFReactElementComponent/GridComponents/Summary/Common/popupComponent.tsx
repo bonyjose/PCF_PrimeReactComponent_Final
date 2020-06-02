@@ -9,6 +9,7 @@ type AppProps = {
     test?: any;
     context: ComponentFramework.Context<IInputs>;
     IsUpdated:boolean;
+    columns: any[];
 }
 
 type AppState = {
@@ -19,21 +20,21 @@ type AppState = {
     displayMaximizable: boolean;
     displayPosition: boolean;
     position: string;
-    updatedData:any[]
+    updatedData:any[];
 }
 interface inputData{
     SetData():any,
     data:any[]
 
 }
-const data={
-    data: [
-        {
-            "CFNAME": "", "PPR": "", "January": " ",
-            "February": "", "March": "", "April": " ","May" : "", "June": " ","July": "", "August": "", "September": " ", "October": " ",
-            "November": " ","December": " ","LineTotal": " "        
-        }]
-    };
+// const data={
+//     data: [
+//         {
+//             "CFNAME": "", "PPR": "", "January": " ",
+//             "February": "", "March": "", "April": " ","May" : "", "June": " ","July": "", "August": "", "September": " ", "October": " ",
+//             "November": " ","December": " ","LineTotal": " "        
+//         }]
+//     };
 export class DialogDemo extends Component<AppProps, AppState>{
 
     constructor(props: AppProps) {
@@ -46,10 +47,9 @@ export class DialogDemo extends Component<AppProps, AppState>{
             displayMaximizable: false,
             displayPosition: false,
             position: 'center',
-            updatedData: []
-           
+            updatedData: [],
+            
         };
-           
     }
 
 
@@ -141,6 +141,10 @@ export class DialogDemo extends Component<AppProps, AppState>{
     }
 
     render() {
+        let inputData = {
+            columns: this.props.columns,
+            context: this.props.context
+        }
         return (
 
 
@@ -150,7 +154,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     <Button label="AddNew" className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
 
                     <Dialog header="Add New Record" visible={this.state.displayBasic2} style={{ width: '90vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
-                        <DataTableAddNew  data={data} setData={this.setData} />
+                        <DataTableAddNew  {...inputData}  />
                         <label style={{float:"left",color:"#ab9999"}} >CFName*: Cash Flow Item Name</label>
                     </Dialog>
 
