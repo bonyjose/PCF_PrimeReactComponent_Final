@@ -57,6 +57,7 @@ export class App extends React.Component<Props, State> {
     };
     // this.setState({ products : this.props.data});
     this.handleChange = this.handleChange.bind(this);
+    
   }
 
   

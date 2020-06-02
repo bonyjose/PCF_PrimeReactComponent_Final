@@ -41,6 +41,7 @@
     ]
   },
   "devDependencies": {
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^3.5.3",
     "ts-loader": "^7.0.2"
   }

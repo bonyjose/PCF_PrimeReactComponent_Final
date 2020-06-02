@@ -25,6 +25,7 @@
   "devDependencies": {
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.8",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "pcf-scripts": "^1",
     "pcf-start": "^1"
   }

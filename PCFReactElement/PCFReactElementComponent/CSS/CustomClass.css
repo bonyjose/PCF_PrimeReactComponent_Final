@@ -3,8 +3,8 @@
     float: right;
     margin-top: 0px;
     z-index: 1;
-    margin-bottom: 7px;
-    margin-right: 22px;
+    margin-bottom: 6px;
+    margin-right: 35px;
 }
 body .p-treetable .p-treetable-tbody > tr.p-highlight_custom {
     background-color: #a5a0a00d;
@@ -12,6 +12,9 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom {
     pointer-events: none !important;
     opacity: 2.1 !important;
     transition-delay: 0s !important;
+}
+.monthlyGrid .p-treetable.p-component{
+    padding-right: 23px
 }
 .p-treetable-scrollable-body>table>.p-treetable-tbody>tr:first-child>td {
     background-color: #a5a0a00d;
@@ -21,7 +24,7 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom {
     transition-delay: 0s !important;
 }
 body .p-tabview .p-tabview-panels{
-    width:80vw;
+    width:78vw;
 }
 .p-treetable table{
     table-layout: fixed !important;
