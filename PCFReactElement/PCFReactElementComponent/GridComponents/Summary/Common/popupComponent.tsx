@@ -10,6 +10,7 @@ type AppProps = {
     context: ComponentFramework.Context<IInputs>;
     IsUpdated:boolean;
     columns: any[];
+    // data :any;
 }
 
 type AppState = {
@@ -24,7 +25,7 @@ type AppState = {
 }
 interface inputData{
     SetData():any,
-    data:any[]
+    // data:any[]
 
 }
 // const data={
@@ -143,7 +144,8 @@ export class DialogDemo extends Component<AppProps, AppState>{
     render() {
         let inputData = {
             columns: this.props.columns,
-            context: this.props.context
+            context: this.props.context,
+            // data :this.props.data
         }
         return (
 
