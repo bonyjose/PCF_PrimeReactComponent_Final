@@ -6,7 +6,7 @@ import { DialogDemo } from "../Common/popupComponent";
 import { IInputs, IOutputs } from "../../../generated/ManifestTypes"
 import { useState, useEffect, useRef } from 'react'
 import { Button } from 'primereact/button';
-
+import axios from 'axios';
 type AppMonthProps = {
     data: any[];
     columns: any[];
@@ -25,7 +25,7 @@ type monthState = {
 }
 
 export class MonthlySummary extends Component<AppMonthProps, monthState>{
-    public InputDataNodes: any[];
+
     constructor(props: AppMonthProps) {
 
         super(props);
@@ -48,23 +48,27 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     componentDidUpdate(prevProps, prevState) {
 
         if ((this.props.IsUpdated) && (!this.state.IsUpdated)) {
-            this.InputDataNodes = this.createJsonTreestructure();
+            let jsonData=this.createJsonTreestructure();
+            this.setState({nodes:jsonData});
             this.setState({ IsUpdated: this.props.IsUpdated });
+        }
+        if(this.state.isSaved){
+            let jsonData=this.createJsonTreestructure();
+            this.setState({nodes:jsonData});
+            this.setState({ isSaved: false});
         }
 
     }
     componentDidMount() {
-        debugger;
-        if (!this.state.IsUpdated || this.props.data.length > 0) {
-            this.InputDataNodes = this.createJsonTreestructure();
-        }
+        let jsonData=this.createJsonTreestructure();
+        this.setState({nodes:jsonData});
 
     }
 
     onEditorValueChange(props: any, event) {
         debugger;
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-        let nodes = this.InputDataNodes;
+        let nodes = this.state.nodes;
         let editedNode = this.findNodeByKey(nodes, props.node.key);
         editedNode.data[props.field] = event.target.value;
 
@@ -78,19 +82,8 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         editedNode.data[props.field] = event.target.value;
         let editedField = props.field;
         let editedObject = this.createApiUpdateRequest(editedNode.data, editedField);
-        let context: ComponentFramework.Context<IInputs>;
-        context = this.props.context;
-        this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(function (result) {
-            debugger;
-            context.parameters.sampleDataSet.refresh();
 
-        },
-            function (result) {
-                // context.parameters.sampleDataSet.refresh();
-                alert("Error Occured");
-            })
-        this.setState({ isSaved: true });
-        this.forceUpdate();
+      
 
 
 
@@ -153,11 +146,11 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     successCallback() {
         // console.log("api create success");
-        console.log("api update success");
+        return console.log("api update success");
     }
 
     errorCallback() {
-        console.log("api update failed");
+        return  console.log("api update failed");
     }
 
     findNodeByKey(nodes: any, key: any) {
@@ -329,18 +322,21 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
         for (let i = 0; i < gridrowKey.length; i++) {
             let rowKey = gridrowKey[i];
-            let rowkeyData = gridrowKeyData[i];
-            this.props.context.webAPI.updateRecord(gridEntity, rowKey, rowkeyData).then(function (result) {
+            let rowkeyData = gridrowKeyData[i];       
+
+          var data= this.props.context.webAPI.updateRecord(gridEntity, rowKey, rowkeyData).then(function (result) {
                 debugger;
                 context.parameters.sampleDataSet.refresh();
-
+                
             },
                 function (result) {
                     // context.parameters.sampleDataSet.refresh();
                     alert("Error Occured");
                 })
-            this.setState({ isSaved: true });
+                console.log(data);
         }
+        this.setState({ isSaved: true });
+        this.forceUpdate();
 
     }
 
@@ -355,7 +351,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
 
         let coldef: any[] = this.createColDefinition();
-        let datanode: any[] = this.InputDataNodes;
+        let datanode: any[] =this.state.nodes;
         const dynamicColumns = Object.values(coldef).map((col, i) => {
             return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.expander ? undefined : this.vinEditor} style={{ width: '100px' }} headerClassName="p-col-d" />;
         });
@@ -363,11 +359,13 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
             <div className="scrollbar scrollbar-primary">
                 <div className="content-section implementation monthlyGrid month">
+                
                     <DialogDemo {...inputData} />
+                    <Button label="Save" className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
                     <TreeTable value={datanode} rowClassName={this.rowClassName} className="monthlyGrid" paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh">
                         {dynamicColumns}
                     </TreeTable >
-                    <Button label="Save" className="addnewBtn" icon="pi pi-external-link" onClick={() => this.saveGrid()} iconPos="left" />
+                   
 
                 </div>
             </div>

@@ -54,10 +54,26 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom > td .p-treetable-t
 .implementation{
     margin-top: 40px !important;
 }
+.p-button.p-component.saveBtn{
+    float: right;
+    margin-top: 0px;
+    z-index: 1;
+    margin-bottom: 6px;
+    margin-right: 145px;
+    width: 100px;
+}
 
 .monthlyGrid .addnewBtn {
     margin-top: -40px  !important;
 }
+span.pi.pi-save.p-c.p-button-icon-left{
+    padding-left: 10px;
+}
+.monthlyGrid .saveBtn {
+
+    margin-top: -40px  !important;
+}
+
 @media screen and (max-width: 64em) {
     .p-col-d {
         display: none;

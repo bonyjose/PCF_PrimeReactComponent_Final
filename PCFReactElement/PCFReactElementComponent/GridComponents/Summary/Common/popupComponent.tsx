@@ -150,8 +150,8 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
 
                 <div className="addNewButton">
- 
                     <Button label="AddNew" className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
+                    
 
                     <Dialog header="Add New Record" visible={this.state.displayBasic2} style={{ width: '90vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
                         <DataTableAddNew  {...inputData}  />
