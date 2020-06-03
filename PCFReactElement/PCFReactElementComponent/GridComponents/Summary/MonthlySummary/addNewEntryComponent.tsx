@@ -10,10 +10,12 @@ import { IInputs } from '../../../generated/ManifestTypes';
 type AppProps = {
     columns: any[];
     context: ComponentFramework.Context<IInputs>;
+    // data :any
 }
 
 type AppState = {
-    colDef: any[]
+    colDef: any[];
+    rowEditedData :[]
 }
 
 export class DataTableAddNew extends Component<AppProps, AppState> {
@@ -22,7 +24,8 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            colDef: []
+            colDef: [],
+            rowEditedData :[]
         };
 
 
@@ -44,8 +47,38 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         }} />;
     }
     /* Cell Editing */
-    onEditorValueChange(props: [], event) {
+    onEditorValueChange(props: any, event) {
         debugger;
+
+        let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let newNodes = JSON.parse(JSON.stringify(this.state.colDef));
+
+        var entity = {};
+        entity[props["header"]] = event;
+        var rowEdited = Array();
+        rowEdited = entity as any;
+        // rowEdited.push(props.node.nodeKey);
+
+        var newStateArray = Array();
+        newStateArray = this.state.rowEditedData;
+        newStateArray.push(rowEdited);
+        console.log(newStateArray);
+
+        this.setState({ rowEditedData: newStateArray as any })
+
+        // this.setState({
+        //     rowEditedData: newNodes
+        // });
+
+
+        // let editedNode = this.findNodeByKey(newNodes, props.node.key);
+        // editedNode.data[props.field] = event.target.value;
+        // this.setState({
+        //     nodes: newNodes
+        // });
+
+        // let editedField = props.field;
+        // let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
         // let updatedCars: [] = [...props.value];
         // updatedCars[props.rowIndex][props.field] = event;
         // console.log(typeof (updatedCars), typeof (this.state.colDef))
@@ -74,30 +107,39 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         debugger;
         var colDefition = this.state.colDef;
          colDefition = colDefition.map((col,i) => {
-            return <Column key={col.field} field={col.field} header={col.header} />;
+            return <Column key={col.field} field={col.field}  editor={this.vinEditor} header={col.header} />;
         });
-        let colData :any [] = this.state.colDef;
-        let cols: any[];
-        cols = [];
-        let resultData : any[];
-        resultData =[];
-        for (let i = 0; i < colData.length; i++) 
-        {
-            let data = Object.values(colData);
-            let childrenData = {
-                [data[i].field] : ""
-        }
-        cols.push(childrenData);
-        resultData = Object.values((cols));
-        console.log(resultData)
-        }
+        // let colData :any [] = this.state.colDef;
+        // let cols: any[];
+        // cols = [];
+        // let resultData : any[];
+        // resultData =[];
+        // for (let i = 0; i < colData.length; i++) 
+        // {
+        //     let data = Object.values(colData);
+        //     let childrenData = {
+        //         [data[i].field] : ""
+        // }
+        // cols.push(childrenData);
+        // resultData = Object.values((cols));
+        // // console.log(resultData)
+        // }
+        // for(let i=0;i<cols.length;i++)
+        // {
+        //     resultData.push(cols[i])
+        // }
+
+
+     let emptyCell = Array.from("1");
+    let fin = Array.from(emptyCell);
+        console.log(fin);
         debugger;
         return (
             <div className="gridstyle">
 
                 <div className="content-section implementation">
                     {/* <h3>New Entry</h3> */}
-                    <DataTable  editMode="Cell" value={resultData} >
+                    <DataTable  editMode="Cell" value={emptyCell} >
                     {colDefition}
                     
                    </DataTable>
