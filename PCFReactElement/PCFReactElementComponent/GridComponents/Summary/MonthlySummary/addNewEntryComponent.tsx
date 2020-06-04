@@ -10,12 +10,14 @@ import { IInputs } from '../../../generated/ManifestTypes';
 type AppProps = {
     columns: any[];
     context: ComponentFramework.Context<IInputs>;
+    setData :any;
     // data :any
 }
 
 type AppState = {
     colDef: any[];
-    rowEditedData :[]
+    rowEditedData :[];
+    popupColDef : any[]
 }
 
 export class DataTableAddNew extends Component<AppProps, AppState> {
@@ -25,7 +27,8 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         super(props);
         this.state = {
             colDef: [],
-            rowEditedData :[]
+            rowEditedData :[],
+            popupColDef : []
         };
 
 
@@ -35,12 +38,21 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     }
 
     componentDidMount() {
-        this.setState({colDef:this.props.columns})
+        debugger;
+        this.setState({colDef:this.props.columns});
+        var jsonArr = [{}];
+
+        for (var i = 0; i < this.props.columns.length; i++) {
+            jsonArr[this.props.columns[i].field] = "5";
+        
+        }
+        console.log(jsonArr);
+        this.setState({popupColDef:jsonArr});
     }
 
     inputTextEditor(props: any, field: any) {
-
-        return <InputText type="text" value={props.rowData[field]} onChange={(
+    debugger;
+        return <InputText type="text" value={props.value[field]} onChange={(
             ev: React.ChangeEvent<HTMLInputElement>): void => {
             this.onEditorValueChange
                 (props, ev.target.value.toString())
@@ -50,21 +62,36 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     onEditorValueChange(props: any, event) {
         debugger;
 
+        // let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        // let newNodes = JSON.parse(JSON.stringify(this.state.colDef));
+
+        // var entity = {};
+        // entity[props["header"]] = event;
+        // var rowEdited = Array();
+        // rowEdited = entity as any;
+        // // rowEdited.push(props.node.nodeKey);
+
+        // var newStateArray = Array();
+        // newStateArray = this.state.rowEditedData;
+        // newStateArray.push(rowEdited);
+        // console.log(newStateArray);
+
+        // this.setState({ rowEditedData: newStateArray as any })
+
         let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-        let newNodes = JSON.parse(JSON.stringify(this.state.colDef));
+        let newNodes = this.state.popupColDef;
+        // let editedNode = this.findNodeByKey(newNodes, props.node.key);
+        let editedNode = newNodes[0];
+       newNodes[props.field] = event;
+        this.setState({
+            popupColDef: newNodes
+        });
+        debugger;
+        let editedField = props.field;
 
-        var entity = {};
-        entity[props["header"]] = event;
-        var rowEdited = Array();
-        rowEdited = entity as any;
-        // rowEdited.push(props.node.nodeKey);
-
-        var newStateArray = Array();
-        newStateArray = this.state.rowEditedData;
-        newStateArray.push(rowEdited);
-        console.log(newStateArray);
-
-        this.setState({ rowEditedData: newStateArray as any })
+        let childproduct = this.state.popupColDef;
+        this.sendData(childproduct);
+        // let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
 
         // this.setState({
         //     rowEditedData: newNodes
@@ -86,7 +113,19 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         // this.setState({ colDef : updatedCars });
     }
 
-
+    findNodeByKey(nodes: any, key: any) {
+        debugger;
+        let path = key.split('-');
+        let node;
+      
+        while (path.length) {
+            let list = node ? node.children : nodes;
+            node = list[parseInt(path[0], 10)];
+            path.shift();
+        }
+      
+        return node;
+      }
     vinEditor(props: any) {
 
         let field = props.rowData[props.field]
@@ -106,29 +145,12 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     render() {
         debugger;
         var colDefition = this.state.colDef;
+
+        var colData = this.state.colDef;
+        console.log(colDefition);
          colDefition = colDefition.map((col,i) => {
             return <Column key={col.field} field={col.field}  editor={this.vinEditor} header={col.header} />;
         });
-        // let colData :any [] = this.state.colDef;
-        // let cols: any[];
-        // cols = [];
-        // let resultData : any[];
-        // resultData =[];
-        // for (let i = 0; i < colData.length; i++) 
-        // {
-        //     let data = Object.values(colData);
-        //     let childrenData = {
-        //         [data[i].field] : ""
-        // }
-        // cols.push(childrenData);
-        // resultData = Object.values((cols));
-        // // console.log(resultData)
-        // }
-        // for(let i=0;i<cols.length;i++)
-        // {
-        //     resultData.push(cols[i])
-        // }
-
 
      let emptyCell = Array.from("1");
     let fin = Array.from(emptyCell);
@@ -139,7 +161,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 
                 <div className="content-section implementation">
                     {/* <h3>New Entry</h3> */}
-                    <DataTable  editMode="Cell" value={emptyCell} >
+                    <DataTable  editMode="Cell" value={this.state.popupColDef} >
                     {colDefition}
                     
                    </DataTable>
@@ -147,4 +169,10 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             </div>
         );
     }
+
+    sendData = (childproduct :any) => {
+        debugger;
+       this.props.setData(childproduct);
+     }
+
 }

@@ -137,6 +137,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
     }
 
     setData=(data)=>{
+        debugger;
         let updatedDatas: any[] = data;
         this.setState({ updatedData: updatedDatas });
     }
@@ -156,7 +157,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     
 
                     <Dialog header="Add New Record" visible={this.state.displayBasic2} style={{ width: '90vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
-                        <DataTableAddNew  {...inputData}  />
+                        <DataTableAddNew setData={this.setData}  {...inputData}  />
                         <label style={{float:"left",color:"#ab9999"}} >CFName*: Cash Flow Item Name</label>
                     </Dialog>
 
