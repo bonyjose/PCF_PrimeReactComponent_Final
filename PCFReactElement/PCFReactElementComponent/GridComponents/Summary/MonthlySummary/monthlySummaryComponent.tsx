@@ -6,6 +6,7 @@ import { DialogDemo } from "../Common/popupComponent";
 import { IInputs, IOutputs } from "../../../generated/ManifestTypes"
 import { useState, useEffect, useRef } from 'react'
 import { Button } from 'primereact/button';
+import { ProgressSpinner } from 'primereact/progressspinner';
 import axios from 'axios';
 type AppMonthProps = {
     data: any[];
@@ -21,7 +22,9 @@ type monthState = {
     isSaved: boolean,
     gridResponsiveWidth: number;
     rowEditedKey: [],
-    rowEditedData: []
+    monthDetails: any[],
+    rowEditedKeyData: any[],
+    loading: boolean
 }
 
 export class MonthlySummary extends Component<AppMonthProps, monthState>{
@@ -39,7 +42,9 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             isSaved: false,
             gridResponsiveWidth: 0,
             rowEditedKey: [],
-            rowEditedData: []
+            rowEditedKeyData: [],
+            monthDetails:[],
+            loading: false
         };
 
     }
@@ -48,109 +53,83 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     componentDidUpdate(prevProps, prevState) {
 
         if ((this.props.IsUpdated) && (!this.state.IsUpdated)) {
-            let jsonData=this.createJsonTreestructure();
-            this.setState({nodes:jsonData});
+            let jsonData = this.createJsonTreestructure();
+            this.setState({ nodes: jsonData });
             this.setState({ IsUpdated: this.props.IsUpdated });
         }
-        if(this.state.isSaved){
-            let jsonData=this.createJsonTreestructure();
-            this.setState({nodes:jsonData});
-            this.setState({ isSaved: false});
+        if (this.state.isSaved) {
+            let jsonData = this.createJsonTreestructure();
+            this.setState({ nodes: jsonData, loading: false });
+            this.setState({ isSaved: false });
         }
 
     }
     componentDidMount() {
-        let jsonData=this.createJsonTreestructure();
-        this.setState({nodes:jsonData});
-
+        let jsonData = this.createJsonTreestructure();
+        this.setState({ nodes: jsonData });       
     }
 
     onEditorValueChange(props: any, event) {
-        debugger;
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-        let nodes = this.state.nodes;
-        let editedNode = this.findNodeByKey(nodes, props.node.key);
+         let nodes = this.state.nodes;
+        let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
+        let editedNode = this.findNodeByKey(newNodes, props.node.key);
         editedNode.data[props.field] = event.target.value;
-
-
-        var rowEdited = Array();
-        rowEdited = this.state.rowEditedKey;
-        rowEdited.push(props.node.nodeKey);
-
-
-
-        editedNode.data[props.field] = event.target.value;
-        let editedField = props.field;
-        let editedObject = this.createApiUpdateRequest(editedNode.data, editedField);
-
+        var rowEdited :any[];
+        rowEdited=this.state.rowEditedKeyData;
+        rowEdited.push(props.node.key);        
+        let EditedKeyArray:any[];
+        this.setState({
+            nodes: newNodes,
+            rowEditedKey: props.node.key as any,
+            rowEditedKeyData:rowEdited
+        });      
       
+    } 
 
-
-
-
-        var newStateArray = Array();
-        newStateArray = this.state.rowEditedData;
-        newStateArray.push(editedObject);
-
-        this.setState({ rowEditedKey: rowEdited as any })
-        this.setState({ rowEditedData: newStateArray as any })
-        console.log(this.state.rowEditedData);
+    createApiUpdateRequest(editNode: any) {
         debugger;
-
-        //  this.props.parentCallback;
-    }
-
-    onBlur = (props: any, event) => {
-        // debugger;
-        // let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-        // let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
-        // let editedNode = this.findNodeByKey(newNodes, props.node.key);
-        // editedNode.data[props.field] = event.target.value;
-        // this.setState({
-        //     nodes: newNodes
-        // });
-
-        // let editedField = props.field;
-        // let editedObject = this.createApiUpdateRequest(editedNode.data, editedField);
-        // console.clear();
-        // console.log(editedObject);
-        // this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(this.successCallback, this.errorCallback);
-        // try {
-        //     this.props.context.parameters.sampleDataSet.refresh();
-        // }
-        // catch (Error) {
-        //     console.log(Error.message);
-        // }
-        // this.forceUpdate();
-    }
-
-    createApiUpdateRequest(editNode: any, editedField: string) {
-        debugger;
-        let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let months:any[]=[];
+        if(this.state.monthDetails.length==0){
+            this.createMonthDefinition();//Define Months
+            
+        }
+        months =this.state.monthDetails;
         var entity = {};
+        let total=0;
         let lineTotal;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             lineTotal = this.props.context.parameters.lineTotal.raw;
         }
         for (let Column in editNode) {
-            if ((Column == editedField)) {
-                entity[Column] = Number(editNode[editedField]);
-            }
-            entity[lineTotal] = 0;
-            if (months.includes(Column)) {
-                entity[lineTotal] += Number(editNode[Column]);
-            }
+                entity[Column] = editNode[Column];
+                if (months.includes(Column)) {
+                    if( isNaN(entity[lineTotal])){
+                        entity[lineTotal]= total= 0;   
+                    }
+                    if(isNaN(editNode[Column])||this.isEmpty(editNode[Column])){
+                        total =  total+0;  
+                         
+                    }
+                    else{
+                        total=total+(parseInt(editNode[Column]));                      
+                    }
+                  
+                }
         }
+        entity[lineTotal]=total;
         return entity;
     }
-
+     isEmpty=(str) =>{
+        return (!str || 0 === str.length);
+    }
     successCallback() {
         // console.log("api create success");
         return console.log("api update success");
     }
 
     errorCallback() {
-        return  console.log("api update failed");
+        return console.log("api update failed");
     }
 
     findNodeByKey(nodes: any, key: any) {
@@ -163,8 +142,6 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             path.shift();
         }
         return node;
-
-
     }
 
     inputTextEditor = (props: any, field: any) => {
@@ -185,6 +162,45 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         return this.inputTextEditor(props, field);
     }
 
+    createMonthDefinition = () => {
+
+        let expandYear, ppr, lineTotal, cashFlow;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            expandYear = this.props.context.parameters.expandYear.raw;
+            ppr = this.props.context.parameters.ppr.raw;
+            lineTotal = this.props.context.parameters.lineTotal.raw;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
+        }
+        else {
+            expandYear = "FinacialYear";
+        }     
+
+        let resultData = {};
+        let cols: any[];
+        let month:any[]=[];
+        cols = [];
+        Object.values(this.props.columns).map(p => {
+            let expander: boolean = false;
+            switch (p.fieldName) {
+                case expandYear:
+                case cashFlow:
+                case ppr:
+                case lineTotal:
+{
+    break;
+}
+                default:
+                    resultData = {
+                        field: p.fieldName, header: p.name, expander: expander
+                    }
+                    cols.push(resultData);
+                    month.push(p.fieldName);
+                    break;
+            }
+        });
+         this.setState({monthDetails:month})
+    }
+
     createColDefinition = () => {
 
 
@@ -202,6 +218,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
         let resultData = {};
         let cols: any[];
+        let month:any[]=[];
         cols = [];
         Object.values(this.props.columns).map(p => {
             let expander: boolean = false;
@@ -235,10 +252,12 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
                         field: p.fieldName, header: p.name, expander: expander
                     }
                     cols.push(resultData);
+                    month.push(p.fieldName);
                     break;
             }
         });
         let datas = this.sortByKey(Object.values(cols), 'expander');
+
 
         return datas;
     }
@@ -313,30 +332,48 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
     saveGrid(): void {
         debugger;
-        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-        let gridrowKey = this.state.rowEditedKey;
-        let gridrowKeyData = this.state.rowEditedData;
 
+        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridrowKey = this.state.rowEditedKeyData;
+
+        let rowKeys: any[] = Object.values(gridrowKey);
+        let field = Object.values(this.props.columns).map(p => p.fieldName);
+
+        var uniqueKeys = Array.from(new Set(rowKeys))
+
+        let nodes = this.state.nodes;
         let context: ComponentFramework.Context<IInputs>;
         context = this.props.context;
+        let stateVariable = this ;
+        for (let i = 0; i < uniqueKeys.length; i++) {
+            debugger;
 
-        for (let i = 0; i < gridrowKey.length; i++) {
-            let rowKey = gridrowKey[i];
-            let rowkeyData = gridrowKeyData[i];       
-
-          var data= this.props.context.webAPI.updateRecord(gridEntity, rowKey, rowkeyData).then(function (result) {
-                debugger;
-                context.parameters.sampleDataSet.refresh();
-                
-            },
-                function (result) {
-                    // context.parameters.sampleDataSet.refresh();
-                    alert("Error Occured");
-                })
-                console.log(data);
-        }
-        this.setState({ isSaved: true });
-        this.forceUpdate();
+            this.setState({  loading: true}, () => {
+                setTimeout(() => {
+                    let rowKey = uniqueKeys[i];
+                    let editedNode = this.findNodeByKey(nodes, rowKey);
+                    let editedObject = this.createApiUpdateRequest(editedNode.data);
+                    var data = this.props.context.webAPI.updateRecord(gridEntity, rowKey, editedObject).then(function (result) {
+                        debugger;
+                        context.parameters.sampleDataSet.refresh();
+                        stateVariable.setState({ isSaved: true, loading: false});
+                        // const index = uniqueKeys.indexOf(rowKey);
+                        // if (index > -1) {
+                        //     uniqueKeys.splice(index, 1);
+                        //     stateVariable.setState({rowEditedKeyData:uniqueKeys})
+                        // }
+                    },
+                        function (result) {        
+                            stateVariable.setState({ isSaved: false, loading: false });
+                            // const index = uniqueKeys.indexOf(rowKey);
+                            // if (index > -1) {
+                            //     uniqueKeys.splice(index, 1);
+                            //     stateVariable.setState({rowEditedKeyData:uniqueKeys})
+                            // }
+                        })
+                }, 3000);
+              });
+    }
 
     }
 
@@ -349,24 +386,34 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             context: this.props.context,
             IsUpdated: this.state.IsUpdated
         }
+        const { loading } = this.state;
 
+        let spinnerClass;
+        if (this.state.loading) {
+            spinnerClass = "spinnerdisplayinline"
+        }
+        else {
+            spinnerClass = "spinnerdisplayNone"
+        }
         let coldef: any[] = this.createColDefinition();
-        let datanode: any[] =this.state.nodes;
+        let datanode: any[] = this.state.nodes;
         const dynamicColumns = Object.values(coldef).map((col, i) => {
             return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.expander ? undefined : this.vinEditor} style={{ width: '100px' }} headerClassName="p-col-d" />;
         });
         return (
-
             <div className="scrollbar scrollbar-primary">
                 <div className="content-section implementation monthlyGrid month">
-                
+
                     <DialogDemo {...inputData} />
                     <Button label="Save" className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
-                    <TreeTable value={datanode} rowClassName={this.rowClassName} className="monthlyGrid" paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh">
-                        {dynamicColumns}
-                    </TreeTable >
-                   
-
+                    <div>
+                        <TreeTable value={datanode} rowClassName={this.rowClassName} className="monthlyGrid" paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh">
+                            {dynamicColumns}
+                        </TreeTable >
+                        {
+                            <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" className={spinnerClass} fill="#EEEEEE" />
+                        }
+                    </div>
                 </div>
             </div>
 

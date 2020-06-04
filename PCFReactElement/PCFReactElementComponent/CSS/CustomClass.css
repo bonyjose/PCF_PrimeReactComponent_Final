@@ -63,6 +63,18 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom > td .p-treetable-t
     width: 100px;
 }
 
+.spinnerdisplayinline{
+    position: absolute;
+    width: 50px;
+    height: 29px;
+    float: none;
+    margin-top: -134px;
+    display: inline-grid;
+}
+.spinnerdisplayNone{
+    position: absolute;
+    display: none;
+}
 .monthlyGrid .addnewBtn {
     margin-top: -40px  !important;
 }
