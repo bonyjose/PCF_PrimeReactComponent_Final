@@ -112,7 +112,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
                 else if (isNaN(editNode[Column])) {
                     var cur = this.convert(editNode[Column]);
                     if(!isNull(cur)){
-                        entity[Column] = editNode[Column];
+                        entity[Column] = cur;
                         total = total + (cur);
                     }                   
                 }
@@ -120,13 +120,14 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
                     total = total + 0;
                 }
                 else {
-                    entity[Column] = editNode[Column];
+                    var key = this.convert(editNode[Column]);
+                    entity[Column] =key;
                     total = total + (parseFloat(editNode[Column]));
                 }
 
             }
         }
-        entity[lineTotal] = total.toString()
+        entity[lineTotal] = total;
         return entity;
     }
     // Function to convert 
