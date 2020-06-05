@@ -43,16 +43,18 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         var jsonArr = [{}];
 
         for (var i = 0; i < this.props.columns.length; i++) {
-            jsonArr[this.props.columns[i].field] = "5";
+            jsonArr[0][this.props.columns[i].field] = "";
         
         }
         console.log(jsonArr);
         this.setState({popupColDef:jsonArr});
     }
 
-    inputTextEditor(props: any, field: any) {
-    debugger;
-        return <InputText type="text" value={props.value[field]} onChange={(
+    inputTextEditor = (props: any, field: any) => {
+        debugger;
+        return <InputText type="text" value={props.value[0][field]}
+
+        onChange={(
             ev: React.ChangeEvent<HTMLInputElement>): void => {
             this.onEditorValueChange
                 (props, ev.target.value.toString())
@@ -82,7 +84,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         let newNodes = this.state.popupColDef;
         // let editedNode = this.findNodeByKey(newNodes, props.node.key);
         let editedNode = newNodes[0];
-       newNodes[props.field] = event;
+       newNodes[0][props.field] = event;
         this.setState({
             popupColDef: newNodes
         });
@@ -128,7 +130,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
       }
     vinEditor(props: any) {
 
-        let field = props.rowData[props.field]
+        let field = props.field
         return this.inputTextEditor(props, field);
     }
 
