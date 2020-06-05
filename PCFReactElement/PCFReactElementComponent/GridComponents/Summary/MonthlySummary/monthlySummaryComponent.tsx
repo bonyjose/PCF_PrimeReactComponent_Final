@@ -8,6 +8,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import axios from 'axios';
+import { isNull } from 'util';
 type AppMonthProps = {
     data: any[];
     columns: any[];
@@ -102,7 +103,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             lineTotal = this.props.context.parameters.lineTotal.raw;
         }
         for (let Column in editNode) {
-            entity[Column] = editNode[Column];
+           
             if (months.includes(Column)) {
 
                 if (isNaN(entity[lineTotal])) {
@@ -110,18 +111,22 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
                 }
                 else if (isNaN(editNode[Column])) {
                     var cur = this.convert(editNode[Column]);
-                    total = total + (cur);
+                    if(!isNull(cur)){
+                        entity[Column] = editNode[Column];
+                        total = total + (cur);
+                    }                   
                 }
                 else if (this.isEmpty(editNode[Column])) {
                     total = total + 0;
                 }
                 else {
+                    entity[Column] = editNode[Column];
                     total = total + (parseFloat(editNode[Column]));
                 }
 
             }
         }
-        entity[lineTotal] = total;
+        entity[lineTotal] = total.toString()
         return entity;
     }
     // Function to convert 
