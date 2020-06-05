@@ -287,6 +287,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         let ChildResultArray: any[];
         let ResultArray: any[];
         let sampleArray: any[];
+        debugger;
         ResultArray = [], sampleArray = [];
         for (let i = 0; i < uniqueItems.length; i++) {
             let data = Object.values(product);
@@ -327,6 +328,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             }
             ResultArray.push(resultData);
         }
+        debugger;
         return JSON.parse(JSON.stringify(ResultArray));
 
     }
@@ -379,9 +381,10 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     render() {
         debugger;
+        let coldef: any[] = this.createColDefinition();
         let inputData = {
 
-            columns: this.state.coldef,
+            columns: coldef,
 
             context: this.props.context,
             IsUpdated: this.state.IsUpdated
@@ -395,7 +398,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         else {
             spinnerClass = "spinnerdisplayNone"
         }
-        let coldef: any[] = this.createColDefinition();
+        
         let datanode: any[] = this.state.nodes;
         const dynamicColumns = Object.values(coldef).map((col, i) => {
             return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.expander ? undefined : this.vinEditor} style={{ width: '100px' }} headerClassName="p-col-d" />;

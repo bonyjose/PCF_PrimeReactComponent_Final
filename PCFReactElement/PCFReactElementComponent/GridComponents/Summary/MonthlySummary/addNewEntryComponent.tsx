@@ -43,7 +43,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         var jsonArr = [{}];
 
         for (var i = 0; i < this.props.columns.length; i++) {
-            jsonArr[this.props.columns[i].field] = "5";
+            jsonArr[0][this.props.columns[i].field] = "";
         
         }
         console.log(jsonArr);

@@ -76,7 +76,8 @@ export class DialogDemo extends Component<AppProps, AppState>{
         let updatedDatas: any[] = this.state.updatedData;
         
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-            let editedObject = this.createApiUpdateRequest(updatedDatas[0]);
+            let editedObject = this.createApiUpdateRequest(updatedDatas);
+
             console.log(editedObject);
             try {
                 this.props.context.webAPI.createRecord(gridEntity,  editedObject).then(this.successCallback, this.errorCallback);
