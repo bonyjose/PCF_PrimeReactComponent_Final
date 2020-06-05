@@ -43,7 +43,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             gridResponsiveWidth: 0,
             rowEditedKey: [],
             rowEditedKeyData: [],
-            monthDetails:[],
+            monthDetails: [],
             loading: false
         };
 
@@ -66,35 +66,35 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
     componentDidMount() {
         let jsonData = this.createJsonTreestructure();
-        this.setState({ nodes: jsonData });       
+        this.setState({ nodes: jsonData });
     }
 
     onEditorValueChange(props: any, event) {
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-         let nodes = this.state.nodes;
+        let nodes = this.state.nodes;
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
         editedNode.data[props.field] = event.target.value;
-        var rowEdited :any[];
-        rowEdited=this.state.rowEditedKeyData;
-        rowEdited.push(props.node.key);        
-        let EditedKeyArray:any[];
+        var rowEdited: any[];
+        rowEdited = this.state.rowEditedKeyData;
+        rowEdited.push(props.node.key);
+        let EditedKeyArray: any[];
         this.setState({
             nodes: newNodes,
             rowEditedKey: props.node.key as any,
-            rowEditedKeyData:rowEdited
-        });      
-      
-    } 
+            rowEditedKeyData: rowEdited
+        });
+
+    }
 
     createApiUpdateRequest(editNode: any) {
         debugger;
-        let months:any[]=[];
-        if(this.state.monthDetails.length==0){
+        let months: any[] = [];
+        if (this.state.monthDetails.length == 0) {
             this.createMonthDefinition();//Define Months
-            
+
         }
-        months =this.state.monthDetails;
+        months = this.state.monthDetails;
         var entity = {};
         let total=0;
         let lineTotal;
@@ -102,25 +102,44 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             lineTotal = this.props.context.parameters.lineTotal.raw;
         }
         for (let Column in editNode) {
-                entity[Column] = editNode[Column];
-                if (months.includes(Column)) {
-                    if( isNaN(entity[lineTotal])){
-                        entity[lineTotal]= total= 0;   
-                    }
-                    if(isNaN(editNode[Column])||this.isEmpty(editNode[Column])){
-                        total =  total+0;  
-                         
-                    }
-                    else{
-                        total=total+(parseInt(editNode[Column]));                      
-                    }
-                  
+            entity[Column] = editNode[Column];
+            if (months.includes(Column)) {
+
+                if (isNaN(entity[lineTotal])) {
+                    entity[lineTotal] = 0;
                 }
+                else if (isNaN(editNode[Column])) {
+                    var cur = this.convert(editNode[Column]);
+                    total = total + (cur);
+                }
+                else if (this.isEmpty(editNode[Column])) {
+                    total = total + 0;
+                }
+                else {
+                    total = total + (parseFloat(editNode[Column]));
+                }
+
+            }
         }
-        entity[lineTotal]=total;
+        entity[lineTotal] = total;
         return entity;
     }
-     isEmpty=(str) =>{
+    // Function to convert 
+    convert = (currency) => {
+        var k, temp;
+        for (var i = 0; i < currency.length; i++) {
+
+            k = currency.charCodeAt(i);
+            if (k > 47 && k < 58) {
+                temp = currency.substring(i);
+                break;
+            }
+        }
+        temp = temp.replace(/, /, '');
+        return parseFloat(temp);
+    }
+
+    isEmpty = (str) => {
         return (!str || 0 === str.length);
     }
     successCallback() {
@@ -173,11 +192,11 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
         else {
             expandYear = "FinacialYear";
-        }     
+        }
 
         let resultData = {};
         let cols: any[];
-        let month:any[]=[];
+        let month: any[] = [];
         cols = [];
         Object.values(this.props.columns).map(p => {
             let expander: boolean = false;
@@ -186,9 +205,9 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
                 case cashFlow:
                 case ppr:
                 case lineTotal:
-{
-    break;
-}
+                    {
+                        break;
+                    }
                 default:
                     resultData = {
                         field: p.fieldName, header: p.name, expander: expander
@@ -198,7 +217,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
                     break;
             }
         });
-         this.setState({monthDetails:month})
+        this.setState({ monthDetails: month })
     }
 
     createColDefinition = () => {
@@ -218,7 +237,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
         let resultData = {};
         let cols: any[];
-        let month:any[]=[];
+        let month: any[] = [];
         cols = [];
         Object.values(this.props.columns).map(p => {
             let expander: boolean = false;
@@ -344,26 +363,26 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         let nodes = this.state.nodes;
         let context: ComponentFramework.Context<IInputs>;
         context = this.props.context;
-        let stateVariable = this ;
+        let stateVariable = this;
         for (let i = 0; i < uniqueKeys.length; i++) {
             debugger;
 
-            this.setState({  loading: true}, () => {
+            this.setState({ loading: true }, () => {
                 setTimeout(() => {
                     let rowKey = uniqueKeys[i];
                     let editedNode = this.findNodeByKey(nodes, rowKey);
                     let editedObject = this.createApiUpdateRequest(editedNode.data);
-                    var data = this.props.context.webAPI.updateRecord(gridEntity, rowKey, editedObject).then(function (result) {
+                    var data = this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(function (result) {
                         debugger;
                         context.parameters.sampleDataSet.refresh();
-                        stateVariable.setState({ isSaved: true, loading: false});
+                        stateVariable.setState({ isSaved: true, loading: false });
                         // const index = uniqueKeys.indexOf(rowKey);
                         // if (index > -1) {
                         //     uniqueKeys.splice(index, 1);
                         //     stateVariable.setState({rowEditedKeyData:uniqueKeys})
                         // }
                     },
-                        function (result) {        
+                        function (result) {
                             stateVariable.setState({ isSaved: false, loading: false });
                             // const index = uniqueKeys.indexOf(rowKey);
                             // if (index > -1) {
@@ -372,8 +391,8 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
                             // }
                         })
                 }, 3000);
-              });
-    }
+            });
+        }
 
     }
 
