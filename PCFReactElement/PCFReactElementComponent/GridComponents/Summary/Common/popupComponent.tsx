@@ -70,7 +70,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
             let editedObject = this.createApiUpdateRequest(updatedDatas[0]);
-
+            debugger;
             console.log(editedObject);
             try {
                 this.props.context.webAPI.createRecord(gridEntity,  editedObject).then(this.successCallback, this.errorCallback);
@@ -86,9 +86,15 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
     createApiUpdateRequest(editNode: any) {
         debugger;
-        let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        // let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        let months = this.props.monthDetails;
         var entity = {};
         entity["m360_linetotal"] = 0;
+
+        // @ts-ignore 
+        let ContextId = this.props.context.page.entityId;
+        // @ts-ignore 
+
         
         debugger;
         for (let Column in editNode) {
@@ -97,14 +103,23 @@ export class DialogDemo extends Component<AppProps, AppState>{
               entity["m360_linetotal"] += Number(editNode[Column]);
               entity[Column] = Number(editNode[Column]);
             }
-            else if(Column == "PPR")
+            else if(Column == "m360_ppr")
             {
-                entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
+                 entity["m360_PPR"+"@odata.bind"] = "/"+"m360_pprs"+"(" + ContextId+ ")";
+                // entity[primaryLookupschemaName+"@odata.bind"] = "/"+entitySetName+"(" + ContextId+ ")";
+                // entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
+            }
+            else if(Column == "m360_cashflowitemname")
+            {
+                entity["m360_cashflowitemname"] = editNode[Column];
+            }
+            else if (Column =="m360_fiscalyear")
+            {
+                entity["m360_fiscalyear"] = "555080002";
             }
             else{
                 // let stri
-                entity[Column] = editNode[Column];
-                
+                entity[Column] = Number(editNode[Column]);
             }
         }
         entity["m360_linetotal"] = Number(entity["m360_linetotal"]);
