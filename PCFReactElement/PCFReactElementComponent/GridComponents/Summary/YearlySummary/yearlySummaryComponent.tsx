@@ -16,7 +16,8 @@ type monthState = {
     nodes: [],
     sampledata: any[],
     IsUpdated: boolean,
-    coldef: any[]
+    coldef: any[],
+    monthDetails: any[],
 
 }
 export class YearlyComponent extends Component<AppMonthProps, monthState>{
@@ -27,7 +28,8 @@ export class YearlyComponent extends Component<AppMonthProps, monthState>{
             nodes: [],
             sampledata: this.props.data,
             IsUpdated: this.props.IsUpdated,
-            coldef: []
+            coldef: [],
+            monthDetails: [],
         };
 
     }
@@ -48,6 +50,45 @@ export class YearlyComponent extends Component<AppMonthProps, monthState>{
             let newNodes = JSON.parse(data);
             this.setState({ nodes: newNodes })
         }
+    }
+
+    createMonthDefinition = () => {
+
+        let expandYear, ppr, lineTotal, cashFlow;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            expandYear = this.props.context.parameters.expandYear.raw;
+            ppr = this.props.context.parameters.ppr.raw;
+            lineTotal = this.props.context.parameters.lineTotal.raw;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
+        }
+        else {
+            expandYear = "FinacialYear";
+        }
+  
+        let resultData = {};
+        let cols: any[];
+        let month: any[] = [];
+        cols = [];
+        Object.values(this.props.columns).map(p => {
+            let expander: boolean = false;
+            switch (p.fieldName) {
+                case expandYear:
+                case cashFlow:
+                case ppr:
+                case lineTotal:
+                    {
+                        break;
+                    }
+                default:
+                    resultData = {
+                        field: p.fieldName, header: p.name, expander: expander
+                    }
+                    cols.push(resultData);
+                    month.push(p.fieldName);
+                    break;
+            }
+        });
+        this.setState({ monthDetails: month })
     }
 
     onEditorValueChange = (props: any, event) => {
@@ -76,6 +117,13 @@ export class YearlyComponent extends Component<AppMonthProps, monthState>{
     createApiUpdateRequest(editNode : any,editedField : string)
     {
     debugger;
+
+    let months: any[] = [];
+    if (this.state.monthDetails.length == 0) {
+        this.createMonthDefinition();//Define Months
+  
+    }
+    months = this.state.monthDetails;
     var entity = {};
     for(let Column in editNode)
     {
@@ -253,7 +301,8 @@ errorCallback()
         let inputData = {
             columns: this.state.coldef,
             context: this.props.context,
-            IsUpdated: this.state.IsUpdated
+            IsUpdated: this.state.IsUpdated,
+            monthDetails :this.state.monthDetails
         }
         const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
             return <Column key={col.field} field={col.field} header={col.header} expander={col.expander}   editor={col.expander ? undefined : this.vinEditor}  style={{width:'100px'}} headerClassName="p-col-d" />;

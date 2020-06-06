@@ -10,6 +10,7 @@ type AppProps = {
     context: ComponentFramework.Context<IInputs>;
     IsUpdated:boolean;
     columns: any[];
+    monthDetails : any
     // data :any;
 }
 
@@ -28,14 +29,6 @@ interface inputData{
     // data:any[]
 
 }
-// const data={
-//     data: [
-//         {
-//             "CFNAME": "", "PPR": "", "January": " ",
-//             "February": "", "March": "", "April": " ","May" : "", "June": " ","July": "", "August": "", "September": " ", "October": " ",
-//             "November": " ","December": " ","LineTotal": " "        
-//         }]
-//     };
 export class DialogDemo extends Component<AppProps, AppState>{
 
     constructor(props: AppProps) {
@@ -109,6 +102,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                 entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
             }
             else{
+                // let stri
                 entity[Column] = editNode[Column];
                 
             }

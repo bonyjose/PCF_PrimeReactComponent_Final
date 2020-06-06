@@ -412,7 +412,8 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             columns: coldef,
 
             context: this.props.context,
-            IsUpdated: this.state.IsUpdated
+            IsUpdated: this.state.IsUpdated,
+            monthDetails :this.state.monthDetails
         }
         const { loading } = this.state;
 

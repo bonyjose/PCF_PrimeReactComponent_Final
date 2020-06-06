@@ -139,10 +139,34 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         return this.inputTextEditor(props, 'year');
     }
     requiredValidator(props: any) {
+        debugger;
 
         let value = props.rowData[props.field];
-        return value && value.length > 0;
+        let isValid =   value.length >0;
+        if(isValid)
+            {
+                return value && value.length > 0;
+            }
+            else{
+                alert("Cells cannot be empty");
+                return value;
+            }
+       
     }
+
+    // requiredValidator(props) {
+    //     let isValid = this.state.updatedData && this.state.updatedData.length > 0;
+    //     if (isValid){
+    //       //update data
+    //       let updatedDataSet = [...this.state.dataSet];
+    //       updatedDataSet[props.rowIndex][props.field] = this.state.updatedData;
+    //       this.setState({dataSet: updatedDataSet, updatedData: ""});
+    //     } else {
+    //       //show error message
+    //       alert("Validation failed.")
+    //     }
+    //     return isValid;
+    //   }
 
     render() {
         debugger;
@@ -151,7 +175,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         var colData = this.state.colDef;
         console.log(colDefition);
          colDefition = colDefition.map((col,i) => {
-            return <Column key={col.field} field={col.field}  editor={this.vinEditor} header={col.header} />;
+            return <Column key={col.field} field={col.field}  editor={this.vinEditor} header={col.header}  editorValidator={this.requiredValidator}  />;
         });
 
      let emptyCell = Array.from("1");

@@ -19,7 +19,8 @@ interface State {
   nodes: [],
   sampledata: any,
   IsUpdated:boolean,
-  coldef: any[]
+  coldef: any[],
+  monthDetails: any[],
 }
  export class GridQuarterlyComponent extends React.Component<Props,State> {
     
@@ -30,7 +31,8 @@ interface State {
         sampledata: this.props,
         SelectedLayout: "Quarterly",
         IsUpdated:this.props.IsUpdated,
-        coldef: []
+        coldef: [],
+        monthDetails: [],
       };
       
     }
@@ -102,6 +104,45 @@ interface State {
         
       }
     }
+
+    createMonthDefinition = () => {
+
+      let expandYear, ppr, lineTotal, cashFlow;
+      if (typeof (this.props.context.parameters) !== 'undefined') {
+          expandYear = this.props.context.parameters.expandYear.raw;
+          ppr = this.props.context.parameters.ppr.raw;
+          lineTotal = this.props.context.parameters.lineTotal.raw;
+          cashFlow = this.props.context.parameters.cashFlow.raw;
+      }
+      else {
+          expandYear = "FinacialYear";
+      }
+
+      let resultData = {};
+      let cols: any[];
+      let month: any[] = [];
+      cols = [];
+      Object.values(this.props.columns).map(p => {
+          let expander: boolean = false;
+          switch (p.fieldName) {
+              case expandYear:
+              case cashFlow:
+              case ppr:
+              case lineTotal:
+                  {
+                      break;
+                  }
+              default:
+                  resultData = {
+                      field: p.fieldName, header: p.name, expander: expander
+                  }
+                  cols.push(resultData);
+                  month.push(p.fieldName);
+                  break;
+          }
+      });
+      this.setState({ monthDetails: month })
+  }
 
  
   createJsonTreestructure = (QuarterData : any[]) => {
@@ -296,9 +337,15 @@ onBlur = (props: any, event) => {
 createApiUpdateRequest(editNode : any,editedField : string)
 {
   debugger;
+  let months: any[] = [];
+  if (this.state.monthDetails.length == 0) {
+      this.createMonthDefinition();//Define Months
+
+  }
+  months = this.state.monthDetails;
   var entity = {};
   entity["m360_linetotal"] = 0;
-  let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  // let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   let Q1 = ["January","February","March"];
   let Q2 = ["April","May","June"];
   let Q3 = ["July","August","September"];
@@ -405,7 +452,8 @@ vinEditor = (props: any) => {
       let inputData = {
         columns: this.state.coldef,
         context: this.props.context,
-        IsUpdated: this.state.IsUpdated
+        IsUpdated: this.state.IsUpdated,
+        monthDetails :this.state.monthDetails
     }
 
       const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
