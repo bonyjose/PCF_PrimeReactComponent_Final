@@ -381,23 +381,17 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
                     let editedNode = this.findNodeByKey(nodes, rowKey);
                     let editedObject = this.createApiUpdateRequest(editedNode.data);
                     var data = this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(function (result) {
-                        debugger;
-                        context.parameters.sampleDataSet.refresh();
-                        stateVariable.setState({ isSaved: true, loading: false });
-                        // const index = uniqueKeys.indexOf(rowKey);
-                        // if (index > -1) {
-                        //     uniqueKeys.splice(index, 1);
-                        //     stateVariable.setState({rowEditedKeyData:uniqueKeys})
-                        // }
+
+                      
+                        if(i===uniqueKeys.length-1){
+                            debugger;
+                            context.parameters.sampleDataSet.refresh();
+                            stateVariable.setState({ isSaved: true, loading: false ,rowEditedKeyData:[]});
+                        }
                     },
                         function (result) {
                             stateVariable.setState({ isSaved: false, loading: false });
-                            // const index = uniqueKeys.indexOf(rowKey);
-                            // if (index > -1) {
-                            //     uniqueKeys.splice(index, 1);
-                            //     stateVariable.setState({rowEditedKeyData:uniqueKeys})
-                            // }
-                        })
+                           })
                 }, 3000);
             });
         }
