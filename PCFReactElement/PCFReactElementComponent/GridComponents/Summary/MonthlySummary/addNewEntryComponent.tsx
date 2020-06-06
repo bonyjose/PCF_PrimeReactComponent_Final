@@ -175,7 +175,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         var colData = this.state.colDef;
         console.log(colDefition);
          colDefition = colDefition.map((col,i) => {
-            return <Column key={col.field} field={col.field}  editor={this.vinEditor} header={col.header}  editorValidator={this.requiredValidator}  />;
+            return <Column key={col.field} field={col.field}  editor={this.vinEditor} header={col.header}   />;  // editorValidator={this.requiredValidator}
         });
 
      let emptyCell = Array.from("1");
