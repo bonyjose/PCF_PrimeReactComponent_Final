@@ -52,12 +52,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
 
     componentDidUpdate(prevProps, prevState) {
-debugger;
-        console.log("prevState:" +prevState.isSaved);
-        console.log("prevState:" +prevState.IsUpdated);
-        console.log("CurrentState:" +this.state.isSaved);
-        console.log("PreviousStateProps:" +prevProps.IsUpdated);
-        console.log("CurrentStateProps:" + this.state.IsUpdated);
+
         if(this.props.IsUpdated!=this.state.IsUpdated){
             let jsonData = this.createJsonTreestructure();
             this.setState({ nodes: jsonData, IsUpdated: this.props.IsUpdated });
@@ -255,31 +250,31 @@ debugger;
             switch (p.fieldName) {
                 case expandYear:
                     resultData = {
-                        field: p.fieldName, header: "Year", expander: true
+                        field: p.fieldName, header: "Year", expander: true,isEditable:false
                     }
                     cols.push(resultData);
                     break;
                 case cashFlow:
                     resultData = {
-                        field: p.fieldName, header: "Cash Flow", expander: expander
+                        field: p.fieldName, header: "Cash Flow", expander: expander,isEditable:false
                     }
                     cols.push(resultData);
                     break;
                 case ppr:
                     resultData = {
-                        field: p.fieldName, header: "PPR", expander: expander
+                        field: p.fieldName, header: "PPR", expander: expander,isEditable:false
                     }
                     cols.push(resultData);
                     break;
                 case lineTotal:
                     resultData = {
-                        field: p.fieldName, header: "Total", expander: expander
+                        field: p.fieldName, header: "Total", expander: expander,isEditable:false
                     }
                     cols.push(resultData);
                     break;
                 default:
                     resultData = {
-                        field: p.fieldName, header: p.name, expander: expander
+                        field: p.fieldName, header: p.name, expander: expander,isEditable:true
                     }
                     cols.push(resultData);
                     month.push(p.fieldName);
@@ -419,7 +414,7 @@ debugger;
         
         let datanode: any[] = this.state.nodes;
         const dynamicColumns = Object.values(coldef).map((col, i) => {
-            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.expander ? undefined : this.vinEditor} style={{ width: '100px' }} headerClassName="p-col-d" />;
+            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.isEditable ? this.vinEditor :undefined} style={{ width: '100px' }} headerClassName="p-col-d" />;
         });
         return (
             <div className="scrollbar scrollbar-primary">
