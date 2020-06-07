@@ -52,20 +52,26 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
 
     componentDidUpdate(prevProps, prevState) {
-
-        if ((this.props.IsUpdated) && (!this.state.IsUpdated)) {
+debugger;
+        console.log("prevState:" +prevState.isSaved);
+        console.log("prevState:" +prevState.IsUpdated);
+        console.log("CurrentState:" +this.state.isSaved);
+        console.log("PreviousStateProps:" +prevProps.IsUpdated);
+        console.log("CurrentStateProps:" + this.state.IsUpdated);
+        if(this.props.IsUpdated!=this.state.IsUpdated){
             let jsonData = this.createJsonTreestructure();
-            this.setState({ nodes: jsonData });
-            this.setState({ IsUpdated: this.props.IsUpdated });
+            this.setState({ nodes: jsonData, IsUpdated: this.props.IsUpdated });
         }
-        if (this.state.isSaved) {
+        if(prevProps.data!=this.props.data&&(this.state.isSaved))
+         {
             let jsonData = this.createJsonTreestructure();
-            this.setState({ nodes: jsonData, loading: false });
-            this.setState({ isSaved: false });
+            this.setState({ nodes: jsonData, loading: false, isSaved: false });
         }
-
     }
     componentDidMount() {
+        if(this.state.isSaved){
+            this.forceUpdate();
+        }
         let jsonData = this.createJsonTreestructure();
         this.setState({ nodes: jsonData });
     }
@@ -89,7 +95,6 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     createApiUpdateRequest(editNode: any) {
-        debugger;
         let months: any[] = [];
         if (this.state.monthDetails.length == 0) {
             this.createMonthDefinition();//Define Months
@@ -294,7 +299,6 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         });
     }
     createJsonTreestructure = () => {
-        debugger;
         let expandYear;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
@@ -312,7 +316,6 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         let ChildResultArray: any[];
         let ResultArray: any[];
         let sampleArray: any[];
-        debugger;
         ResultArray = [], sampleArray = [];
         for (let i = 0; i < uniqueItems.length; i++) {
             let data = Object.values(product);
@@ -353,13 +356,10 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
             }
             ResultArray.push(resultData);
         }
-        debugger;
         return JSON.parse(JSON.stringify(ResultArray));
 
     }
     saveGrid(): void {
-        debugger;
-
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let gridrowKey = this.state.rowEditedKeyData;
 
@@ -373,7 +373,6 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         context = this.props.context;
         let stateVariable = this;
         for (let i = 0; i < uniqueKeys.length; i++) {
-            debugger;
 
             this.setState({ loading: true }, () => {
                 setTimeout(() => {
@@ -384,22 +383,21 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
                       
                         if(i===uniqueKeys.length-1){
-                            debugger;
                             context.parameters.sampleDataSet.refresh();
                             stateVariable.setState({ isSaved: true, loading: false ,rowEditedKeyData:[]});
-                        }
+                           }
                     },
                         function (result) {
                             stateVariable.setState({ isSaved: false, loading: false });
                            })
-                }, 3000);
+                },3000);
             });
         }
 
     }
 
     render() {
-        debugger;
+
         let coldef: any[] = this.createColDefinition();
         let inputData = {
 
