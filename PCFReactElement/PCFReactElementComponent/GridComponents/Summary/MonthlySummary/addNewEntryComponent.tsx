@@ -190,7 +190,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                     break;
                 default:
                     resultData = {
-                        field: p.field, header: p.field, expander: expander,isEditable:true
+                        field: p.field, header: p.header, expander: expander,isEditable:true
                     }
                     cols.push(resultData);
                     month.push(p.fieldName);
