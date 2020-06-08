@@ -90,6 +90,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     createApiUpdateRequest(editNode: any) {
+        debugger;
         let months: any[] = [];
         if (this.state.monthDetails.length == 0) {
             this.createMonthDefinition();//Define Months
@@ -188,7 +189,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     createMonthDefinition = () => {
-
+        debugger;
         let expandYear, ppr, lineTotal, cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
@@ -223,7 +224,9 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
                     break;
             }
         });
-        this.setState({ monthDetails: month })
+        debugger;
+        this.setState({ monthDetails: month });
+        console.log(this.state.monthDetails);
     }
 
     createColDefinition = () => {

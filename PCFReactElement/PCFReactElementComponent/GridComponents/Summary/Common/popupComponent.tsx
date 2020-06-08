@@ -23,6 +23,7 @@ type AppState = {
     displayPosition: boolean;
     position: string;
     updatedData:any[];
+    monthDetails :any;
 }
 interface inputData{
     SetData():any,
@@ -42,6 +43,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             displayPosition: false,
             position: 'center',
             updatedData: [],
+            monthDetails :[]
             
         };
     }
@@ -84,12 +86,62 @@ export class DialogDemo extends Component<AppProps, AppState>{
             debugger;
     }
 
+    createMonthDefinition = () => {
+        debugger;
+        let expandYear, ppr, lineTotal, cashFlow;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            expandYear = this.props.context.parameters.expandYear.raw;
+            ppr = this.props.context.parameters.ppr.raw;
+            lineTotal = this.props.context.parameters.lineTotal.raw;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
+        }
+        else {
+            expandYear = "FinacialYear";
+        }
+
+        let resultData = {};
+        let cols: any[];
+        let month: any[] = [];
+        cols = [];
+        Object.values(this.props.columns).map(p => {
+            let expander: boolean = false;
+            switch (p.field) {
+                case expandYear:
+                case cashFlow:
+                case ppr:
+                case lineTotal:
+                    {
+                        break;
+                    }
+                default:
+                    resultData = {
+                        field: p.field, header: p.name, expander: expander
+                    }
+                    cols.push(resultData);
+                    month.push(p.field);
+                    break;
+            }
+        });
+        debugger;
+        this.setState({ monthDetails: month });
+        console.log(this.state.monthDetails);
+    }
+
     createApiUpdateRequest(editNode: any) {
         debugger;
         // let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-        let months = this.props.monthDetails;
+       
+        let months = this.state.monthDetails;
+
+        let expandYear, ppr, lineTotal, cashFlow;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            expandYear = this.props.context.parameters.expandYear.raw;
+            ppr = this.props.context.parameters.ppr.raw;
+            lineTotal = this.props.context.parameters.lineTotal.raw;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
+        }
         var entity = {};
-        entity["m360_linetotal"] = 0;
+        entity[lineTotal] = 0;
 
         // @ts-ignore 
         let ContextId = this.props.context.page.entityId;
@@ -100,18 +152,18 @@ export class DialogDemo extends Component<AppProps, AppState>{
         for (let Column in editNode) {
             if(months.includes(Column))
             {
-              entity["m360_linetotal"] += Number(editNode[Column]);
+              entity[lineTotal] += Number(editNode[Column]);
               entity[Column] = Number(editNode[Column]);
             }
-            else if(Column == "m360_ppr")
+            else if(Column == ppr)
             {
-                 entity["m360_PPR"+"@odata.bind"] = "/"+"m360_pprs"+"(" + ContextId+ ")";
+                 entity[ppr+"@odata.bind"] = "/"+"m360_pprs"+"(" + ContextId+ ")";
                 // entity[primaryLookupschemaName+"@odata.bind"] = "/"+entitySetName+"(" + ContextId+ ")";
                 // entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
             }
-            else if(Column == "m360_cashflowitemname")
+            else if(Column == cashFlow)
             {
-                entity["m360_cashflowitemname"] = editNode[Column];
+                entity[cashFlow] = editNode[Column];
             }
             else if (Column =="m360_fiscalyear")
             {
@@ -122,7 +174,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                 entity[Column] = Number(editNode[Column]);
             }
         }
-        entity["m360_linetotal"] = Number(entity["m360_linetotal"]);
+        entity[lineTotal] = Number(entity[lineTotal]);
         return entity;
     }
 
@@ -156,6 +208,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         let inputData = {
             columns: this.props.columns,
             context: this.props.context,
+            monthDetails : this.props.monthDetails
             // data :this.props.data
         }
         return (

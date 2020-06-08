@@ -11,13 +11,15 @@ type AppProps = {
     columns: any[];
     context: ComponentFramework.Context<IInputs>;
     setData :any;
+    monthDetails : any
     // data :any
 }
 
 type AppState = {
     colDef: any[];
     rowEditedData :[];
-    popupColDef : any[]
+    popupColDef : any[];
+    monthDetails :any;
 }
 
 export class DataTableAddNew extends Component<AppProps, AppState> {
@@ -28,7 +30,8 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         this.state = {
             colDef: [],
             rowEditedData :[],
-            popupColDef : []
+            popupColDef : [],
+            monthDetails :[]
         };
 
 
@@ -39,6 +42,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 
     componentDidMount() {
         debugger;
+        this.createMonthDefinition();
         this.setState({colDef:this.props.columns});
         var jsonArr = [{}];
 
@@ -66,9 +70,27 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 
         let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let newNodes = this.state.popupColDef;
+        let expandYear, ppr, lineTotal, cashFlow;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            expandYear = this.props.context.parameters.expandYear.raw;
+            ppr = this.props.context.parameters.ppr.raw;
+            lineTotal = this.props.context.parameters.lineTotal.raw;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
+        }
         // let editedNode = this.findNodeByKey(newNodes, props.node.key);
         let editedNode = newNodes[0];
-       newNodes[0][props.field] = event;
+        newNodes[0][props.field] = event;
+       let months = this.state.monthDetails;
+       let Total = 0;
+       for (let Column in newNodes[0]) {
+           
+        if (months.includes(Column)) {
+
+            Total += Number(newNodes[0][Column]);
+            }
+        }
+        newNodes[0][lineTotal]  = Total;
+
         this.setState({
             popupColDef: newNodes
         });
@@ -79,6 +101,46 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         this.sendData(childproduct);
     }
 
+    createMonthDefinition = () => {
+        debugger;
+        let expandYear, ppr, lineTotal, cashFlow;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            expandYear = this.props.context.parameters.expandYear.raw;
+            ppr = this.props.context.parameters.ppr.raw;
+            lineTotal = this.props.context.parameters.lineTotal.raw;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
+        }
+        else {
+            expandYear = "FinacialYear";
+        }
+
+        let resultData = {};
+        let cols: any[];
+        let month: any[] = [];
+        cols = [];
+        Object.values(this.props.columns).map(p => {
+            let expander: boolean = false;
+            switch (p.field) {
+                case expandYear:
+                case cashFlow:
+                case ppr:
+                case lineTotal:
+                    {
+                        break;
+                    }
+                default:
+                    resultData = {
+                        field: p.field, header: p.name, expander: expander
+                    }
+                    cols.push(resultData);
+                    month.push(p.field);
+                    break;
+            }
+        });
+        debugger;
+        this.setState({ monthDetails: month });
+        console.log(this.state.monthDetails);
+    }
     
     createColDefinition = () => {
 
@@ -97,12 +159,23 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 
         let resultData = {};
         let cols: any[];
-        let month: any[] = [];
+        let month: any[] = this.props.monthDetails;
         cols = [];
         Object.values(this.state.colDef).map(p => {
             let expander: boolean = false;
             switch (p.field) {
-                
+                case expandYear:
+                    resultData = {
+                        field: p.field, header: "Year", expander: true,isEditable:true
+                    }
+                    cols.push(resultData);
+                    break;
+                case cashFlow:
+                    resultData = {
+                        field: p.field, header: "Cash Flow", expander: expander,isEditable:true
+                    }
+                    cols.push(resultData);
+                    break;
                 case ppr:
                     resultData = {
                         field: p.field, header: "PPR", expander: expander,isEditable:false
@@ -186,6 +259,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     render() {
         debugger;
         var colDefition = this.createColDefinition();
+        
 
         var colData = this.state.colDef;
         console.log(colDefition);
