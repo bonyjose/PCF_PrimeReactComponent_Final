@@ -107,6 +107,7 @@ export class YearlyComponent extends Component<AppMonthProps, monthState>{
          if (!isNull(lineTotalData)) {
             var cur = this.convert(lineTotalData);
             if(!isNull(cur)){
+                entity[lineTotal] = cur;
                 totalForEach=cur/12;
             }                   
         }
@@ -116,7 +117,6 @@ export class YearlyComponent extends Component<AppMonthProps, monthState>{
                 entity[Column] = totalForEach;
             }
         }
-        entity[lineTotal] = lineTotalData;
         return entity;
     }
     // Function to convert 
