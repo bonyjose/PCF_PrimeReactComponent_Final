@@ -283,7 +283,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         });
         let datas = this.sortByKey(Object.values(cols), 'expander');
 
-
+        debugger;
         return datas;
     }
 

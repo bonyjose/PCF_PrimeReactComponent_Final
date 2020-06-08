@@ -166,9 +166,9 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     <Button label="AddNew" className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
                     
 
-                    <Dialog header="Add New Record" visible={this.state.displayBasic2} style={{ width: '90vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
+                    <Dialog position="top" header="Add New Record" visible={this.state.displayBasic2} style={{ width: '90vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
                         <DataTableAddNew setData={this.setData}  {...inputData}  />
-                        <label style={{float:"left",color:"#ab9999"}} >CFName*: Cash Flow Item Name</label>
+                        {/* <label style={{float:"left",color:"#ab9999"}} >CFName*: Cash Flow Item Name</label> */}
                     </Dialog>
 
                 </div>

@@ -64,22 +64,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     onEditorValueChange(props: any, event) {
         debugger;
 
-        // let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-        // let newNodes = JSON.parse(JSON.stringify(this.state.colDef));
-
-        // var entity = {};
-        // entity[props["header"]] = event;
-        // var rowEdited = Array();
-        // rowEdited = entity as any;
-        // // rowEdited.push(props.node.nodeKey);
-
-        // var newStateArray = Array();
-        // newStateArray = this.state.rowEditedData;
-        // newStateArray.push(rowEdited);
-        // console.log(newStateArray);
-
-        // this.setState({ rowEditedData: newStateArray as any })
-
         let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let newNodes = this.state.popupColDef;
         // let editedNode = this.findNodeByKey(newNodes, props.node.key);
@@ -93,27 +77,58 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 
         let childproduct = this.state.popupColDef;
         this.sendData(childproduct);
-        // let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
-
-        // this.setState({
-        //     rowEditedData: newNodes
-        // });
-
-
-        // let editedNode = this.findNodeByKey(newNodes, props.node.key);
-        // editedNode.data[props.field] = event.target.value;
-        // this.setState({
-        //     nodes: newNodes
-        // });
-
-        // let editedField = props.field;
-        // let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
-        // let updatedCars: [] = [...props.value];
-        // updatedCars[props.rowIndex][props.field] = event;
-        // console.log(typeof (updatedCars), typeof (this.state.colDef))
-        // // this.props.setData(updatedCars)
-        // this.setState({ colDef : updatedCars });
     }
+
+    
+    createColDefinition = () => {
+
+
+        let expandYear, ppr, lineTotal, cashFlow;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            expandYear = this.props.context.parameters.expandYear.raw;
+            ppr = this.props.context.parameters.ppr.raw;
+            lineTotal = this.props.context.parameters.lineTotal.raw;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
+        }
+        else {
+            expandYear = "FinacialYear";
+        }
+        // let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
+
+        let resultData = {};
+        let cols: any[];
+        let month: any[] = [];
+        cols = [];
+        Object.values(this.state.colDef).map(p => {
+            let expander: boolean = false;
+            switch (p.field) {
+                
+                case ppr:
+                    resultData = {
+                        field: p.field, header: "PPR", expander: expander,isEditable:false
+                    }
+                    cols.push(resultData);
+                    break;
+                case lineTotal:
+                    resultData = {
+                        field: p.field, header: "Total", expander: expander,isEditable:false
+                    }
+                    cols.push(resultData);
+                    break;
+                default:
+                    resultData = {
+                        field: p.field, header: p.field, expander: expander,isEditable:true
+                    }
+                    cols.push(resultData);
+                    month.push(p.fieldName);
+                    break;
+            }
+        });
+
+        debugger;
+        return cols;
+    }
+
 
     findNodeByKey(nodes: any, key: any) {
         debugger;
@@ -170,12 +185,12 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 
     render() {
         debugger;
-        var colDefition = this.state.colDef;
+        var colDefition = this.createColDefinition();
 
         var colData = this.state.colDef;
         console.log(colDefition);
          colDefition = colDefition.map((col,i) => {
-            return <Column key={col.field} field={col.field}  editor={this.vinEditor} header={col.header}   />;  // editorValidator={this.requiredValidator}
+            return <Column key={col.field} field={col.field}  editor={col.isEditable ? this.vinEditor :undefined} header={col.header}   />;  // editorValidator={this.requiredValidator}
         });
 
      let emptyCell = Array.from("1");
