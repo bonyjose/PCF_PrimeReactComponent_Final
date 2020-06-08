@@ -21,6 +21,8 @@ interface State {
   IsUpdated:boolean,
   coldef: any[],
   monthDetails: any[],
+  rowEditedKeyData: any[],
+  rowEditedKey: []
 }
  export class GridQuarterlyComponent extends React.Component<Props,State> {
     
@@ -33,6 +35,8 @@ interface State {
         IsUpdated:this.props.IsUpdated,
         coldef: [],
         monthDetails: [],
+        rowEditedKeyData: [],
+        rowEditedKey: []
       };
       
     }
@@ -60,23 +64,23 @@ interface State {
       return data;
 
     }
-    createQuarterColumnDef()
-    {
-      debugger;
-      let columnsProps: any[] = Object.values(this.props.columns);
-      let columns = Object.values(columnsProps);
-      let i=0;
-      for (i=0;i<4;i++) {
+    // createQuarterColumnDef()
+    // {
+    //   debugger;
+    //   let columnsProps: any[] = Object.values(this.props.columns);
+    //   let columns = Object.values(columnsProps);
+    //   let i=0;
+    //   for (i=0;i<4;i++) {
 
-        let row =  {} ;
-        row["fieldName"] = "Q" + Number(i+1);
-        row["name"] = "Q" + Number(i+1);
-        columns.push(row);
-      }
-      // this.setState({sampledata : data});
-      return columns;
+    //     let row =  {} ;
+    //     row["fieldName"] = "Q" + Number(i+1);
+    //     row["name"] = "Q" + Number(i+1);
+    //     columns.push(row);
+    //   }
+    //   // this.setState({sampledata : data});
+    //   return columns;
 
-    }
+    // }
 
 
     
@@ -226,48 +230,83 @@ createfieldDef()
 
 }
 
-createColDefinition() {
+createColDefinition = () => {
+
   debugger;
-  let expandYear = "";
-  if (typeof (this.context.parameters) !== 'undefined') {
-      expandYear = this.context.parameters.expandYear.raw.toString();
+  let expandYear, ppr, lineTotal, cashFlow;
+  if (typeof (this.props.context.parameters) !== 'undefined') {
+      expandYear = this.props.context.parameters.expandYear.raw;
+      ppr = this.props.context.parameters.ppr.raw;
+      lineTotal = this.props.context.parameters.lineTotal.raw;
+      cashFlow = this.props.context.parameters.cashFlow.raw;
   }
   else {
       expandYear = "FinacialYear";
   }
   // let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
 
-  debugger;
   let resultData = {};
   let cols: any[];
+  let month: any[] = [];
   cols = [];
-  let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  let columnDef = this.createQuarterColumnDef();
-  Object.values(columnDef).map(p => {
-    let expander: boolean = false;
-    if (p.fieldName == expandYear) {
-        resultData = {
-            field: p.fieldName, header: "Year", expander: true
-        }
-    }
-    else {
-        resultData = {
-            field: p.fieldName, header: p.name, expander: expander
-        }
-    }
-    if(months.includes(resultData["field"]))
-    {
+  Object.values(this.props.columns).map(p => {
+      let expander: boolean = false;
+      switch (p.fieldName) {
+          case expandYear:
+              resultData = {
+                  field: p.fieldName, header: "Year", expander: true,isEditable:false
+              }
+              cols.push(resultData);
+              break;
+          case cashFlow:
+              resultData = {
+                  field: p.fieldName, header: "Cash Flow", expander: expander,isEditable:false
+              }
+              cols.push(resultData);
+              break;
+          case ppr:
+              resultData = {
+                  field: p.fieldName, header: "PPR", expander: expander,isEditable:false
+              }
+              cols.push(resultData);
+              break;
+          case lineTotal:
+              resultData = {
+                  field: p.fieldName, header: "Total", expander: expander,isEditable:false
+              }
+              cols.push(resultData);
+              break;
 
-    }
-    else{
-      cols.push(resultData);
-    }
+             
+          default:
+            
+      }
 
-});
+       
+  });
+  resultData = {
+    field: "Q1", header: "Quarter 1", expander: false,isEditable:true
+}
+cols.push(resultData);
+
+resultData = {
+    field: "Q2", header: "Quarter 2", expander: false,isEditable:true
+}
+cols.push(resultData);
+
+resultData = {
+    field: "Q3", header: "Quarter 3", expander: false,isEditable:true
+}
+cols.push(resultData);
+
+resultData = {
+    field: "Q4", header: "Quarter 4", expander: false,isEditable:true
+}
+cols.push(resultData);
   let datas = this.sortByKey(Object.values(cols), 'expander');
 
   debugger;
-  this.setState({ coldef: datas });
+  return datas;
 }
 
 sortByKey(array, key) {
@@ -282,33 +321,20 @@ sortByKey(array, key) {
 
 onEditorValueChange(props: any, event) {
   debugger;
-  if (event.key === "Enter" ) 
-        {
-        let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-        let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
-        let editedNode = this.findNodeByKey(newNodes, props.node.key);
-        editedNode.data[props.field] = event.target.value;
-        this.setState({
-            nodes: newNodes
-        });
-
-        let editedField = props.field;
-        let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
-        this.props.context.webAPI.updateRecord(gridEntity,editedNode.nodeKey,editedObject).then(this.successCallback,this.errorCallback);
-        try{
-            this.props.context.parameters.sampleDataSet.refresh();
-        }
-        catch (Error)   
-        {  
-          console.log(Error.message);  
-        }  
-        // let result = this.props.context.webAPI.retrieveMultipleRecords(gridEntity,).then();
-        // console.log(result);
-        // this.setState({ nodes: newNodes });
-        this.forceUpdate();
-        debugger;
-      }
-  // this.props.parentCallback;
+  let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+  let nodes = this.state.nodes;
+  let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
+  let editedNode = this.findNodeByKey(newNodes, props.node.key);
+  editedNode.data[props.field] = event.target.value;
+  var rowEdited: any[];
+  rowEdited = this.state.rowEditedKeyData;
+  rowEdited.push(props.node.key);
+  let EditedKeyArray: any[];
+  this.setState({
+      nodes: newNodes,
+      rowEditedKey: props.node.key as any,
+      rowEditedKeyData: rowEdited
+  });
 }
 
 onBlur = (props: any, event) => {
@@ -344,8 +370,11 @@ createApiUpdateRequest(editNode : any,editedField : string)
   }
   months = this.state.monthDetails;
   var entity = {};
-  entity["m360_linetotal"] = 0;
-  // let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  let total=0;
+  let lineTotal;
+  if (typeof (this.props.context.parameters) !== 'undefined') {
+      lineTotal = this.props.context.parameters.lineTotal.raw;
+  }
   let Q1 = ["January","February","March"];
   let Q2 = ["April","May","June"];
   let Q3 = ["July","August","September"];
@@ -396,10 +425,11 @@ createApiUpdateRequest(editNode : any,editedField : string)
     }
       if(months.includes(Column))
       {
-        entity["m360_linetotal"] += Number(editNode[Column]);
+        entity[lineTotal] += Number(editNode[Column]);
       }
   }
-  entity["m360_linetotal"] = entity["m360_linetotal"] - currentSum + newSum;
+  entity[lineTotal] = entity[lineTotal] - currentSum + newSum;
+  debugger;
   return entity;
 }
 
@@ -448,23 +478,26 @@ vinEditor = (props: any) => {
 
   
     render() {
+
+      let coldef: any[] = this.createColDefinition();
       debugger;
       let inputData = {
-        columns: this.state.coldef,
+        columns: coldef,
         context: this.props.context,
         IsUpdated: this.state.IsUpdated,
         monthDetails :this.state.monthDetails
     }
 
-      const dynamicColumns = Object.values(this.state.coldef).map((col, i) => {
-        return <Column key={col.field} field={col.field} header={col.header}  expander={col.expander} editor={col.expander ? undefined : this.vinEditor} style={{width:'100px'}} headerClassName="p-col-d" />;
-    });
+    let datanode: any[] = this.state.nodes;
+        const dynamicColumns = Object.values(coldef).map((col, i) => {
+            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.isEditable ? this.vinEditor :undefined} style={{ width: '100px' }} headerClassName="p-col-d" />;
+        });
     return (
 
         <div className="scrollbar scrollbar-primary">
             <div className="content-section implementation monthlyGrid">
                 <DialogDemo {...inputData} />
-                <TreeTable value={this.state.nodes} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{width: '1000px'}}  scrollHeight="400px">
+                <TreeTable value={datanode} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{width: '1000px'}}  scrollHeight="400px">
                     {dynamicColumns}
                 </TreeTable >
                 <label style={{ float: "left", color: "#ab9999" }} >Total*: Line Total</label><br />
