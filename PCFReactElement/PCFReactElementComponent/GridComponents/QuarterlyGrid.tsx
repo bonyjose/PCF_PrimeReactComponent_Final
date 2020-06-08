@@ -6,6 +6,7 @@ import { TreeTable } from "primereact/treetable";
 import { InputText } from "primereact/inputtext";
 import { DialogDemo } from "../GridComponents/Summary/Common/popupComponent"
 import { IInputs, IOutputs } from "../generated/ManifestTypes"
+import { Button } from "primereact/button";
 interface Props {
   data: any[];
   columns: any[];
@@ -22,7 +23,9 @@ interface State {
   coldef: any[],
   monthDetails: any[],
   rowEditedKeyData: any[],
-  rowEditedKey: []
+  rowEditedKey: [],
+  loading: boolean,
+  isSaved :boolean
 }
  export class GridQuarterlyComponent extends React.Component<Props,State> {
     
@@ -36,7 +39,9 @@ interface State {
         coldef: [],
         monthDetails: [],
         rowEditedKeyData: [],
-        rowEditedKey: []
+        rowEditedKey: [],
+        loading: false,
+        isSaved :false
       };
       
     }
@@ -468,6 +473,44 @@ vinEditor = (props: any) => {
   return this.inputTextEditor(props, field);
 }
 
+saveGrid(): void {
+  let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+  let gridrowKey = this.state.rowEditedKeyData;
+
+  let rowKeys: any[] = Object.values(gridrowKey);
+  let field = Object.values(this.props.columns).map(p => p.fieldName);
+
+  var uniqueKeys = Array.from(new Set(rowKeys))
+
+  let nodes = this.state.nodes;
+  let context: ComponentFramework.Context<IInputs>;
+  context = this.props.context;
+  let stateVariable = this;
+  for (let i = 0; i < uniqueKeys.length; i++) {
+
+      // this.setState({ loading: true }, () => {
+      //     setTimeout(() => {
+      //         let rowKey = uniqueKeys[i];
+      //         let editedNode = this.findNodeByKey(nodes, rowKey);
+      //         let editedObject = this.createApiUpdateRequest(editedNode.data);
+      //         var data = this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(function (result) {
+
+                
+      //             if(i===uniqueKeys.length-1){
+      //                 context.parameters.sampleDataSet.refresh();
+      //                 stateVariable.setState({ isSaved: true, loading: false ,rowEditedKeyData:[]});
+      //                }
+      //         },
+      //             function (result) {
+      //                 stateVariable.setState({ isSaved: false, loading: false });
+      //                })
+      //     },3000);
+      // });
+  }
+
+}
+
+
   
     render() {
 
@@ -489,6 +532,7 @@ vinEditor = (props: any) => {
         <div className="scrollbar scrollbar-primary">
             <div className="content-section implementation monthlyGrid">
                 <DialogDemo {...inputData} />
+                <Button label="Save" className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
                 <TreeTable value={datanode} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{width: '1000px'}}  scrollHeight="400px">
                     {dynamicColumns}
                 </TreeTable >
