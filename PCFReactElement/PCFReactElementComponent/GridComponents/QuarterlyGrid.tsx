@@ -276,32 +276,27 @@ createColDefinition = () => {
               }
               cols.push(resultData);
               break;
-
-             
-          default:
-            
+          default: 
       }
-
-       
   });
-  resultData = {
+    resultData = {
     field: "Q1", header: "Quarter 1", expander: false,isEditable:true
-}
-cols.push(resultData);
+    }
+    cols.push(resultData);
 
-resultData = {
-    field: "Q2", header: "Quarter 2", expander: false,isEditable:true
-}
-cols.push(resultData);
+    resultData = {
+        field: "Q2", header: "Quarter 2", expander: false,isEditable:true
+    }
+    cols.push(resultData);
 
-resultData = {
-    field: "Q3", header: "Quarter 3", expander: false,isEditable:true
-}
-cols.push(resultData);
+    resultData = {
+        field: "Q3", header: "Quarter 3", expander: false,isEditable:true
+    }
+    cols.push(resultData);
 
-resultData = {
-    field: "Q4", header: "Quarter 4", expander: false,isEditable:true
-}
+    resultData = {
+        field: "Q4", header: "Quarter 4", expander: false,isEditable:true
+    }
 cols.push(resultData);
   let datas = this.sortByKey(Object.values(cols), 'expander');
 
@@ -315,9 +310,6 @@ sortByKey(array, key) {
       return ((x > y) ? -1 : ((x < y) ? 1 : 0));
   });
 }
-
-
-
 
 onEditorValueChange(props: any, event) {
   debugger;
