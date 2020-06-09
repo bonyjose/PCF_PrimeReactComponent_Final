@@ -77,7 +77,7 @@ interface State {
         data[i].Q2 = q2 == 0 ? '': "$" + q2.toFixed(2);
         data[i].Q3 = q3 == 0 ? '': "$" + q3.toFixed(2);
         data[i].Q4 = q4 == 0 ? '': "$" + q4.toFixed(2);
-        if(data[i].lineTotal !== null)
+        if(data[i].lineTotal !== null && typeof (data[i].lineTotal) !== 'undefined')
         {
           data[i].lineTotal = data[i].lineTotal == 0 ? '': "$" + data[i].lineTotal.toFixed(2);
         }
