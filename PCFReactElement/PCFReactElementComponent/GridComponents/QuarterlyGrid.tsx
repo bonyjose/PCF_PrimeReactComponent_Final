@@ -52,9 +52,9 @@ interface State {
 
       let months =month;
 
-        let  lineTotal
+        let  lineTot
   if (typeof (this.props.context.parameters) !== 'undefined') {
-      lineTotal = this.props.context.parameters.lineTotal.raw;
+      lineTot = this.props.context.parameters.lineTotal.raw;
   }
       console.log(months);
       let product: any[] = Object.values(this.props.data);
@@ -80,9 +80,9 @@ interface State {
           data[i].Q2 = q2 == 0 ? '': "$" + q2.toFixed(2);
           data[i].Q3 = q3 == 0 ? '': "$" + q3.toFixed(2);
           data[i].Q4 = q4 == 0 ? '': "$" + q4.toFixed(2);
-          if(data[i].LineTotal !== null && typeof (data[i].LineTotal) !== 'undefined')
+          if(data[i][lineTot] !== null && typeof (data[i][lineTot]) !== 'undefined' && data[i][lineTot] !=="")
           {
-            // data[i].LineTotal = data[i].LineTotal == 0 ? '': "$" + data[i].LineTotal.toFixed(2);
+            data[i][lineTot] = data[i][lineTot] == 0 ? '': "$" + data[i][lineTot].toFixed(2);
           }
           console.log(data[i]);
           i++;
@@ -101,7 +101,7 @@ interface State {
 
     numberTryParse(string) {
       var returnValue = 0;
-      if (!isNaN(string) && string != null) {
+      if (!isNaN(string) && string != null && string != "") {
         returnValue = Number.parseFloat(string);
       }
       return returnValue;
