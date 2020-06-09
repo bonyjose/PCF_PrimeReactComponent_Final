@@ -150,8 +150,8 @@ export class DialogDemo extends Component<AppProps, AppState>{
         for (let Column in editNode) {
             if(months.includes(Column))
             {
-              entity[lineTotal] += Number(editNode[Column]);
-              entity[Column] = Number(editNode[Column]);
+              entity[lineTotal] += this.numberTryParse(editNode[Column]);
+              entity[Column] = this.numberTryParse(editNode[Column]);
             }
             else if(Column == ppr)
             {
@@ -169,12 +169,21 @@ export class DialogDemo extends Component<AppProps, AppState>{
             }
             else{
                 // let stri
-                entity[Column] = Number(editNode[Column]);
+                entity[Column] = this.numberTryParse(editNode[Column]);
             }
         }
-        entity[lineTotal] = Number(entity[lineTotal]);
+        entity[lineTotal] = this.numberTryParse(entity[lineTotal]);
         return entity;
     }
+
+    
+    numberTryParse(string) {
+        var returnValue = 0;
+        if (!isNaN(string) && string != null) {
+          returnValue = Number.parseFloat(string);
+        }
+        return returnValue;
+      }
 
     
     successCallback() {

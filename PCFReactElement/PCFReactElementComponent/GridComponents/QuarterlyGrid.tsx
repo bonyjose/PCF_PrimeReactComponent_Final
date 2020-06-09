@@ -67,10 +67,10 @@ interface State {
       for (let columns of data) {
         if (typeof (columns[months[3]]) !== 'undefined' && columns[months[3]] !==null)
         {
-          q1 = ( Number(columns[months[3]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[4]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[5]].replace(/[^0-9.-]+/g,"")) );
-          q2 = ( Number(columns[months[6]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[7]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[8]].replace(/[^0-9.-]+/g,"")) );
-          q3 = ( Number(columns[months[9]].replace(/[^0-9.-]+/g,"")) +Number(columns[months[10]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[11]].replace(/[^0-9.-]+/g,"")) );
-          q4 = ( Number(columns[months[0]].replace(/[^0-9.-]+/g,""))+ Number(columns[months[1]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[2]].replace(/[^0-9.-]+/g,"")) );
+          q1 = ( this.numberTryParse(columns[months[3]].replace(/[^0-9.-]+y/g,"")) + this.numberTryParse(columns[months[4]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[5]].replace(/[^0-9.-]+/g,"")) );
+          q2 = ( this.numberTryParse(columns[months[6]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[7]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[8]].replace(/[^0-9.-]+/g,"")) );
+          q3 = ( this.numberTryParse(columns[months[9]].replace(/[^0-9.-]+/g,"")) +this.numberTryParse(columns[months[10]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[11]].replace(/[^0-9.-]+/g,"")) );
+          q4 = ( this.numberTryParse(columns[months[0]].replace(/[^0-9.-]+/g,""))+ this.numberTryParse(columns[months[1]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[2]].replace(/[^0-9.-]+/g,"")) );
         }
     
         data[i].Q1 = q1 == 0 ? '': "$" + q1.toFixed(2);
@@ -88,8 +88,15 @@ interface State {
       console.log("parse");
       console.log(data);
       return data;
-      
+    }
 
+
+    numberTryParse(string) {
+      var returnValue = 0;
+      if (!isNaN(string) && string != null) {
+        returnValue = Number.parseFloat(string);
+      }
+      return returnValue;
     }
     
     componentDidUpdate(prevProps, prevState) {
@@ -238,7 +245,7 @@ createfieldDef()
   for (i=0;i<4;i++) {
 
     let row =  {} ;
-    row["fieldName"] = "Q" + Number(i+1);
+    row["fieldName"] = "Q" + this.numberTryParse(i+1);
     cols.push(row);
   }
   // this.setState({sampledata : data});
@@ -398,8 +405,8 @@ createApiUpdateRequest(editNode : any,editedField : string)
       {
         for (var i = 0; i < Q1.length; i++) 
         {
-          entity[Q1[i]] = Number(editNode[editedField])/3;
-          currentSum += Number(editNode[Q1[i]]);
+          entity[Q1[i]] = this.numberTryParse(editNode[editedField])/3;
+          currentSum += this.numberTryParse(editNode[Q1[i]]);
           newSum +=entity[Q1[i]];
         }
       }
@@ -408,8 +415,8 @@ createApiUpdateRequest(editNode : any,editedField : string)
           // entity["April"] = Math.round( ( ( (Number(editNode[editedField])/3) * 100) / 100) );
           for (var i = 0; i < Q2.length; i++) 
         {
-          entity[Q2[i]] = Number(editNode[editedField])/3;
-          currentSum += Number(editNode[Q2[i]]);
+          entity[Q2[i]] = this.numberTryParse(editNode[editedField])/3;
+          currentSum += this.numberTryParse(editNode[Q2[i]]);
           newSum +=entity[Q3[i]];
         }
       }
@@ -417,8 +424,8 @@ createApiUpdateRequest(editNode : any,editedField : string)
       {
         for (var i = 0; i < Q3.length; i++) 
         {
-          entity[Q3[i]] = Number(editNode[editedField])/3;
-          currentSum += Number(editNode[Q3[i]]);
+          entity[Q3[i]] = this.numberTryParse(editNode[editedField])/3;
+          currentSum += this.numberTryParse(editNode[Q3[i]]);
           newSum +=entity[Q3[i]];
         }
       }
@@ -426,15 +433,15 @@ createApiUpdateRequest(editNode : any,editedField : string)
       {
         for (var i = 0; i < Q4.length; i++) 
         {
-          entity[Q4[i]] = Number(editNode[editedField])/3;
-          currentSum += Number(editNode[Q4[i]]);
+          entity[Q4[i]] = this.numberTryParse(editNode[editedField])/3;
+          currentSum += this.numberTryParse(editNode[Q4[i]]);
           newSum +=entity[Q4[i]];
         }
       }
     }
       if(months.includes(Column))
       {
-        entity[lineTotal] += Number(editNode[Column]);
+        entity[lineTotal] += this.numberTryParse(editNode[Column]);
       }
   }
   entity[lineTotal] = entity[lineTotal] - currentSum + newSum;

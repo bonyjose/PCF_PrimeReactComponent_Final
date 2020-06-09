@@ -86,7 +86,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
            
         if (months.includes(Column)) {
 
-            Total += Number(newNodes[0][Column]);
+            Total += this.numberTryParse(newNodes[0][Column]);
             }
         }
         newNodes[0][lineTotal]  = Total;
@@ -100,6 +100,15 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         let childproduct = this.state.popupColDef;
         this.sendData(childproduct);
     }
+
+    
+    numberTryParse(string) {
+        var returnValue = 0;
+        if (!isNaN(string) && string != null) {
+          returnValue = Number.parseFloat(string);
+        }
+        return returnValue;
+      }
 
     createMonthDefinition = () => {
         debugger;
