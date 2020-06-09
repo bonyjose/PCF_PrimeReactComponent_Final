@@ -52,6 +52,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
 
     componentDidUpdate(prevProps, prevState) {
+        debugger;
 
         if(this.props.IsUpdated!=this.state.IsUpdated){
             let jsonData = this.createJsonTreestructure();
@@ -61,6 +62,11 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
          {
             let jsonData = this.createJsonTreestructure();
             this.setState({ nodes: jsonData, loading: false, isSaved: false });
+        }
+        if(prevProps.data !=this.props.data)
+        {
+            let jsonData = this.createJsonTreestructure();
+            this.setState({ nodes: jsonData});
         }
     }
     componentDidMount() {
@@ -393,6 +399,8 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
 
     }
+
+
 
     render() {
 

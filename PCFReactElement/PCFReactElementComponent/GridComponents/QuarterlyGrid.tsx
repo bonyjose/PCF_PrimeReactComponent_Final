@@ -116,7 +116,7 @@ interface State {
     }
     
     componentDidUpdate(prevProps, prevState) {
-
+      debugger;
       if ((this.props.IsUpdated) && (!this.state.IsUpdated))  {
           let months  = this.createMonthDefinition();
           debugger;
@@ -127,7 +127,18 @@ interface State {
           let newNodes = JSON.parse(data);
           this.setState({ nodes: newNodes });
           this.setState({ IsUpdated: this.props.IsUpdated });
-          
+      }
+      else if(prevProps.data != this.props.data)
+      {
+        let months  = this.createMonthDefinition();
+        debugger;
+        this.setState({ monthDetails: months });
+        let QuarterData = this.ParseToQuarter(months);
+        debugger;
+        let data = this.createJsonTreestructure(QuarterData);
+        let newNodes = JSON.parse(data);
+        this.setState({ nodes: newNodes });
+        this.setState({ IsUpdated: this.props.IsUpdated });
       }
       // this.props.parentCallback;
     }

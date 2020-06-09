@@ -62,6 +62,11 @@ export class YearlyComponent extends Component<AppMonthProps, monthState>{
             let jsonData = this.createJsonTreestructure();
             this.setState({ nodes: jsonData, loading: false, isSaved: false });
         }
+        else if(prevProps.data !=this.props.data)
+        {
+            let jsonData = this.createJsonTreestructure();
+            this.setState({ nodes: jsonData});
+        }
     }
     componentDidMount() {
         if(this.state.isSaved){
