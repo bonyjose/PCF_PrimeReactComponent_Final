@@ -21,7 +21,7 @@ interface State {
   sampledata: any,
   IsUpdated:boolean,
   coldef: any[],
-  monthDetails: any[],
+  monthDetails: any,
   rowEditedKeyData: any[],
   rowEditedKey: [],
   loading: boolean,
@@ -46,17 +46,18 @@ interface State {
       
     }
 
-    ParseToQuarter()
+    ParseToQuarter(month : any)
     {
-      debugger;
+      let months =month;
+      console.log(months);
       let product: any[] = Object.values(this.props.data);
       let data = Object.values(product);
-      let i=0;
+      let i = 0;
       for (let columns of data) {
-      let q1 =(Number(columns["January"]) + Number(columns["February"]) + Number(columns["March"]));
-      let q2 =(Number(columns["April"]) + Number(columns["May"]) + Number(columns["June"]) );
-      let q3 = (Number(columns["July"]) + Number(columns["August"]) + Number(columns["September"]));
-      let q4 = (Number(columns["October"]) + Number(columns["November"]) + Number(columns["December"]));
+      let q1 = ( Number(columns[months[3]]) + Number(columns[months[4]]) + Number(columns[months[5]]) );
+      let q2 = ( Number(columns[months[6]]) + Number(columns[months[7]]) + Number(columns[months[8]]) );
+      let q3 = ( Number(columns[months[9]]) + Number(columns[months[10]]) + Number(columns[months[11]]) );
+      let q4 = ( Number(columns[months[0]]) + Number(columns[months[1]]) + Number(columns[months[2]]) );
         data[i].Q1 = q1 == 0 ? '': q1;
         data[i].Q2 = q2 == 0 ? '': q2;
         data[i].Q3 = q3 == 0 ? '': q3;
@@ -64,58 +65,46 @@ interface State {
         console.log(data[i]);
         i++;
       }
-      // this.setState({sampledata : data});
       debugger;
+      console.log("parse");
+      console.log(data);
       return data;
+      
 
     }
-    // createQuarterColumnDef()
-    // {
-    //   debugger;
-    //   let columnsProps: any[] = Object.values(this.props.columns);
-    //   let columns = Object.values(columnsProps);
-    //   let i=0;
-    //   for (i=0;i<4;i++) {
-
-    //     let row =  {} ;
-    //     row["fieldName"] = "Q" + Number(i+1);
-    //     row["name"] = "Q" + Number(i+1);
-    //     columns.push(row);
-    //   }
-    //   // this.setState({sampledata : data});
-    //   return columns;
-
-    // }
-
-
     
     componentDidUpdate(prevProps, prevState) {
 
       if ((this.props.IsUpdated) && (!this.state.IsUpdated))  {
-          // this.setState({sampledata : this.props});
-          let QuarterData = this.ParseToQuarter();
-
+          let months  = this.createMonthDefinition();
+          debugger;
+          this.setState({ monthDetails: months });
+          let QuarterData = this.ParseToQuarter(months);
+          debugger;
           let data = this.createJsonTreestructure(QuarterData);
           let newNodes = JSON.parse(data);
           this.setState({ nodes: newNodes });
           this.setState({ IsUpdated: this.props.IsUpdated });
+          
       }
       // this.props.parentCallback;
     }
     componentDidMount() {
       if (!this.state.IsUpdated||this.props.data.length>0) {
-          // this.setState({sampledata : this.props});
-          let QuarterData = this.ParseToQuarter();
-
+          let months  = this.createMonthDefinition();
+          debugger;
+          this.setState({ monthDetails: months });
+          let QuarterData = this.ParseToQuarter(months);
+          debugger;
           let data = this.createJsonTreestructure(QuarterData);
           let newNodes = JSON.parse(data);
           this.setState({ nodes: newNodes });
-        
+          
       }
     }
 
     createMonthDefinition = () => {
-
+      debugger;
       let expandYear, ppr, lineTotal, cashFlow;
       if (typeof (this.props.context.parameters) !== 'undefined') {
           expandYear = this.props.context.parameters.expandYear.raw;
@@ -150,7 +139,8 @@ interface State {
                   break;
           }
       });
-      this.setState({ monthDetails: month })
+      return month;
+      // this.setState({ monthDetails: month });
   }
 
  
