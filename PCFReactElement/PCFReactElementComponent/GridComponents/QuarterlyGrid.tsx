@@ -50,6 +50,11 @@ interface State {
     {
       debugger;
       let months =month;
+
+        let  lineTotal
+  if (typeof (this.props.context.parameters) !== 'undefined') {
+      lineTotal = this.props.context.parameters.lineTotal.raw;
+  }
       console.log(months);
       let product: any[] = Object.values(this.props.data);
       let data = Object.values(product);
@@ -60,7 +65,7 @@ interface State {
       let q3 = 0;
       let q4 = 0;
       for (let columns of data) {
-        if (typeof (columns[months[3]]) !== 'undefined')
+        if (typeof (columns[months[3]]) !== 'undefined' && columns[months[3]] !==null)
         {
           q1 = ( Number(columns[months[3]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[4]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[5]].replace(/[^0-9.-]+/g,"")) );
           q2 = ( Number(columns[months[6]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[7]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[8]].replace(/[^0-9.-]+/g,"")) );
@@ -72,8 +77,10 @@ interface State {
         data[i].Q2 = q2 == 0 ? '': "$" + q2.toFixed(2);
         data[i].Q3 = q3 == 0 ? '': "$" + q3.toFixed(2);
         data[i].Q4 = q4 == 0 ? '': "$" + q4.toFixed(2);
-
-
+        if(data[i].lineTotal !== null)
+        {
+          data[i].lineTotal = data[i].lineTotal == 0 ? '': "$" + data[i].lineTotal.toFixed(2);
+        }
         console.log(data[i]);
         i++;
       }
@@ -460,10 +467,10 @@ findNodeByKey(nodes: any, key: any) {
 
   return node;
 }
-
+// onBlur={(e) => this.onBlur(props,e)}
 inputTextEditor = (props: any, field: any) => {
   return <InputText type="text" defaultValue={props.node.data[field]}
-      onBlur={(e) => this.onBlur(props,e)} onKeyDown={(e) =>
+      onChange={(e) =>
            this.onEditorValueChange(props,e)}
             />
 }
@@ -541,9 +548,7 @@ saveGrid(): void {
                 <TreeTable value={datanode} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{width: '1000px'}}  scrollHeight="400px">
                     {dynamicColumns}
                 </TreeTable >
-                <label style={{ float: "left", color: "#ab9999" }} >Total*: Line Total</label><br />
-                <label style={{ float: "left", color: "#ab9999" }} >CFN*: Cash Flow Name</label><br />
-                <label style={{ float: "left", color: "#ab9999" }} >Year*: Finacial Year</label><br />
+                
             </div>
         </div>
 
