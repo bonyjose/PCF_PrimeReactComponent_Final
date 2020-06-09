@@ -69,15 +69,24 @@ export class DialogDemo extends Component<AppProps, AppState>{
         debugger;
 
         let updatedDatas: any[] = this.state.updatedData;
+        let context: ComponentFramework.Context<IInputs>;
+        context = this.props.context;
+        let stateVariable = this;
         
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
             let editedObject = this.createApiUpdateRequest(updatedDatas[0]);
             debugger;
             console.log(editedObject);
             try {
-                this.props.context.webAPI.createRecord(gridEntity,  editedObject).then(this.successCallback, this.errorCallback);
-                this.props.context.parameters.sampleDataSet.refresh();
-                this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
+                this.props.context.webAPI.createRecord(gridEntity,  editedObject).then(function (result) {
+                    debugger;
+
+                        context.parameters.sampleDataSet.refresh();
+                       }
+                ,
+                    function (result) {
+                       })
+                // this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
             }
             catch (Error) {
                 console.log(Error.message);
