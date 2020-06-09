@@ -129,8 +129,6 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
     createApiUpdateRequest(editNode: any) {
         debugger;
-        // let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-       
         let months = this.state.monthDetails;
 
         let expandYear, ppr, lineTotal, cashFlow;

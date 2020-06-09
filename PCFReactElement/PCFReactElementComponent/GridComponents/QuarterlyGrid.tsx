@@ -48,20 +48,32 @@ interface State {
 
     ParseToQuarter(month : any)
     {
+      debugger;
       let months =month;
       console.log(months);
       let product: any[] = Object.values(this.props.data);
       let data = Object.values(product);
       let i = 0;
+
+      let q1 = 0;
+      let q2 = 0;
+      let q3 = 0;
+      let q4 = 0;
       for (let columns of data) {
-      let q1 = ( Number(columns[months[3]]) + Number(columns[months[4]]) + Number(columns[months[5]]) );
-      let q2 = ( Number(columns[months[6]]) + Number(columns[months[7]]) + Number(columns[months[8]]) );
-      let q3 = ( Number(columns[months[9]]) + Number(columns[months[10]]) + Number(columns[months[11]]) );
-      let q4 = ( Number(columns[months[0]]) + Number(columns[months[1]]) + Number(columns[months[2]]) );
-        data[i].Q1 = q1 == 0 ? '': q1;
-        data[i].Q2 = q2 == 0 ? '': q2;
-        data[i].Q3 = q3 == 0 ? '': q3;
-        data[i].Q4 = q4 == 0 ? '': q4;
+        if (typeof (columns[months[3]]) !== 'undefined')
+        {
+          q1 = ( Number(columns[months[3]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[4]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[5]].replace(/[^0-9.-]+/g,"")) );
+          q2 = ( Number(columns[months[6]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[7]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[8]].replace(/[^0-9.-]+/g,"")) );
+          q3 = ( Number(columns[months[9]].replace(/[^0-9.-]+/g,"")) +Number(columns[months[10]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[11]].replace(/[^0-9.-]+/g,"")) );
+          q4 = ( Number(columns[months[0]].replace(/[^0-9.-]+/g,""))+ Number(columns[months[1]].replace(/[^0-9.-]+/g,"")) + Number(columns[months[2]].replace(/[^0-9.-]+/g,"")) );
+        }
+    
+        data[i].Q1 = q1 == 0 ? '': "$" + q1.toFixed(2);
+        data[i].Q2 = q2 == 0 ? '': "$" + q2.toFixed(2);
+        data[i].Q3 = q3 == 0 ? '': "$" + q3.toFixed(2);
+        data[i].Q4 = q4 == 0 ? '': "$" + q4.toFixed(2);
+
+
         console.log(data[i]);
         i++;
       }
@@ -163,47 +175,50 @@ interface State {
     let uniqYear = product.map(i => i[expandYear]);
     var uniqueItems = Array.from(new Set(uniqYear))
     let result = {};
-    let ChildResultArray: any[];
-    let ResultArray: any[];
-    let sampleArray: any[];
-    ResultArray = [], sampleArray = [];
-    for (let i = 0; i < uniqueItems.length; i++) {
-        let data = Object.values(product);
-        let column = Object.values(field);
-        var currentKey;
-        var currentVal;
-        const year = uniqueItems[i];
-        ChildResultArray = [];
-        let x: number = 0;
-        let childrenData: any[];
-        let result = {};
-        data.map(p => {
-            if (p[expandYear] === year) {
-                for (let k = 0; k <= column.length; k++) {
-                    currentKey = column[k];
-                    currentVal = p[currentKey];
-                    result[currentKey] = currentVal;
-                }
+        let ChildResultArray: any[];
+        let ResultArray: any[];
+        let sampleArray: any[];
+        ResultArray = [], sampleArray = [];
+        for (let i = 0; i < uniqueItems.length; i++) {
+            let data = Object.values(product);
+            let column = Object.values(field);
+            var currentKey;
+            var currentVal;
+            const year = uniqueItems[i];
+            ChildResultArray = [];
+            let x: number = 0;
+            let childrenData: any[];
 
-                let childrenData = {
-                    key: i.toString().concat('-', x.toString()),
-                    data: result,
-                    nodeKey: p.key
+            data.map(p => {
+                if (p[expandYear] === year) {
+                    let result = {};
+                    for (let k = 0; k <= column.length; k++) {
+
+                        currentKey = column[k];
+                        currentVal = p[currentKey];
+                        result[currentKey] = currentVal;
+                    }
+                    var childrenData = {};
+                    childrenData = {
+                        key: i.toString().concat('-', x.toString()),
+                        data: result,
+                        nodeKey: p.key
+                    }
+
+                    ChildResultArray[x] = childrenData;
+                    x++;
                 }
-                x++;
-                ChildResultArray.push(childrenData)
+            });
+            let resultData = {
+                key: i.toString(),
+                data: {
+                    [expandYear]: year,
+                },
+                children: ChildResultArray
             }
-        });
-        let resultData = {
-            key: i.toString(),
-            data: {
-                "FinacialYear": year,
-            },
-            children: ChildResultArray
+            ResultArray.push(resultData);
         }
-        ResultArray.push(resultData);
-    }
-    debugger;
+        debugger;
     return JSON.stringify(ResultArray);
 }
 
