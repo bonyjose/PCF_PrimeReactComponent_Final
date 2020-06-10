@@ -104,7 +104,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     
     numberTryParse(string) {
         var returnValue = 0;
-        if (!isNaN(string) && string != null) {
+        if (!isNaN(string) && string != null && string != "") {
           returnValue = Number.parseFloat(string);
         }
         return returnValue;
