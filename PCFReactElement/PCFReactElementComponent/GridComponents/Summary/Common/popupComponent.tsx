@@ -86,7 +86,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                 ,
                     function (result) {
                        })
-                // this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
+                this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
             }
             catch (Error) {
                 console.log(Error.message);
