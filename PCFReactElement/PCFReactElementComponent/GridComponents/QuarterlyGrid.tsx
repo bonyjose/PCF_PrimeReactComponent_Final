@@ -70,10 +70,10 @@ interface State {
         for (let columns of data) {
           if (typeof (columns[months[3]]) !== 'undefined' && columns[months[3]] !==null)
           {
-            q1 = ( this.numberTryParse(columns[months[3]].replace(/[^0-9.-]+y/g,"")) + this.numberTryParse(columns[months[4]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[5]].replace(/[^0-9.-]+/g,"")) );
-            q2 = ( this.numberTryParse(columns[months[6]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[7]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[8]].replace(/[^0-9.-]+/g,"")) );
-            q3 = ( this.numberTryParse(columns[months[9]].replace(/[^0-9.-]+/g,"")) +this.numberTryParse(columns[months[10]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[11]].replace(/[^0-9.-]+/g,"")) );
-            q4 = ( this.numberTryParse(columns[months[0]].replace(/[^0-9.-]+/g,""))+ this.numberTryParse(columns[months[1]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[2]].replace(/[^0-9.-]+/g,"")) );
+            q1 =  this.numberTryParse(columns[months[3]].replace(/[^0-9.-]+y/g,"")) + this.numberTryParse(columns[months[4]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[5]].replace(/[^0-9.-]+/g,"")) ;
+            q2 =  this.numberTryParse(columns[months[6]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[7]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[8]].replace(/[^0-9.-]+/g,"")) ;
+            q3 =  this.numberTryParse(columns[months[9]].replace(/[^0-9.-]+/g,"")) +this.numberTryParse(columns[months[10]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[11]].replace(/[^0-9.-]+/g,"")) ;
+            q4 =  this.numberTryParse(columns[months[0]].replace(/[^0-9.-]+/g,""))+ this.numberTryParse(columns[months[1]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[2]].replace(/[^0-9.-]+/g,"")) ;
           }
       
           data[i].Q1 = q1 == 0 ? '': "$" + q1.toFixed(2);
