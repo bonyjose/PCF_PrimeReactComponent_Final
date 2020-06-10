@@ -40,7 +40,7 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 		this.theContainer = container;
 		this._props.data = context.parameters.sampleDataSet;
 		// let arraData=this._props.data ;
-		context.parameters.sampleDataSet.paging.setPageSize(50);
+		// context.parameters.sampleDataSet.paging.setPageSize(50);
 		// const dataSet = context.parameters.sampleDataSet;
 		// let datasetColumns: any[] = this._columns(dataSet);
 		// let dataItems: any[] = this._items(dataSet, datasetColumns);
@@ -58,24 +58,36 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	 */
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
-		const dataSet = context.parameters.sampleDataSet;
-		dataSet.paging.setPageSize(50);
+		if (!context.parameters.sampleDataSet.loading) 
+		{
+			if(context.parameters.sampleDataSet.paging != null && context.parameters.sampleDataSet.paging.hasNextPage == true) 
+			{
+			//set page size
+				context.parameters.sampleDataSet.paging.setPageSize(100);
+				//load next paging
+				context.parameters.sampleDataSet.paging.loadNextPage();
+			} 
+			else 
+			{
+				const dataSet = context.parameters.sampleDataSet;
+				// dataSet.paging.setPageSize(50);
 
-		let datasetColumns: any = this._columns(dataSet);
-		let dataItems: any = this._items(dataSet, datasetColumns);
+				let datasetColumns: any = this._columns(dataSet);
+				let dataItems: any = this._items(dataSet, datasetColumns);
 
-		console.log(dataItems);
-		this._props.data =dataItems;
-		this._props.columns =datasetColumns;
-		this._props.context=context;
-		const element = React.createElement(
-			App ,
-			this._props
-		);
-
-		ReactDOM.render(element ,
-			this.theContainer
-		);
+				console.log(dataItems);
+				this._props.data =dataItems;
+				this._props.columns =datasetColumns;
+				this._props.context=context;
+				const element = React.createElement(
+					App ,
+					this._props
+				);
+				ReactDOM.render(element ,
+					this.theContainer
+				);
+			} 
+		}
 	}
 
 	// this event will collect the modified grid array from child react component 
