@@ -90,6 +90,17 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             }
         }
         newNodes[0][lineTotal]  = Total;
+        let newNode : any;
+
+        if (typeof (newNodes[0].Q1) !== 'undefined')
+        {
+            newNode = this.parseQuartertoMonth(newNodes);
+            debugger;
+        }
+        else
+        {
+            newNode = newNodes;
+        }
 
         this.setState({
             popupColDef: newNodes
@@ -98,7 +109,41 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         let editedField = props.field;
 
         let childproduct = this.state.popupColDef;
+        debugger;
         this.sendData(childproduct);
+    }
+    parseQuartertoMonth(newNodes : any)
+    {
+        let January,February,March,April,May,June,July,August,September,October,November,December;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            January = this.props.context.parameters.January.raw;
+            February = this.props.context.parameters.February.raw;
+            March = this.props.context.parameters.March.raw;
+            April = this.props.context.parameters.April.raw;
+            May = this.props.context.parameters.May.raw;
+            June = this.props.context.parameters.June.raw;
+            July = this.props.context.parameters.July.raw;
+            August = this.props.context.parameters.August.raw;
+            September = this.props.context.parameters.September.raw;
+            October = this.props.context.parameters.October.raw;
+            November = this.props.context.parameters.November.raw;
+            December = this.props.context.parameters.December.raw;
+        }
+        newNodes[0][January] = this.numberTryParse(newNodes[0].Q1/3);
+        newNodes[0][February] = this.numberTryParse(newNodes[0].Q1/3);
+        newNodes[0][March] = this.numberTryParse(newNodes[0].Q1/3);
+        newNodes[0][April] = this.numberTryParse(newNodes[0].Q2/3);
+        newNodes[0][May] = this.numberTryParse(newNodes[0].Q2/3);
+        newNodes[0][June] = this.numberTryParse(newNodes[0].Q2/3);
+        newNodes[0][July] = this.numberTryParse(newNodes[0].Q3/3);
+        newNodes[0][August] = this.numberTryParse(newNodes[0].Q3/3);
+        newNodes[0][September] = this.numberTryParse(newNodes[0].Q3/3);
+        newNodes[0][October] = this.numberTryParse(newNodes[0].Q4/3);
+        newNodes[0][November] = this.numberTryParse(newNodes[0].Q4/3);
+        newNodes[0][December] = this.numberTryParse(newNodes[0].Q4/3);
+
+
+        return newNodes;
     }
 
     

@@ -17,7 +17,7 @@
 		  <property name="June" display-name-key="Jun" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
 		  <property name="July" display-name-key="Jul" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
 		  <property name="August" display-name-key="Aug" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-		  <property name="Septmber" display-name-key="Sept" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property name="September" display-name-key="Sept" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
 		  <property name="October" display-name-key="Oct" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
 	    <property name="November" display-name-key="Nov" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
 	    <property name="December" display-name-key="Dec" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
