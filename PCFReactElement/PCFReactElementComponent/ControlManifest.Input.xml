@@ -4,28 +4,27 @@
     <!-- dataset node represents a set of entity records on CDS; allow more than one datasets -->
     <data-set name="sampleDataSet" display-name-key="Dataset_Display_Key">
       <!-- 'property-set' node represents a unique, configurable property that each record in the dataset must provide. -->
-      
-      <property-set name="January" display-name-key="Jan" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-	   <property-set name="February" display-name-key="Feb" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-	    <property-set name="March" display-name-key="Mar" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-		 <property-set name="April" display-name-key="Apr" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-		  <property-set name="May" display-name-key="May" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-		   <property-set name="June" display-name-key="Jun" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-		   <property-set name="July" display-name-key="Jul" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-		  <property-set name="August" display-name-key="Aug" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-		 <property-set name="Septmber" display-name-key="Sept" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-		<property-set name="October" display-name-key="Oct" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-	   <property-set name="November" display-name-key="Nov" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-	  <property-set name="December" display-name-key="Dec" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-    <property-set name="FiscalYear" display-name-key="ExpandYear" description-key="enter" of-type="SingleLine.Text" usage="input" required="true" />
-  <property-set name="PPRName" display-name-key="PPR"  description-key="enter " of-type="SingleLine.Text" usage="input" required="true" />
- <property-set name="Total" display-name-key="LineTotal" description-key="enter row gr" of-type="SingleLine.Text" usage="input" required="true" />
-<property-setname="cashFlowName" display-name-key="CashFlow" description-key="enter row " of-type="SingleLine.Text" usage="input" required="true" />
     </data-set>
       <property name="expandYear" display-name-key="ExpandYear" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
 	    <property name="ppr" display-name-key="PPR"  description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
       <property name="lineTotal" display-name-key="LineTotal" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
       <property name="cashFlow" display-name-key="CashFlow" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
+      <property name="January" display-name-key="Jan" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+	    <property name="February" display-name-key="Feb" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+	    <property name="March" display-name-key="Mar" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property name="April" display-name-key="Apr" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property name="May" display-name-key="May" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property name="June" display-name-key="Jun" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property name="July" display-name-key="Jul" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property name="August" display-name-key="Aug" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property name="Septmber" display-name-key="Sept" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property name="October" display-name-key="Oct" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+	    <property name="November" display-name-key="Nov" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+	    <property name="December" display-name-key="Dec" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+      <property name="FiscalYear" display-name-key="ExpandYear" description-key="enter" of-type="SingleLine.Text" usage="input" required="true" />
+      <property name="PPRName" display-name-key="PPR"  description-key="enter " of-type="SingleLine.Text" usage="input" required="true" />
+      <property name="Total" display-name-key="LineTotal" description-key="enter row gr" of-type="SingleLine.Text" usage="input" required="true" />
+      <property name="cashFlowName" display-name-key="CashFlow" description-key="enter row " of-type="SingleLine.Text" usage="input" required="true" />
     
     <resources>
       <code path="index.ts" order="1"/>
