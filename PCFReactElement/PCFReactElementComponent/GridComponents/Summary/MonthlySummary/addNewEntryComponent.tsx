@@ -129,18 +129,18 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             November = this.props.context.parameters.November.raw;
             December = this.props.context.parameters.December.raw;
         }
-        newNodes[0][January] = this.numberTryParse(newNodes[0].Q1/3);
-        newNodes[0][February] = this.numberTryParse(newNodes[0].Q1/3);
-        newNodes[0][March] = this.numberTryParse(newNodes[0].Q1/3);
-        newNodes[0][April] = this.numberTryParse(newNodes[0].Q2/3);
-        newNodes[0][May] = this.numberTryParse(newNodes[0].Q2/3);
-        newNodes[0][June] = this.numberTryParse(newNodes[0].Q2/3);
-        newNodes[0][July] = this.numberTryParse(newNodes[0].Q3/3);
-        newNodes[0][August] = this.numberTryParse(newNodes[0].Q3/3);
-        newNodes[0][September] = this.numberTryParse(newNodes[0].Q3/3);
-        newNodes[0][October] = this.numberTryParse(newNodes[0].Q4/3);
-        newNodes[0][November] = this.numberTryParse(newNodes[0].Q4/3);
-        newNodes[0][December] = this.numberTryParse(newNodes[0].Q4/3);
+        newNodes[0][January] = this.numberTryParse(newNodes[0].Q1/3).toFixed(2);
+        newNodes[0][February] = this.numberTryParse(newNodes[0].Q1/3).toFixed(2);
+        newNodes[0][March] = this.numberTryParse(newNodes[0].Q1/3).toFixed(2);
+        newNodes[0][April] = this.numberTryParse(newNodes[0].Q2/3).toFixed(2);
+        newNodes[0][May] = this.numberTryParse(newNodes[0].Q2/3).toFixed(2);
+        newNodes[0][June] = this.numberTryParse(newNodes[0].Q2/3).toFixed(2);
+        newNodes[0][July] = this.numberTryParse(newNodes[0].Q3/3).toFixed(2);
+        newNodes[0][August] = this.numberTryParse(newNodes[0].Q3/3).toFixed(2);
+        newNodes[0][September] = this.numberTryParse(newNodes[0].Q3/3).toFixed(2);
+        newNodes[0][October] = this.numberTryParse(newNodes[0].Q4/3).toFixed(2);
+        newNodes[0][November] = this.numberTryParse(newNodes[0].Q4/3).toFixed(2);
+        newNodes[0][December] = this.numberTryParse(newNodes[0].Q4/3).toFixed(2);
 
 
         return newNodes;

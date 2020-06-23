@@ -49,18 +49,15 @@ interface State {
     ParseToQuarter(month : any)
     {
       debugger;
-
       let months =month;
-
         let  lineTot
-  if (typeof (this.props.context.parameters) !== 'undefined') {
-      lineTot = this.props.context.parameters.lineTotal.raw;
-  }
+     if (typeof (this.props.context.parameters) !== 'undefined') {
+        lineTot = this.props.context.parameters.lineTotal.raw;
+      }
       console.log(months);
       let product: any[] = Object.values(this.props.data);
       let data = Object.values(product);
       let i = 0;
-
       let q1 = 0;
       let q2 = 0;
       let q3 = 0;

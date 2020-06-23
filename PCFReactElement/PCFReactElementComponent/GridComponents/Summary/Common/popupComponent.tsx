@@ -176,6 +176,10 @@ export class DialogDemo extends Component<AppProps, AppState>{
             {
                 entity["m360_fiscalyear"] = "555080002";
             }
+            else if (Column =="Q1" || Column =="Q2" ||Column =="Q3" ||Column =="Q4" )
+            {
+                
+            }
             else{
                 // let stri
                 entity[Column] = this.numberTryParse(editNode[Column]);
