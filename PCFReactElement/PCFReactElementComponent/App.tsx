@@ -129,7 +129,7 @@ debugger;
       DataTable=<MonthlySummary {...inputData}/>
       // DataTable = <GridMonthlyComponent parentCallback = {this.callbackFunction} {...products}/> ;
     }
-    else if (layout ==="Quater")
+    else if (layout ==="Quarter")
     {
       DataTable = <GridQuarterlyComponent  {...inputData}/>;
     }
@@ -144,7 +144,7 @@ debugger;
                         <TabPanel header="Month" >
                         <MonthlySummary {...inputData}/>
                         </TabPanel>
-                        <TabPanel header="Quater" >
+                        <TabPanel header="Quarter" >
                         <GridQuarterlyComponent  {...inputData}/>;
                         </TabPanel>
                   </TabView>

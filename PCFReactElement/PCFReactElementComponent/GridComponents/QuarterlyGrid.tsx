@@ -7,6 +7,7 @@ import { InputText } from "primereact/inputtext";
 import { DialogDemo } from "../GridComponents/Summary/Common/popupComponent"
 import { IInputs, IOutputs } from "../generated/ManifestTypes"
 import { Button } from "primereact/button";
+import { isNull } from "util";
 interface Props {
   data: any[];
   columns: any[];
@@ -57,6 +58,22 @@ interface State {
       console.log(months);
       let product: any[] = Object.values(this.props.data);
       let data = Object.values(product);
+
+      let January,February,March,April,May,June,July,August,September,October,November,December;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            January = this.props.context.parameters.January.raw;
+            February = this.props.context.parameters.February.raw;
+            March = this.props.context.parameters.March.raw;
+            April = this.props.context.parameters.April.raw;
+            May = this.props.context.parameters.May.raw;
+            June = this.props.context.parameters.June.raw;
+            July = this.props.context.parameters.July.raw;
+            August = this.props.context.parameters.August.raw;
+            September = this.props.context.parameters.September.raw;
+            October = this.props.context.parameters.October.raw;
+            November = this.props.context.parameters.November.raw;
+            December = this.props.context.parameters.December.raw;
+        }
       let i = 0;
       let q1 = 0;
       let q2 = 0;
@@ -67,10 +84,10 @@ interface State {
         for (let columns of data) {
           if (typeof (columns[months[3]]) !== 'undefined' && columns[months[3]] !==null)
           {
-            q1 =  this.numberTryParse(columns[months[3]].replace(/[^0-9.-]+y/g,"")) + this.numberTryParse(columns[months[4]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[5]].replace(/[^0-9.-]+/g,"")) ;
-            q2 =  this.numberTryParse(columns[months[6]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[7]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[8]].replace(/[^0-9.-]+/g,"")) ;
-            q3 =  this.numberTryParse(columns[months[9]].replace(/[^0-9.-]+/g,"")) +this.numberTryParse(columns[months[10]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[11]].replace(/[^0-9.-]+/g,"")) ;
-            q4 =  this.numberTryParse(columns[months[0]].replace(/[^0-9.-]+/g,""))+ this.numberTryParse(columns[months[1]].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[months[2]].replace(/[^0-9.-]+/g,"")) ;
+            q1 =  this.numberTryParse(columns[January].replace(/[^0-9.-]+y/g,"")) + this.numberTryParse(columns[February].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[March].replace(/[^0-9.-]+/g,"")) ;
+            q2 =  this.numberTryParse(columns[April].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[May].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[June].replace(/[^0-9.-]+/g,"")) ;
+            q3 =  this.numberTryParse(columns[July].replace(/[^0-9.-]+/g,"")) +this.numberTryParse(columns[August].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[September].replace(/[^0-9.-]+/g,"")) ;
+            q4 =  this.numberTryParse(columns[October].replace(/[^0-9.-]+/g,""))+ this.numberTryParse(columns[November].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[December].replace(/[^0-9.-]+/g,"")) ;
           }
       
           data[i].Q1 = q1 == 0 ? '': "$" + q1.toFixed(2);
@@ -377,36 +394,12 @@ onEditorValueChange(props: any, event) {
   });
 }
 
-onBlur = (props: any, event) => {
-  debugger;
-  let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-  let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
-  let editedNode = this.findNodeByKey(newNodes, props.node.key);
-  editedNode.data[props.field] = event.target.value;
-  this.setState({
-      nodes: newNodes
-  });
-
-  let editedField = props.field;
-  let editedObject = this.createApiUpdateRequest(editedNode.data,editedField);
-  this.props.context.webAPI.updateRecord(gridEntity,editedNode.nodeKey,editedObject).then(this.successCallback,this.errorCallback);
-  try{
-      this.props.context.parameters.sampleDataSet.refresh();
-  }
-  catch (Error)   
-  {  
-    console.log(Error.message);  
-  }  
-  this.forceUpdate();
-}
-
-createApiUpdateRequest(editNode : any,editedField : string)
+createApiUpdateRequest(editNode : any)
 {
   debugger;
   let months: any[] = [];
   if (this.state.monthDetails.length == 0) {
       this.createMonthDefinition();//Define Months
-
   }
   months = this.state.monthDetails;
   var entity = {};
@@ -415,64 +408,81 @@ createApiUpdateRequest(editNode : any,editedField : string)
   if (typeof (this.props.context.parameters) !== 'undefined') {
       lineTotal = this.props.context.parameters.lineTotal.raw;
   }
-  let Q1 = ["January","February","March"];
-  let Q2 = ["April","May","June"];
-  let Q3 = ["July","August","September"];
-  let Q4 = ["October","November","December"];
-  let currentSum = 0;
-  let newSum = 0;
-  for(let Column in editNode)
-  {
-    if(Column == editedField)
-    {
-      if ( Column =="Q1" )
-      {
-        for (var i = 0; i < Q1.length; i++) 
-        {
-          entity[Q1[i]] = this.numberTryParse(editNode[editedField])/3;
-          currentSum += this.numberTryParse(editNode[Q1[i]]);
-          newSum +=entity[Q1[i]];
-        }
-      }
-      else if ( Column =="Q2" )
-      {
-          // entity["April"] = Math.round( ( ( (Number(editNode[editedField])/3) * 100) / 100) );
-          for (var i = 0; i < Q2.length; i++) 
-        {
-          entity[Q2[i]] = this.numberTryParse(editNode[editedField])/3;
-          currentSum += this.numberTryParse(editNode[Q2[i]]);
-          newSum +=entity[Q3[i]];
-        }
-      }
-      else if (Column =="Q3" )
-      {
-        for (var i = 0; i < Q3.length; i++) 
-        {
-          entity[Q3[i]] = this.numberTryParse(editNode[editedField])/3;
-          currentSum += this.numberTryParse(editNode[Q3[i]]);
-          newSum +=entity[Q3[i]];
-        }
-      }
-      else if (Column =="Q4" )
-      {
-        for (var i = 0; i < Q4.length; i++) 
-        {
-          entity[Q4[i]] = this.numberTryParse(editNode[editedField])/3;
-          currentSum += this.numberTryParse(editNode[Q4[i]]);
-          newSum +=entity[Q4[i]];
-        }
-      }
-    }
-      if(months.includes(Column))
-      {
-        entity[lineTotal] += this.numberTryParse(editNode[Column]);
-      }
+  let January,February,March,April,May,June,July,August,September,October,November,December;
+  if (typeof (this.props.context.parameters) !== 'undefined') {
+      January = this.props.context.parameters.January.raw;
+      February = this.props.context.parameters.February.raw;
+      March = this.props.context.parameters.March.raw;
+      April = this.props.context.parameters.April.raw;
+      May = this.props.context.parameters.May.raw;
+      June = this.props.context.parameters.June.raw;
+      July = this.props.context.parameters.July.raw;
+      August = this.props.context.parameters.August.raw;
+      September = this.props.context.parameters.September.raw;
+      October = this.props.context.parameters.October.raw;
+      November = this.props.context.parameters.November.raw;
+      December = this.props.context.parameters.December.raw;
   }
-  entity[lineTotal] = entity[lineTotal] - currentSum + newSum;
+  for (let Column in editNode) {
+
+     if (Column == "Q1") 
+     {
+        var key = this.convert(editNode[Column]) / 3;;
+        entity[January] =key;
+        entity[February] =key;
+        entity[March] =key;
+        total = total + 0;
+      }
+      else if (Column == "Q2") 
+      {
+        var key = this.convert(editNode[Column]) / 3;;
+        entity[April] =key;
+        entity[May] =key;
+        entity[June] =key;
+         total = total + 0;
+       }
+       else if (Column == "Q3") 
+       {
+        var key = this.convert(editNode[Column]) / 3;;
+        entity[July] =key;
+        entity[August] =key;
+        entity[September] =key;
+          total = total + 0;
+        }
+        else if (Column == "Q4") 
+        {
+          var key = this.convert(editNode[Column]) / 3;;
+          entity[October] =key;
+          entity[November] =key;
+          entity[December] =key;
+           total = total + 0;
+         }
+     
+  }
+  entity[lineTotal] = total;
   debugger;
   return entity;
 }
 
+
+isEmpty = (str) => {
+  return (!str || 0 === str.length);
+}
+
+  // Function to convert 
+  convert = (currency) => {
+    var k, temp;
+    for (var i = 0; i < currency.length; i++) {
+
+        k = currency.charCodeAt(i);
+        if (k > 47 && k < 58) {
+            temp = currency.substring(i);
+            break;
+        }
+    }
+    temp = temp.replace(/, /, '');
+    return parseFloat(temp);
+}
 
 successCallback()
 {
@@ -498,7 +508,6 @@ findNodeByKey(nodes: any, key: any) {
 
   return node;
 }
-// onBlur={(e) => this.onBlur(props,e)}
 inputTextEditor = (props: any, field: any) => {
   return <InputText type="text" defaultValue={props.node.data[field]}
       onChange={(e) =>
@@ -517,39 +526,40 @@ vinEditor = (props: any) => {
 }
 
 saveGrid(): void {
+  debugger;
   let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-  let gridrowKey = this.state.rowEditedKeyData;
+        let gridrowKey = this.state.rowEditedKeyData;
 
-  let rowKeys: any[] = Object.values(gridrowKey);
-  let field = Object.values(this.props.columns).map(p => p.fieldName);
+        let rowKeys: any[] = Object.values(gridrowKey);
+        let field = Object.values(this.props.columns).map(p => p.fieldName);
 
-  var uniqueKeys = Array.from(new Set(rowKeys))
+        var uniqueKeys = Array.from(new Set(rowKeys))
 
-  let nodes = this.state.nodes;
-  let context: ComponentFramework.Context<IInputs>;
-  context = this.props.context;
-  let stateVariable = this;
-  for (let i = 0; i < uniqueKeys.length; i++) {
+        let nodes = this.state.nodes;
+        let context: ComponentFramework.Context<IInputs>;
+        context = this.props.context;
+        let stateVariable = this;
+        for (let i = 0; i < uniqueKeys.length; i++) {
 
-      // this.setState({ loading: true }, () => {
-      //     setTimeout(() => {
-      //         let rowKey = uniqueKeys[i];
-      //         let editedNode = this.findNodeByKey(nodes, rowKey);
-      //         let editedObject = this.createApiUpdateRequest(editedNode.data);
-      //         var data = this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(function (result) {
+            this.setState({ loading: true }, () => {
+                setTimeout(() => {
+                    let rowKey = uniqueKeys[i];
+                    let editedNode = this.findNodeByKey(nodes, rowKey);
+                    let editedObject = this.createApiUpdateRequest(editedNode.data);
+                    var data = this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(function (result) {
 
-                
-      //             if(i===uniqueKeys.length-1){
-      //                 context.parameters.sampleDataSet.refresh();
-      //                 stateVariable.setState({ isSaved: true, loading: false ,rowEditedKeyData:[]});
-      //                }
-      //         },
-      //             function (result) {
-      //                 stateVariable.setState({ isSaved: false, loading: false });
-      //                })
-      //     },3000);
-      // });
-  }
+                      
+                        if(i===uniqueKeys.length-1){
+                            context.parameters.sampleDataSet.refresh();
+                            stateVariable.setState({ isSaved: true, loading: false ,rowEditedKeyData:[]});
+                           }
+                    },
+                        function (result) {
+                            stateVariable.setState({ isSaved: false, loading: false });
+                           })
+                },3000);
+            });
+          }
 
 }
 
