@@ -84,16 +84,16 @@ interface State {
         for (let columns of data) {
           if (typeof (columns[months[3]]) !== 'undefined' && columns[months[3]] !==null)
           {
-            q1 =  this.numberTryParse(columns[January].replace(/[^0-9.-]+y/g,"")) + this.numberTryParse(columns[February].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[March].replace(/[^0-9.-]+/g,"")) ;
-            q2 =  this.numberTryParse(columns[April].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[May].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[June].replace(/[^0-9.-]+/g,"")) ;
-            q3 =  this.numberTryParse(columns[July].replace(/[^0-9.-]+/g,"")) +this.numberTryParse(columns[August].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[September].replace(/[^0-9.-]+/g,"")) ;
-            q4 =  this.numberTryParse(columns[October].replace(/[^0-9.-]+/g,""))+ this.numberTryParse(columns[November].replace(/[^0-9.-]+/g,"")) + this.numberTryParse(columns[December].replace(/[^0-9.-]+/g,"")) ;
+            q1 =  this.convert(columns[January]) + this.convert(columns[February]) + this.convert(columns[March]) ;
+            q2 =  this.convert(columns[April]) + this.convert(columns[May]) + this.convert(columns[June]) ;
+            q3 =  this.convert(columns[July]) +this.convert(columns[August]) + this.convert(columns[September]) ;
+            q4 =  this.convert(columns[October])+ this.convert(columns[November]) + this.convert(columns[December]) ;
           }
       
-          data[i].Q1 = q1 == 0 ? '': "$" + q1.toFixed(2);
-          data[i].Q2 = q2 == 0 ? '': "$" + q2.toFixed(2);
-          data[i].Q3 = q3 == 0 ? '': "$" + q3.toFixed(2);
-          data[i].Q4 = q4 == 0 ? '': "$" + q4.toFixed(2);
+          data[i].Q1 = q1 == 0 ? '': "$" + q1;
+          data[i].Q2 = q2 == 0 ? '': "$" + q2;
+          data[i].Q3 = q3 == 0 ? '': "$" + q3;
+          data[i].Q4 = q4 == 0 ? '': "$" + q4;
           if(data[i][lineTot] !== null && typeof (data[i][lineTot]) !== 'undefined' && data[i][lineTot] !=="")
           {
             if(data[i][lineTot] !==0)
