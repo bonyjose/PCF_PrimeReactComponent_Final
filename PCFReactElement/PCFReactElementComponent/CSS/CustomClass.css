@@ -40,6 +40,18 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom > td .p-treetable-t
     transition-delay: 0s !important;
 }
 
+.addnew .p-datatable-wrapper .p-datatable-row{
+    height: 40px !important;
+
+}
+.addnew .p-panel.p-component .p-panel-content{
+    border-top-style: solid;
+    border-top-width: 1px !important;
+    border-top-color: rgb(200, 200, 200);
+
+}
+
+
 
 
 

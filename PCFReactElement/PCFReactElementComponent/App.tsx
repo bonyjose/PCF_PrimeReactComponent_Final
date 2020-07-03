@@ -11,11 +11,13 @@ import { Column } from "primereact/column";
 import {GridQuarterlyComponent} from './GridComponents/QuarterlyGrid'
 import{ GridMonthlyComponent} from './GridComponents/MonthlyGrid'
 import{ GridYearlyComponent} from './GridComponents/YearlyGrid'
-import {MonthlySummary} from './GridComponents/Summary/MonthlySummary/monthlySummaryComponent' 
+import MonthlySummary from './GridComponents/Summary/MonthlySummary/monthlySummaryComponent' 
 import{RecordOverviewProps} from './GridComponents/interface/contextInterface'
 import {IInputs, IOutputs} from "../PCFReactElementComponent/generated/ManifestTypes"
 import {TabView,TabPanel} from 'primereact/tabview';
-import {YearlyComponent} from './GridComponents/Summary/YearlySummary/yearlySummaryComponent';
+import YearlyComponent from './GridComponents/Summary/YearlySummary/yearlySummaryComponent';
+import { threadId } from "worker_threads";
+import { Growl } from 'primereact/growl';
 
 export interface Props {
   data: any;
@@ -33,11 +35,15 @@ export interface State {
   columns : any,
   context:ComponentFramework.Context<IInputs>;
   IsUpdated:boolean;
-  activeIndex:number
+  activeIndex:number,
+  TabUpdated:boolean
 }
 
-export class App extends React.Component<Props, State> {
 
+export class App extends React.Component<Props, State> {
+  
+  public growl = React.createRef<any>();
+  
   constructor(props: Props) {
     super(props);
 
@@ -53,14 +59,17 @@ export class App extends React.Component<Props, State> {
       columns : this.props.columns,
       context:this.props.context,
       IsUpdated:false,
-      activeIndex: 1
+      activeIndex: 1,
+      TabUpdated:false
     };
     // this.setState({ products : this.props.data});
     this.handleChange = this.handleChange.bind(this);
-    
+    // this.growlRef = React.createRef() // <---- Note the change in this line.
   }
 
-  
+  fileUpdated = (value:boolean) => {
+    this.setState({TabUpdated:value});
+  }
   static getDerivedStateFromProps(props, state) {
 
     if (state.products !== props.data) 
@@ -74,19 +83,19 @@ export class App extends React.Component<Props, State> {
       } 
     }
     return null;
-  }
-  
-//   componentDidUpdate() {
-//     debugger;
-//     if (this.state.products !== this.props.data) 
-//     {
-//       this.setState({products: this.props.data});
-//       // this.render();
-//   }
-//  }
+  }  
+
 
   handleChange(e) {
-    debugger
+    if(this.state.TabUpdated){
+      this.growl.current.show({
+        severity: 'error',
+        summary: 'Error Message',
+        detail: 'Please save Data '
+        });
+
+    return;
+    }
    // this.setState({ SelectedLayout: e.originalEvent.va });
   let selectedItem=e.originalEvent.target.innerText;
   this.setState({ SelectedLayout: selectedItem })
@@ -96,8 +105,7 @@ export class App extends React.Component<Props, State> {
   callbackFunction = (childData) => {  
 
     this.setState({productsFomChild: childData});
-    // console.log(childData);
-    this.props.onChange(childData);
+     this.props.onChange(childData);
   }
   
 
@@ -109,40 +117,39 @@ debugger;
       data: this.state.products,
       columns: this.state.columns,
       context:this.state.context,
-      IsUpdated:this.state.IsUpdated
+      IsUpdated:this.state.IsUpdated,
     }
     // this.setState({ products : this.props.data});
     const layout = this.state.SelectedLayout;
     let products = this.state.products;
 
 
-    let DataTable;
-    if (layout ==="Year")
-    {
-
-      DataTable=<YearlyComponent {...inputData}/>
-      
+    // let DataTable;
+    // if (layout ==="Year")
+    // {
+    //   DataTable=<YearlyComponent {...inputData}/>     
      
-    } 
-    else if (layout === "Month")
-    {
-      DataTable=<MonthlySummary {...inputData}/>
-      // DataTable = <GridMonthlyComponent parentCallback = {this.callbackFunction} {...products}/> ;
-    }
-    else if (layout ==="Quater")
-    {
-      DataTable = <GridQuarterlyComponent  {...inputData}/>;
-    }
+    // } 
+    // else if (layout === "Month")
+    // {
+    //   DataTable=<MonthlySummary {...inputData}/>
+    //   // DataTable = <GridMonthlyComponent parentCallback = {this.callbackFunction} {...products}/> ;
+    // }
+    // else if (layout ==="Quater")
+    // {
+    //   DataTable = <GridQuarterlyComponent  {...inputData}/>;
+    // }
    
 
     return (
       <div className="App">
+    <Growl ref={this.growl} />
                     <TabView activeIndex={this.state.activeIndex} renderActiveOnly={false} onTabChange={(e) => this.handleChange(e)}>
                         <TabPanel header="Year">
-                        <YearlyComponent {...inputData} />;
+                        <YearlyComponent {...inputData} fileUpdated={this.fileUpdated}/>;
                         </TabPanel>
                         <TabPanel header="Month" >
-                        <MonthlySummary {...inputData}/>
+                        <MonthlySummary {...inputData} fileUpdated={this.fileUpdated}/>
                         </TabPanel>
                         <TabPanel header="Quater" >
                         <GridQuarterlyComponent  {...inputData}/>;

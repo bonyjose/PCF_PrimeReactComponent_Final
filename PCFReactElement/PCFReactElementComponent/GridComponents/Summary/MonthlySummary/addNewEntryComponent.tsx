@@ -3,7 +3,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
-
+import { Panel } from 'primereact/panel';
 import { CarService } from '../../service/carService';
 import { IInputs } from '../../../generated/ManifestTypes';
 
@@ -33,8 +33,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             popupColDef : [],
             monthDetails :[]
         };
-
-
         this.vinEditor = this.vinEditor.bind(this);
         this.yearEditor = this.yearEditor.bind(this);
         this.requiredValidator = this.requiredValidator.bind(this);
@@ -326,15 +324,17 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         console.log(fin);
         debugger;
         return (
-            <div className="gridstyle">
+            <div className="addnew gridstyle">
+                <Panel>
+                    <div className="content-section implementation">
+                        {/* <h3>New Entry</h3> */}
+                        <DataTable editMode="Cell" value={this.state.popupColDef} >
+                            {colDefition}
 
-                <div className="content-section implementation">
-                    {/* <h3>New Entry</h3> */}
-                    <DataTable  editMode="Cell" value={this.state.popupColDef} >
-                    {colDefition}
-                    
-                   </DataTable>
-                </div>
+                        </DataTable>
+                    </div>
+                </Panel>
+
             </div>
         );
     }

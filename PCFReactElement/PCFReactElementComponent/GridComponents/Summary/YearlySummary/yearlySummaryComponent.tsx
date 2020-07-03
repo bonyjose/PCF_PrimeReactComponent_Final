@@ -7,13 +7,16 @@ import { IInputs, IOutputs } from "../../../generated/ManifestTypes"
 import { useState, useEffect, useRef } from 'react'
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
+
 import axios from 'axios';
 import { isNull } from 'util';
 type AppMonthProps = {
     data: any[];
     columns: any[];
     context: ComponentFramework.Context<IInputs>;
-    IsUpdated: boolean
+    IsUpdated: boolean,
+    fileUpdated(boolean):any
+  
 }
 type monthState = {
     nodes: [],
@@ -28,7 +31,7 @@ type monthState = {
     loading: boolean
 }
 
-export class YearlyComponent extends Component<AppMonthProps, monthState>{
+ class YearlyComponent extends Component<AppMonthProps, monthState>{
 
     constructor(props: AppMonthProps) {
 
@@ -62,11 +65,6 @@ export class YearlyComponent extends Component<AppMonthProps, monthState>{
             let jsonData = this.createJsonTreestructure();
             this.setState({ nodes: jsonData, loading: false, isSaved: false });
         }
-        else if(prevProps.data !=this.props.data)
-        {
-            let jsonData = this.createJsonTreestructure();
-            this.setState({ nodes: jsonData});
-        }
     }
     componentDidMount() {
         if(this.state.isSaved){
@@ -77,6 +75,7 @@ export class YearlyComponent extends Component<AppMonthProps, monthState>{
     }
 
     onEditorValueChange(props: any, event) {
+        this.props.fileUpdated(true);
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let nodes = this.state.nodes;
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
@@ -273,6 +272,8 @@ export class YearlyComponent extends Component<AppMonthProps, monthState>{
         return datas;
     }
 
+    
+
     sortByKey(array, key) {
         return array.sort(function (a, b) {
             var x = a[key]; var y = b[key];
@@ -341,6 +342,7 @@ export class YearlyComponent extends Component<AppMonthProps, monthState>{
 
     }
     saveGrid(): void {
+        this.props.fileUpdated(false);
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let gridrowKey = this.state.rowEditedKeyData;
 
@@ -383,7 +385,8 @@ export class YearlyComponent extends Component<AppMonthProps, monthState>{
         let inputData = {
 
             columns: coldef,
-
+            pannelType:"Y",
+            actualColDef:this.props.columns,
             context: this.props.context,
             IsUpdated: this.state.IsUpdated,
             monthDetails :this.state.monthDetails
@@ -424,3 +427,4 @@ export class YearlyComponent extends Component<AppMonthProps, monthState>{
 
 
 }
+export default YearlyComponent;

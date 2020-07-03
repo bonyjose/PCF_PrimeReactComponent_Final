@@ -7,13 +7,20 @@ import { IInputs, IOutputs } from "../../../generated/ManifestTypes"
 import { useState, useEffect, useRef } from 'react'
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import {changeUpadated} from '../../store/actions'
+import {connect} from 'react-redux'
 import axios from 'axios';
 import { isNull } from 'util';
+
 type AppMonthProps = {
     data: any[];
     columns: any[];
     context: ComponentFramework.Context<IInputs>;
-    IsUpdated: boolean
+    IsUpdated: boolean,
+    campaign:any,
+    isUpdated:boolean,
+    changeUpadated:any,
+    fileUpdated(boolean):any
 }
 type monthState = {
     nodes: [],
@@ -25,10 +32,10 @@ type monthState = {
     rowEditedKey: [],
     monthDetails: any[],
     rowEditedKeyData: any[],
-    loading: boolean
+    loading: boolean,
 }
 
-export class MonthlySummary extends Component<AppMonthProps, monthState>{
+ class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     constructor(props: AppMonthProps) {
 
@@ -70,6 +77,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
     }
     componentDidMount() {
+
         if(this.state.isSaved){
             this.forceUpdate();
         }
@@ -78,6 +86,8 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     onEditorValueChange(props: any, event) {
+        this.props.changeUpadated()
+        this.props.fileUpdated(true);
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let nodes = this.state.nodes;
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
@@ -364,6 +374,7 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     }
     saveGrid(): void {
+        this.props.fileUpdated(false);
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let gridrowKey = this.state.rowEditedKeyData;
 
@@ -446,6 +457,11 @@ export class MonthlySummary extends Component<AppMonthProps, monthState>{
 
         )
     }
-
-
 }
+const mapStateToProps = (state: any) => {
+    return{
+        campaign:state.postReduce.campaign,
+        isUpdated : state.postReduce.isUpdated
+    }
+};
+export default connect(mapStateToProps,{changeUpadated})(MonthlySummary)
