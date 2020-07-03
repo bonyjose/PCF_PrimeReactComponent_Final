@@ -9,6 +9,7 @@
     "start": "pcf-scripts start"
   },
   "dependencies": {
+    "@crystallize/react-growl": "^2.2.1",
     "@types/jest": "^25.2.1",
     "@types/mocha": "^7.0.2",
     "@types/node": "^10.12.18",
@@ -16,11 +17,17 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "classnames": "^2.2.6",
+    "framer-motion": "^1.11.1",
     "office-ui-fabric-react": "^6.189.0",
-    "primeicons": "^3.0.0-rc.1",
+    "primeicons": "file:PCFReactElementComponent/primeicons",
+    "primereact": "^4.2.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-transition-group": "^4.4.1"
+    "react-redux": "^7.2.0",
+    "react-toastify": "^6.0.8",
+    "react-transition-group": "^4.4.1",
+    "redux": "^4.0.5",
+    "styled-components": "^5.1.1"
   },
   "devDependencies": {
     "@types/react": "^16.9.34",
