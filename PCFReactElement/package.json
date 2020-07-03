@@ -19,7 +19,7 @@
     "classnames": "^2.2.6",
     "framer-motion": "^1.11.1",
     "office-ui-fabric-react": "^6.189.0",
-    "primeicons": "file:PCFReactElementComponent/primeicons",
+    "primeicons": "^4.0.0",
     "primereact": "^4.2.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
