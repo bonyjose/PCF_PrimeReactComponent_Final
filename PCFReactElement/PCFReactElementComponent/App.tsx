@@ -121,25 +121,7 @@ debugger;
     }
     // this.setState({ products : this.props.data});
     const layout = this.state.SelectedLayout;
-    let products = this.state.products;
-
-
-    // let DataTable;
-    // if (layout ==="Year")
-    // {
-    //   DataTable=<YearlyComponent {...inputData}/>     
-     
-    // } 
-    // else if (layout === "Month")
-    // {
-    //   DataTable=<MonthlySummary {...inputData}/>
-    //   // DataTable = <GridMonthlyComponent parentCallback = {this.callbackFunction} {...products}/> ;
-    // }
-    // else if (layout ==="Quater")
-    // {
-    //   DataTable = <GridQuarterlyComponent  {...inputData}/>;
-    // }
-   
+    let products = this.state.products;  
 
     return (
       <div className="App">
@@ -151,7 +133,7 @@ debugger;
                         <TabPanel header="Month" >
                         <MonthlySummary {...inputData} fileUpdated={this.fileUpdated}/>
                         </TabPanel>
-                        <TabPanel header="Quater" >
+                        <TabPanel header="Quarter" >
                         <GridQuarterlyComponent  {...inputData}/>;
                         </TabPanel>
                   </TabView>
