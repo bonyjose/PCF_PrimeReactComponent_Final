@@ -39,7 +39,12 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom > td .p-treetable-t
     opacity: 2.1 !important;
     transition-delay: 0s !important;
 }
+.p-messages.p-component.p-messages-warn.p-messages-enter-done{
+    float: none !important;
+    margin-top: -7px !important;
+    margin-bottom: -30px !important;
 
+}
 .addnew .p-datatable-wrapper .p-datatable-row{
     height: 40px !important;
 

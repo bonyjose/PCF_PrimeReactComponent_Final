@@ -11,7 +11,7 @@ import {changeUpadated} from '../../store/actions'
 import {connect} from 'react-redux'
 import axios from 'axios';
 import { isNull } from 'util';
-
+import {Messages} from 'primereact/messages';
 type AppMonthProps = {
     data: any[];
     columns: any[];
@@ -36,7 +36,7 @@ type monthState = {
 }
 
  class MonthlySummary extends Component<AppMonthProps, monthState>{
-
+    public messages =  React.createRef<any>();
     constructor(props: AppMonthProps) {
 
         super(props);
@@ -86,6 +86,14 @@ type monthState = {
     }
 
     onEditorValueChange(props: any, event) {
+
+        let data=this.messages.current.state.messages;
+        if(data.length===0){
+            debugger;
+            this.messages.current.show({sticky: true,severity: 'warn', summary: 'Warn Message', detail: 'There are unsaved changes'});
+        }
+           
+  
         this.props.changeUpadated()
         this.props.fileUpdated(true);
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
@@ -374,6 +382,7 @@ type monthState = {
 
     }
     saveGrid(): void {
+        this.messages.current.clear();
         this.props.fileUpdated(false);
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let gridrowKey = this.state.rowEditedKeyData;
@@ -439,9 +448,11 @@ type monthState = {
             return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.isEditable ? this.vinEditor :undefined} style={{ width: '100px' }} headerClassName="p-col-d" />;
         });
         return (
-            <div className="scrollbar scrollbar-primary">
-                <div className="content-section implementation monthlyGrid month">
 
+            <div className="scrollbar scrollbar-primary">
+                            <Messages ref={this.messages} />
+                <div className="content-section implementation monthlyGrid month">
+             
                     <DialogDemo {...inputData} />
                     <Button label="Save" className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
                     <div>

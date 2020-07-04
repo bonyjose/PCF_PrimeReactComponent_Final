@@ -8,9 +8,9 @@ import { IInputs } from '../../../generated/ManifestTypes';
 type AppProps = {
     test?: any;
     context: ComponentFramework.Context<IInputs>;
-    IsUpdated:boolean;
+    IsUpdated: boolean;
     columns: any[];
-    monthDetails : any
+    monthDetails: any
     // data :any;
 }
 
@@ -22,11 +22,11 @@ type AppState = {
     displayMaximizable: boolean;
     displayPosition: boolean;
     position: string;
-    updatedData:any[];
-    monthDetails :any;
+    updatedData: any[];
+    monthDetails: any;
 }
-interface inputData{
-    SetData():any,
+interface inputData {
+    SetData(): any,
     // data:any[]
 
 }
@@ -43,8 +43,8 @@ export class DialogDemo extends Component<AppProps, AppState>{
             displayPosition: false,
             position: 'center',
             updatedData: [],
-            monthDetails :[]
-            
+            monthDetails: []
+
         };
     }
 
@@ -72,27 +72,27 @@ export class DialogDemo extends Component<AppProps, AppState>{
         let context: ComponentFramework.Context<IInputs>;
         context = this.props.context;
         let stateVariable = this;
-        
-        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-            let editedObject = this.createApiUpdateRequest(updatedDatas[0]);
-            debugger;
-            console.log(editedObject);
-            try {
-                this.props.context.webAPI.createRecord(gridEntity,  editedObject).then(function (result) {
-                    debugger;
 
-                        context.parameters.sampleDataSet.refresh();
-                       }
+        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let editedObject = this.createApiUpdateRequest(updatedDatas[0]);
+        debugger;
+        console.log(editedObject);
+        try {
+            this.props.context.webAPI.createRecord(gridEntity, editedObject).then(function (result) {
+                debugger;
+
+                context.parameters.sampleDataSet.refresh();
+            }
                 ,
-                    function (result) {
-                       })
-                this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
-            }
-            catch (Error) {
-                console.log(Error.message);
-            }
-            this.forceUpdate();
-            debugger;
+                function (result) {
+                })
+            this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
+        }
+        catch (Error) {
+            console.log(Error.message);
+        }
+        this.forceUpdate();
+        debugger;
     }
 
     createMonthDefinition = () => {
@@ -152,43 +152,40 @@ export class DialogDemo extends Component<AppProps, AppState>{
         //  //   return this.createMonthRequest(editNode, ContextId)
         // }
         // else{
-            for (let Column in editNode) {
-                if (months.includes(Column)) {
-                    entity["m360_linetotal"] += Number(editNode[Column]);
-                    entity[Column] = Number(editNode[Column]);
-                }
-                else if (Column == "m360_ppr") {
-                    entity["m360_PPR" + "@odata.bind"] = "/" + "m360_pprs" + "(" + ContextId + ")";
-                    // entity[primaryLookupschemaName+"@odata.bind"] = "/"+entitySetName+"(" + ContextId+ ")";
-                    // entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
-                }
-                else if (Column == "m360_cashflowitemname") {
-                    entity["m360_cashflowitemname"] = editNode[Column];
-                }
-                else if (Column == "m360_fiscalyear") {
-                    entity["m360_fiscalyear"] = "555080002";
-                }
-                else {
-                    // let stri
-                    entity[Column] = Number(editNode[Column]);
-                }
+        for (let Column in editNode) {
+            if (months.includes(Column)) {
+                entity["m360_linetotal"] += Number(editNode[Column]);
+                entity[Column] = Number(editNode[Column]);
             }
-            entity["m360_linetotal"] = Number(entity["m360_linetotal"]);
-            return entity;
-        
-
+            else if (Column == "m360_ppr") {
+                entity["m360_PPR" + "@odata.bind"] = "/" + "m360_pprs" + "(" + ContextId + ")";
+                // entity[primaryLookupschemaName+"@odata.bind"] = "/"+entitySetName+"(" + ContextId+ ")";
+                // entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
+            }
+            else if (Column == "m360_cashflowitemname") {
+                entity["m360_cashflowitemname"] = editNode[Column];
+            }
+            else if (Column == "m360_fiscalyear") {
+                entity["m360_fiscalyear"] = "555080002";
+            }
+            else {
+                // let stri
+                entity[Column] = Number(editNode[Column]);
+            }
+        }
+        entity["m360_linetotal"] = Number(entity["m360_linetotal"]);
+        return entity;
     }
 
-    
     numberTryParse(string) {
         var returnValue = 0;
         if (!isNaN(string) && string != null) {
-          returnValue = Number.parseFloat(string);
+            returnValue = Number.parseFloat(string);
         }
         return returnValue;
-      }
+    }
 
-    
+
     successCallback() {
         // console.log("api create success");
         console.log("api update success");
@@ -198,7 +195,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         console.log("api update failed");
     }
 
-    
+
     renderFooter(name: string) {
         return (
             <div>
@@ -208,7 +205,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         );
     }
 
-    setData=(data)=>{
+    setData = (data) => {
         debugger;
         let updatedDatas: any[] = data;
         this.setState({ updatedData: updatedDatas });
@@ -218,23 +215,16 @@ export class DialogDemo extends Component<AppProps, AppState>{
         let inputData = {
             columns: this.props.columns,
             context: this.props.context,
-            monthDetails : this.props.monthDetails
-            // data :this.props.data
+            monthDetails: this.props.monthDetails
         }
         return (
-
-
-
-                <div className="addNewButton">
-                    <Button label="AddNew" className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
-                    
-
-                    <Dialog position="top" header="Add New Record" visible={this.state.displayBasic2} style={{ width: '90vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
-                        <DataTableAddNew setData={this.setData}  {...inputData}  />
-                        {/* <label style={{float:"left",color:"#ab9999"}} >CFName*: Cash Flow Item Name</label> */}
-                    </Dialog>
-
-                </div>
+            <div className="addNewButton">
+                <Button label="Add New" className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
+                <Dialog position="top" header="Add New Record" visible={this.state.displayBasic2} style={{ width: '90vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
+                    <DataTableAddNew setData={this.setData}  {...inputData} />
+                    {/* <label style={{float:"left",color:"#ab9999"}} >CFName*: Cash Flow Item Name</label> */}
+                </Dialog>
+            </div>
 
         )
     }
