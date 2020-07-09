@@ -241,7 +241,10 @@ export class DialogDemo extends Component<AppProps, AppState>{
                 entity["m360_PPR" + "@odata.bind"] = "/" + "m360_pprs" + "(" + contextId + ")";
                 //entity[ppr + "@odata.bind"] = "/" + ppr + "(" + contextId + ")";
             }
-            else if (Column == cashFlow || Column == expandYear) {
+            else if (Column == expandYear) {
+                entity[expandYear] = "555080002";
+            }
+            else if (Column == cashFlow) {
                 entity[Column] = editNode[Column];
             }
         }
