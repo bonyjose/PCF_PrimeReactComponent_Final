@@ -20,6 +20,7 @@ type AppMonthProps = {
     campaign:any,
     isUpdated:boolean,
     changeUpadated:any,
+    pannelType:any,
     fileUpdated(boolean):any
 }
 type monthState = {
@@ -59,8 +60,6 @@ type monthState = {
 
 
     componentDidUpdate(prevProps, prevState) {
-        debugger;
-
         if(this.props.IsUpdated!=this.state.IsUpdated){
             let jsonData = this.createJsonTreestructure();
             this.setState({ nodes: jsonData, IsUpdated: this.props.IsUpdated });
@@ -89,7 +88,6 @@ type monthState = {
 
         let data=this.messages.current.state.messages;
         if(data.length===0){
-            debugger;
             this.messages.current.show({sticky: true,severity: 'warn', summary: 'Warn Message', detail: 'There are unsaved changes'});
         }
            
@@ -114,7 +112,6 @@ type monthState = {
     }
 
     createApiUpdateRequest(editNode: any) {
-        debugger;
         let months: any[] = [];
         if (this.state.monthDetails.length == 0) {
             this.createMonthDefinition();//Define Months
@@ -213,7 +210,6 @@ type monthState = {
     }
 
     createMonthDefinition = () => {
-        debugger;
         let expandYear, ppr, lineTotal, cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
@@ -248,8 +244,7 @@ type monthState = {
                     break;
             }
         });
-        debugger;
-        this.setState({ monthDetails: month });
+         this.setState({ monthDetails: month });
         console.log(this.state.monthDetails);
     }
 
@@ -309,8 +304,6 @@ type monthState = {
             }
         });
         let datas = this.sortByKey(Object.values(cols), 'expander');
-
-        debugger;
         return datas;
     }
 
@@ -428,7 +421,8 @@ type monthState = {
         let inputData = {
 
             columns: coldef,
-
+            actualColDef:this.props.columns,
+            pannelType:this.props.pannelType,
             context: this.props.context,
             IsUpdated: this.state.IsUpdated,
             monthDetails :this.state.monthDetails

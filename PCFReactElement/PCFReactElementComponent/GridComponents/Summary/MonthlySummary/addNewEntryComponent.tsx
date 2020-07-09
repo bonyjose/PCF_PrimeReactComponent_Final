@@ -10,16 +10,17 @@ import { IInputs } from '../../../generated/ManifestTypes';
 type AppProps = {
     columns: any[];
     context: ComponentFramework.Context<IInputs>;
-    setData :any;
-    monthDetails : any
+    setData: any;
+    monthDetails: any
+    pannelType: any
     // data :any
 }
 
 type AppState = {
     colDef: any[];
-    rowEditedData :[];
-    popupColDef : any[];
-    monthDetails :any;
+    rowEditedData: [];
+    popupColDef: any[];
+    monthDetails: any;
 }
 
 export class DataTableAddNew extends Component<AppProps, AppState> {
@@ -29,9 +30,9 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         super(props);
         this.state = {
             colDef: [],
-            rowEditedData :[],
-            popupColDef : [],
-            monthDetails :[]
+            rowEditedData: [],
+            popupColDef: [],
+            monthDetails: []
         };
         this.vinEditor = this.vinEditor.bind(this);
         this.yearEditor = this.yearEditor.bind(this);
@@ -39,34 +40,33 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     }
 
     componentDidMount() {
-        debugger;
+
         this.createMonthDefinition();
-        this.setState({colDef:this.props.columns});
+        this.setState({ colDef: this.props.columns });
         var jsonArr = [{}];
 
         for (var i = 0; i < this.props.columns.length; i++) {
             jsonArr[0][this.props.columns[i].field] = "";
-        
+
         }
         console.log(jsonArr);
-        this.setState({popupColDef:jsonArr});
+        this.setState({ popupColDef: jsonArr });
     }
 
     inputTextEditor = (props: any, field: any) => {
-        debugger;
+
         return <InputText type="text" value={props.value[0][field]}
 
-        onChange={(
-            ev: React.ChangeEvent<HTMLInputElement>): void => {
-            this.onEditorValueChange
-                (props, ev.target.value.toString())
-        }} />;
+            onChange={(
+                ev: React.ChangeEvent<HTMLInputElement>): void => {
+                this.onEditorValueChange
+                    (props, ev.target.value.toString())
+            }} />;
     }
     /* Cell Editing */
     onEditorValueChange(props: any, event) {
         debugger;
-
-        let gridEntity: string=this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let newNodes = this.state.popupColDef;
         let expandYear, ppr, lineTotal, cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
@@ -78,41 +78,36 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         // let editedNode = this.findNodeByKey(newNodes, props.node.key);
         let editedNode = newNodes[0];
         newNodes[0][props.field] = event;
-       let months = this.state.monthDetails;
-       let Total = 0;
-       for (let Column in newNodes[0]) {
-           
-        if (months.includes(Column)) {
+        if (this.props.pannelType === "Q") {
+            let months = this.state.monthDetails;
+            let Total = 0;
+            for (let Column in newNodes[0]) {
 
-            Total += this.numberTryParse(newNodes[0][Column]);
+                if (months.includes(Column)) {
+
+                    Total += this.numberTryParse(newNodes[0][Column]);
+                }
             }
-        }
-        newNodes[0][lineTotal]  = Total;
-        let newNode : any;
+            newNodes[0][lineTotal] = Total;
+            let newNode: any;
 
-        if (typeof (newNodes[0].Q1) !== 'undefined')
-        {
-            newNode = this.parseQuartertoMonth(newNodes);
-            debugger;
-        }
-        else
-        {
-            newNode = newNodes;
+            if (typeof (newNodes[0].Q1) !== 'undefined') {
+                newNode = this.parseQuartertoMonth(newNodes);
+            }
+            else {
+                newNode = newNodes;
+            }
         }
 
         this.setState({
             popupColDef: newNodes
         });
-        debugger;
         let editedField = props.field;
-
         let childproduct = this.state.popupColDef;
-        debugger;
         this.sendData(childproduct);
     }
-    parseQuartertoMonth(newNodes : any)
-    {
-        let January,February,March,April,May,June,July,August,September,October,November,December;
+    parseQuartertoMonth(newNodes: any) {
+        let January, February, March, April, May, June, July, August, September, October, November, December;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             January = this.props.context.parameters.January.raw;
             February = this.props.context.parameters.February.raw;
@@ -127,34 +122,33 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             November = this.props.context.parameters.November.raw;
             December = this.props.context.parameters.December.raw;
         }
-        newNodes[0][January] = this.numberTryParse(newNodes[0].Q1/3).toFixed(2);
-        newNodes[0][February] = this.numberTryParse(newNodes[0].Q1/3).toFixed(2);
-        newNodes[0][March] = this.numberTryParse(newNodes[0].Q1/3).toFixed(2);
-        newNodes[0][April] = this.numberTryParse(newNodes[0].Q2/3).toFixed(2);
-        newNodes[0][May] = this.numberTryParse(newNodes[0].Q2/3).toFixed(2);
-        newNodes[0][June] = this.numberTryParse(newNodes[0].Q2/3).toFixed(2);
-        newNodes[0][July] = this.numberTryParse(newNodes[0].Q3/3).toFixed(2);
-        newNodes[0][August] = this.numberTryParse(newNodes[0].Q3/3).toFixed(2);
-        newNodes[0][September] = this.numberTryParse(newNodes[0].Q3/3).toFixed(2);
-        newNodes[0][October] = this.numberTryParse(newNodes[0].Q4/3).toFixed(2);
-        newNodes[0][November] = this.numberTryParse(newNodes[0].Q4/3).toFixed(2);
-        newNodes[0][December] = this.numberTryParse(newNodes[0].Q4/3).toFixed(2);
+        newNodes[0][January] = this.numberTryParse(newNodes[0].Q1 / 3).toFixed(2);
+        newNodes[0][February] = this.numberTryParse(newNodes[0].Q1 / 3).toFixed(2);
+        newNodes[0][March] = this.numberTryParse(newNodes[0].Q1 / 3).toFixed(2);
+        newNodes[0][April] = this.numberTryParse(newNodes[0].Q2 / 3).toFixed(2);
+        newNodes[0][May] = this.numberTryParse(newNodes[0].Q2 / 3).toFixed(2);
+        newNodes[0][June] = this.numberTryParse(newNodes[0].Q2 / 3).toFixed(2);
+        newNodes[0][July] = this.numberTryParse(newNodes[0].Q3 / 3).toFixed(2);
+        newNodes[0][August] = this.numberTryParse(newNodes[0].Q3 / 3).toFixed(2);
+        newNodes[0][September] = this.numberTryParse(newNodes[0].Q3 / 3).toFixed(2);
+        newNodes[0][October] = this.numberTryParse(newNodes[0].Q4 / 3).toFixed(2);
+        newNodes[0][November] = this.numberTryParse(newNodes[0].Q4 / 3).toFixed(2);
+        newNodes[0][December] = this.numberTryParse(newNodes[0].Q4 / 3).toFixed(2);
 
 
         return newNodes;
     }
 
-    
+
     numberTryParse(string) {
         var returnValue = 0;
         if (!isNaN(string) && string != null && string != "") {
-          returnValue = Number.parseFloat(string);
+            returnValue = Number.parseFloat(string);
         }
         return returnValue;
-      }
+    }
 
     createMonthDefinition = () => {
-        debugger;
         let expandYear, ppr, lineTotal, cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
@@ -189,14 +183,11 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                     break;
             }
         });
-        debugger;
         this.setState({ monthDetails: month });
         console.log(this.state.monthDetails);
     }
-    
+
     createColDefinition = () => {
-
-
         let expandYear, ppr, lineTotal, cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
@@ -218,56 +209,54 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             switch (p.field) {
                 case expandYear:
                     resultData = {
-                        field: p.field, header: "Year", expander: true,isEditable:true
+                        field: p.field, header: "Year", expander: true, isEditable: true
                     }
                     cols.push(resultData);
                     break;
                 case cashFlow:
                     resultData = {
-                        field: p.field, header: "Cash Flow", expander: expander,isEditable:true
+                        field: p.field, header: "Cash Flow", expander: expander, isEditable: true
                     }
                     cols.push(resultData);
                     break;
                 case ppr:
-                    resultData = {
-                        field: p.field, header: "PPR", expander: expander,isEditable:false
-                    }
-                    cols.push(resultData);
                     break;
                 case lineTotal:
+                    var isVisible: Boolean = false
+                    if (this.props.pannelType === 'Y') {
+                        isVisible = true;
+                    }
                     resultData = {
-                        field: p.field, header: "Total", expander: expander,isEditable:false
+                        field: p.field, header: "Total", expander: expander, isEditable: isVisible
                     }
                     cols.push(resultData);
                     break;
                 default:
                     resultData = {
-                        field: p.field, header: p.header, expander: expander,isEditable:true
+                        field: p.field, header: p.header, expander: expander, isEditable: true
                     }
                     cols.push(resultData);
                     month.push(p.fieldName);
                     break;
             }
         });
-
-        debugger;
         return cols;
     }
 
 
     findNodeByKey(nodes: any, key: any) {
-        debugger;
+
         let path = key.split('-');
         let node;
-      
+
         while (path.length) {
             let list = node ? node.children : nodes;
             node = list[parseInt(path[0], 10)];
             path.shift();
         }
-      
+
         return node;
-      }
+    }
     vinEditor(props: any) {
 
         let field = props.field
@@ -279,19 +268,16 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         return this.inputTextEditor(props, 'year');
     }
     requiredValidator(props: any) {
-        debugger;
-
         let value = props.rowData[props.field];
-        let isValid =   value.length >0;
-        if(isValid)
-            {
-                return value && value.length > 0;
-            }
-            else{
-                alert("Cells cannot be empty");
-                return value;
-            }
-       
+        let isValid = value.length > 0;
+        if (isValid) {
+            return value && value.length > 0;
+        }
+        else {
+            alert("Cells cannot be empty");
+            return value;
+        }
+
     }
 
     // requiredValidator(props) {
@@ -309,20 +295,20 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     //   }
 
     render() {
-        debugger;
+
         var colDefition = this.createColDefinition();
-        
+
 
         var colData = this.state.colDef;
         console.log(colDefition);
-         colDefition = colDefition.map((col,i) => {
-            return <Column key={col.field} field={col.field}  editor={col.isEditable ? this.vinEditor :undefined} header={col.header}   />;  // editorValidator={this.requiredValidator}
+        colDefition = colDefition.map((col, i) => {
+            return <Column key={col.field} field={col.field} editor={col.isEditable ? this.vinEditor : undefined} header={col.header} />;  // editorValidator={this.requiredValidator}
         });
 
-     let emptyCell = Array.from("1");
-    let fin = Array.from(emptyCell);
+        let emptyCell = Array.from("1");
+        let fin = Array.from(emptyCell);
         console.log(fin);
-        debugger;
+
         return (
             <div className="addnew gridstyle">
                 <Panel>
@@ -339,9 +325,8 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         );
     }
 
-    sendData = (childproduct :any) => {
-        debugger;
-       this.props.setData(childproduct);
-     }
+    sendData = (childproduct: any) => {
+        this.props.setData(childproduct);
+    }
 
 }

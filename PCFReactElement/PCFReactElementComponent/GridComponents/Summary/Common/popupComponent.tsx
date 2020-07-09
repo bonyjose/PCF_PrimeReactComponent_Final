@@ -5,12 +5,15 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { DataTableAddNew } from '../MonthlySummary/addNewEntryComponent'
 import { IInputs } from '../../../generated/ManifestTypes';
+import { isNull } from 'util';
 type AppProps = {
     test?: any;
     context: ComponentFramework.Context<IInputs>;
     IsUpdated: boolean;
     columns: any[];
-    monthDetails: any
+    monthDetails: any,
+    pannelType: any,
+    actualColDef: any[]
     // data :any;
 }
 
@@ -61,13 +64,9 @@ export class DialogDemo extends Component<AppProps, AppState>{
     }
 
     onHide(name: string) {
-        debugger;
-
         this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
     }
     onSave(name: string) {
-        debugger;
-
         let updatedDatas: any[] = this.state.updatedData;
         let context: ComponentFramework.Context<IInputs>;
         context = this.props.context;
@@ -75,11 +74,11 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let editedObject = this.createApiUpdateRequest(updatedDatas[0]);
-        debugger;
+
         console.log(editedObject);
         try {
             this.props.context.webAPI.createRecord(gridEntity, editedObject).then(function (result) {
-                debugger;
+
 
                 context.parameters.sampleDataSet.refresh();
             }
@@ -92,11 +91,11 @@ export class DialogDemo extends Component<AppProps, AppState>{
             console.log(Error.message);
         }
         this.forceUpdate();
-        debugger;
+
     }
 
     createMonthDefinition = () => {
-        debugger;
+
         let expandYear, ppr, lineTotal, cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
@@ -131,14 +130,13 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     break;
             }
         });
-        debugger;
+
         this.setState({ monthDetails: month });
         console.log(this.state.monthDetails);
     }
 
 
     createApiUpdateRequest(editNode: any) {
-        debugger;
         // let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         let months = this.props.monthDetails;
         var entity = {};
@@ -148,33 +146,34 @@ export class DialogDemo extends Component<AppProps, AppState>{
         let ContextId = this.props.context.page.entityId;
         // @ts-ignore 
         let type = this.props.pannelType;
-        // if (type == "Y") {
-        //  //   return this.createMonthRequest(editNode, ContextId)
-        // }
-        // else{
-        for (let Column in editNode) {
-            if (months.includes(Column)) {
-                entity["m360_linetotal"] += Number(editNode[Column]);
-                entity[Column] = Number(editNode[Column]);
-            }
-            else if (Column == "m360_ppr") {
-                entity["m360_PPR" + "@odata.bind"] = "/" + "m360_pprs" + "(" + ContextId + ")";
-                // entity[primaryLookupschemaName+"@odata.bind"] = "/"+entitySetName+"(" + ContextId+ ")";
-                // entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
-            }
-            else if (Column == "m360_cashflowitemname") {
-                entity["m360_cashflowitemname"] = editNode[Column];
-            }
-            else if (Column == "m360_fiscalyear") {
-                entity["m360_fiscalyear"] = "555080002";
-            }
-            else {
-                // let stri
-                entity[Column] = Number(editNode[Column]);
-            }
+        if (type == "Y") {
+            return this.createMonthRequest(editNode, ContextId)
         }
-        entity["m360_linetotal"] = Number(entity["m360_linetotal"]);
-        return entity;
+        else {
+            for (let Column in editNode) {
+                if (months.includes(Column)) {
+                    entity["m360_linetotal"] += Number(editNode[Column]);
+                    entity[Column] = Number(editNode[Column]);
+                }
+                else if (Column == "m360_ppr") {
+                    entity["m360_PPR" + "@odata.bind"] = "/" + "m360_pprs" + "(" + ContextId + ")";
+                    // entity[primaryLookupschemaName+"@odata.bind"] = "/"+entitySetName+"(" + ContextId+ ")";
+                    // entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
+                }
+                else if (Column == "m360_cashflowitemname") {
+                    entity["m360_cashflowitemname"] = editNode[Column];
+                }
+                else if (Column == "m360_fiscalyear") {
+                    entity["m360_fiscalyear"] = "555080002";
+                }
+                else {
+                    // let stri
+                    entity[Column] = Number(editNode[Column]);
+                }
+            }
+            entity["m360_linetotal"] = Number(entity["m360_linetotal"]);
+            return entity;
+        }
     }
 
     numberTryParse(string) {
@@ -206,16 +205,113 @@ export class DialogDemo extends Component<AppProps, AppState>{
     }
 
     setData = (data) => {
-        debugger;
+
         let updatedDatas: any[] = data;
         this.setState({ updatedData: updatedDatas });
     }
+
+    //------------------------------------------------Year Region-----------------------------------------
+    createMonthRequest = (editNode: any, contextId: any) => {
+        debugger;
+        let months: any[] = [];
+        months = this.createMonthDefinitionFromYear();//Define Months
+        var entity = {};
+        let totalForEach = 0;
+        let expandYear, ppr, lineTotal, cashFlow;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            lineTotal = this.props.context.parameters.lineTotal.raw;
+            expandYear = this.props.context.parameters.expandYear.raw;
+            ppr = this.props.context.parameters.ppr.raw;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
+        }
+        let lineTotalData = editNode[lineTotal];
+        if (!isNull(lineTotalData)) {
+            var cur = this.convert(lineTotalData);
+            if (!isNull(cur)) {
+                entity[lineTotal] = cur;
+                totalForEach = cur / 12;
+            }
+        }
+        months.map(p => {
+            entity[p] = totalForEach;
+        })
+        for (let Column in editNode) {
+
+            if (Column == ppr) {
+                entity[ppr + "@odata.bind"] = "/" + ppr + "(" + contextId + ")";
+            }
+            else if (Column == cashFlow || Column == expandYear) {
+                entity[Column] = editNode[Column];
+            }
+        }
+        entity[lineTotal] = Number(entity[lineTotal]);
+        return entity;
+    }
+    convert = (currency) => {
+        var k, temp;
+        for (var i = 0; i < currency.length; i++) {
+
+            k = currency.charCodeAt(i);
+            if (k > 47 && k < 58) {
+                temp = currency.substring(i);
+                break;
+            }
+        }
+        temp = temp.replace(/, /, '');
+        return parseFloat(temp);
+    }
+    createMonthDefinitionFromYear = () => {
+
+        let expandYear, ppr, lineTotal, cashFlow;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            expandYear = this.props.context.parameters.expandYear.raw;
+            ppr = this.props.context.parameters.ppr.raw;
+            lineTotal = this.props.context.parameters.lineTotal.raw;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
+        }
+        else {
+            expandYear = "FinacialYear";
+        }
+
+        let resultData = {};
+        let cols: any[];
+        let month: any[] = [];
+        cols = [];
+        Object.values(this.props.actualColDef).map(p => {
+            let expander: boolean = false;
+            switch (p.fieldName) {
+                case expandYear:
+                case cashFlow:
+                case ppr:
+                case lineTotal:
+                    {
+                        break;
+                    }
+                default:
+                    resultData = {
+                        field: p.fieldName, header: p.name, expander: expander
+                    }
+                    cols.push(resultData);
+                    month.push(p.fieldName);
+                    break;
+            }
+        });
+        return month;
+    }
+
+    //------------------------------------------------End Region
+
+
+
+
+
 
     render() {
         let inputData = {
             columns: this.props.columns,
             context: this.props.context,
-            monthDetails: this.props.monthDetails
+            monthDetails: this.props.monthDetails,
+            pannelType: this.props.pannelType
         }
         return (
             <div className="addNewButton">

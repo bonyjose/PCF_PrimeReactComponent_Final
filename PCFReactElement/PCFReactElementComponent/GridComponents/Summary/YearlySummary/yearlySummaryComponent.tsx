@@ -94,7 +94,6 @@ type monthState = {
     }
 
     createApiUpdateRequest(editNode: any) {
-        debugger;
         let months: any[] = [];
         if (this.state.monthDetails.length == 0) {
             this.createMonthDefinition();//Define Months
@@ -220,7 +219,6 @@ type monthState = {
     }
 
     createColDefinition() {
-        debugger;
         let expandYear,ppr,lineTotal,cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
@@ -231,9 +229,7 @@ type monthState = {
         else {
             expandYear = "FinacialYear";
         }
-        // let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
-
-        debugger;
+    
         let resultData = {};
         let cols: any[];
         cols = [];

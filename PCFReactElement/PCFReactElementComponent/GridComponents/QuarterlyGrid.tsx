@@ -49,7 +49,6 @@ interface State {
 
     ParseToQuarter(month : any)
     {
-      debugger;
       let months =month;
         let  lineTot
      if (typeof (this.props.context.parameters) !== 'undefined') {
@@ -114,7 +113,6 @@ interface State {
         console.log("Parse failed");
       }
       
-      debugger;
       console.log("parse");
       console.log(data);
       return data;
@@ -130,13 +128,11 @@ interface State {
     }
     
     componentDidUpdate(prevProps, prevState) {
-      debugger;
+
       if ((this.props.IsUpdated) && (!this.state.IsUpdated))  {
           let months  = this.createMonthDefinition();
-          debugger;
           this.setState({ monthDetails: months });
           let QuarterData = this.ParseToQuarter(months);
-          debugger;
           let data = this.createJsonTreestructure(QuarterData);
           let newNodes = JSON.parse(data);
           this.setState({ nodes: newNodes });
@@ -145,10 +141,8 @@ interface State {
       else if(prevProps.data != this.props.data)
       {
         let months  = this.createMonthDefinition();
-        debugger;
         this.setState({ monthDetails: months });
         let QuarterData = this.ParseToQuarter(months);
-        debugger;
         let data = this.createJsonTreestructure(QuarterData);
         let newNodes = JSON.parse(data);
         this.setState({ nodes: newNodes });
@@ -159,10 +153,8 @@ interface State {
     componentDidMount() {
       if (!this.state.IsUpdated||this.props.data.length>0) {
           let months  = this.createMonthDefinition();
-          debugger;
           this.setState({ monthDetails: months });
           let QuarterData = this.ParseToQuarter(months);
-          debugger;
           let data = this.createJsonTreestructure(QuarterData);
           let newNodes = JSON.parse(data);
           this.setState({ nodes: newNodes });
@@ -171,7 +163,6 @@ interface State {
     }
 
     createMonthDefinition = () => {
-      debugger;
       let expandYear, ppr, lineTotal, cashFlow;
       if (typeof (this.props.context.parameters) !== 'undefined') {
           expandYear = this.props.context.parameters.expandYear.raw;
@@ -212,7 +203,6 @@ interface State {
 
  
   createJsonTreestructure = (QuarterData : any[]) => {
-    debugger;
     let expandYear ;
     if (typeof (this.props.context.parameters) !== 'undefined') {
         expandYear = this.props.context.parameters.expandYear.raw;
@@ -223,9 +213,7 @@ interface State {
     const yearHead=expandYear.toString();
     this.createColDefinition()
     let product: any[] = Object.values(QuarterData);
-    debugger;
     let cols = this.createfieldDef();
-    debugger;
     let field = Object.values(cols).map(p => p.fieldName);
     let uniqYear = product.map(i => i[expandYear]);
     var uniqueItems = Array.from(new Set(uniqYear))
@@ -273,13 +261,11 @@ interface State {
             }
             ResultArray.push(resultData);
         }
-        debugger;
     return JSON.stringify(ResultArray);
 }
 
 createfieldDef()
 {
-  debugger;
   let cols: any[] = Object.values(this.props.columns);
   let data = Object.values(cols);
   let i=0;
@@ -289,15 +275,12 @@ createfieldDef()
     row["fieldName"] = "Q" + this.numberTryParse(i+1);
     cols.push(row);
   }
-  // this.setState({sampledata : data});
-  debugger;
+
   return cols;
 
 }
 
 createColDefinition = () => {
-
-  debugger;
   let expandYear, ppr, lineTotal, cashFlow;
   if (typeof (this.props.context.parameters) !== 'undefined') {
       expandYear = this.props.context.parameters.expandYear.raw;
@@ -364,8 +347,6 @@ createColDefinition = () => {
     }
 cols.push(resultData);
   let datas = this.sortByKey(Object.values(cols), 'expander');
-
-  debugger;
   return datas;
 }
 
@@ -377,7 +358,7 @@ sortByKey(array, key) {
 }
 
 onEditorValueChange(props: any, event) {
-  debugger;
+
   let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
   let nodes = this.state.nodes;
   let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
@@ -396,7 +377,7 @@ onEditorValueChange(props: any, event) {
 
 createApiUpdateRequest(editNode : any)
 {
-  debugger;
+
   let months: any[] = [];
   if (this.state.monthDetails.length == 0) {
       this.createMonthDefinition();//Define Months
@@ -460,7 +441,6 @@ createApiUpdateRequest(editNode : any)
      
   }
   entity[lineTotal] = total;
-  debugger;
   return entity;
 }
 
@@ -496,7 +476,6 @@ errorCallback()
 }
 
 findNodeByKey(nodes: any, key: any) {
-  debugger;
   let path = key.split('-');
   let node;
 
@@ -526,7 +505,6 @@ vinEditor = (props: any) => {
 }
 
 saveGrid(): void {
-  debugger;
   let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let gridrowKey = this.state.rowEditedKeyData;
 
@@ -568,12 +546,13 @@ saveGrid(): void {
     render() {
 
       let coldef: any[] = this.createColDefinition();
-      debugger;
       let inputData = {
+        actualColDef:this.props.columns,
         columns: coldef,
         context: this.props.context,
         IsUpdated: this.state.IsUpdated,
-        monthDetails :this.state.monthDetails
+        monthDetails :this.state.monthDetails,
+        pannelType:"Q",
     }
 
     let datanode: any[] = this.state.nodes;
