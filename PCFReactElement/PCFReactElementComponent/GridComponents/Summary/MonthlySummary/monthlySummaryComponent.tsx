@@ -88,7 +88,7 @@ type monthState = {
 
         let data=this.messages.current.state.messages;
         if(data.length===0){
-            this.messages.current.show({sticky: true,severity: 'warn', summary: 'Warn Message', detail: 'There are unsaved changes'});
+            this.messages.current.show({sticky: true,severity: 'warn', detail: 'There are unsaved changes'});
         }
            
   
