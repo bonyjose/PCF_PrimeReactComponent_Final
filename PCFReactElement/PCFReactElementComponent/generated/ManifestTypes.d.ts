@@ -24,6 +24,7 @@ export interface IInputs {
     PPRName: ComponentFramework.PropertyTypes.StringProperty;
     Total: ComponentFramework.PropertyTypes.StringProperty;
     cashFlowName: ComponentFramework.PropertyTypes.StringProperty;
+    EditViewEnabled: ComponentFramework.PropertyTypes.StringProperty;
     sampleDataSet: ComponentFramework.PropertyTypes.DataSet;
 }
 export interface IOutputs {

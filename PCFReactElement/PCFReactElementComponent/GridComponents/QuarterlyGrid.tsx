@@ -281,18 +281,26 @@ createfieldDef()
 }
 
 createColDefinition = () => {
-  let expandYear, ppr, lineTotal, cashFlow;
+  let expandYear, ppr, lineTotal, cashFlow,EditViewEnabled;
   if (typeof (this.props.context.parameters) !== 'undefined') {
       expandYear = this.props.context.parameters.expandYear.raw;
       ppr = this.props.context.parameters.ppr.raw;
       lineTotal = this.props.context.parameters.lineTotal.raw;
       cashFlow = this.props.context.parameters.cashFlow.raw;
+      EditViewEnabled = this.props.context.parameters.EditViewEnabled.raw;
   }
   else {
       expandYear = "FinacialYear";
   }
-  // let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
-
+   let IsQuarterEdit : Boolean;
+  if(EditViewEnabled =="Quarterly")
+  {
+    IsQuarterEdit = true;
+  }
+  else
+  {
+    IsQuarterEdit = false;
+  }
   let resultData = {};
   let cols: any[];
   let month: any[] = [];
@@ -328,22 +336,22 @@ createColDefinition = () => {
       }
   });
     resultData = {
-    field: "Q1", header: "Quarter 1", expander: false,isEditable:true
+    field: "Q1", header: "Quarter 1", expander: false,isEditable:IsQuarterEdit
     }
     cols.push(resultData);
 
     resultData = {
-        field: "Q2", header: "Quarter 2", expander: false,isEditable:true
+        field: "Q2", header: "Quarter 2", expander: false,isEditable:IsQuarterEdit
     }
     cols.push(resultData);
 
     resultData = {
-        field: "Q3", header: "Quarter 3", expander: false,isEditable:true
+        field: "Q3", header: "Quarter 3", expander: false,isEditable:IsQuarterEdit
     }
     cols.push(resultData);
 
     resultData = {
-        field: "Q4", header: "Quarter 4", expander: false,isEditable:true
+        field: "Q4", header: "Quarter 4", expander: false,isEditable:IsQuarterEdit
     }
 cols.push(resultData);
   let datas = this.sortByKey(Object.values(cols), 'expander');

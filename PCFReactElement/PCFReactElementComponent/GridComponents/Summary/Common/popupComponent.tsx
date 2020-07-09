@@ -67,6 +67,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
     }
     onSave(name: string) {
+        debugger;
         let updatedDatas: any[] = this.state.updatedData;
         let context: ComponentFramework.Context<IInputs>;
         context = this.props.context;
@@ -90,7 +91,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         catch (Error) {
             console.log(Error.message);
         }
-        this.forceUpdate();
+        // this.forceUpdate();
 
     }
 
@@ -168,7 +169,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                 }
                 else {
                     // let stri
-                    entity[Column] = Number(editNode[Column]);
+                    // entity[Column] = Number(editNode[Column]);
                 }
             }
             entity["m360_linetotal"] = Number(entity["m360_linetotal"]);

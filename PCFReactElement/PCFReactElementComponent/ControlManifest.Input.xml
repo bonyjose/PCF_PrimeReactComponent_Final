@@ -25,6 +25,7 @@
       <property name="PPRName" display-name-key="PPR"  description-key="enter " of-type="SingleLine.Text" usage="input" required="true" />
       <property name="Total" display-name-key="LineTotal" description-key="enter row gr" of-type="SingleLine.Text" usage="input" required="true" />
       <property name="cashFlowName" display-name-key="CashFlow" description-key="enter row " of-type="SingleLine.Text" usage="input" required="true" />
+      <property name="EditViewEnabled" display-name-key="EditViewEnabled" description-key="enter row " of-type="SingleLine.Text" usage="input" required="true" />
     
     <resources>
       <code path="index.ts" order="1"/>

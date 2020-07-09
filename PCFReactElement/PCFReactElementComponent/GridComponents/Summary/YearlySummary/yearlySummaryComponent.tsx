@@ -219,15 +219,25 @@ type monthState = {
     }
 
     createColDefinition() {
-        let expandYear,ppr,lineTotal,cashFlow;
+        let expandYear,ppr,lineTotal,cashFlow,EditViewEnabled;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
             cashFlow = this.props.context.parameters.cashFlow.raw;
+            EditViewEnabled = this.props.context.parameters.EditViewEnabled.raw;
         }
         else {
             expandYear = "FinacialYear";
+        }
+        let IsYearlyEdit : Boolean;
+        if(EditViewEnabled =="Yearly")
+        {
+            IsYearlyEdit = true;
+        }
+        else
+        {
+            IsYearlyEdit = false;
         }
     
         let resultData = {};
@@ -256,7 +266,7 @@ type monthState = {
                 break;
                 case lineTotal:
                     resultData = {
-                        field: p.fieldName, header: "Total", expander: expander,isEditable:true
+                        field: p.fieldName, header: "Total", expander: expander,isEditable:IsYearlyEdit
                     }
                 cols.push(resultData);
                 break;
