@@ -88,7 +88,7 @@ interface State {
             {
                 q1 =  this.convert(columns[January]) + this.convert(columns[February]) + this.convert(columns[March]) ;
                 q2 =  this.convert(columns[April]) + this.convert(columns[May]) + this.convert(columns[June]) ;
-                q3 =  this.convert(columns[July]) +this.convert(columns[August]) + this.convert(columns[September]) ;
+                q3 =  this.convert(columns[July]) + this.convert(columns[August]) + this.convert(columns[September]) ;
                 q4 =  this.convert(columns[October])+ this.convert(columns[November]) + this.convert(columns[December]) ;
             }
             catch{
@@ -104,9 +104,9 @@ interface State {
               data[i].Q4 = q4 == 0 ? '': "$" + q4.toFixed(2);
               if(data[i][lineTot] !== null && typeof (data[i][lineTot]) !== 'undefined' && data[i][lineTot] !=="")
               {
-                if(data[i][lineTot] ! ==0 )
+                if(data[i][lineTot] ! == 0 )
                 {
-                  data[i][lineTot] = "$" + this.numberTryParse(data[i][lineTot]).toFixed(2);
+                  data[i][lineTot] = "$" + this.numberTryParse(data[i][lineTot]);
                 }
                 else
                 {
