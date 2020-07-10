@@ -389,12 +389,13 @@ type monthState = {
         context = this.props.context;
         let stateVariable = this;
         for (let i = 0; i < uniqueKeys.length; i++) {
-
-            this.setState({ loading: true }, () => {
-                setTimeout(() => {
+            debugger;
+            // this.setState({ loading: true }, () => {
+            //     setTimeout(() => {
                     let rowKey = uniqueKeys[i];
                     let editedNode = this.findNodeByKey(nodes, rowKey);
                     let editedObject = this.createApiUpdateRequest(editedNode.data);
+                    console.log(editedObject);
                     var data = this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(function (result) {
 
                       
@@ -406,8 +407,8 @@ type monthState = {
                         function (result) {
                             stateVariable.setState({ isSaved: false, loading: false });
                            })
-                },3000);
-            });
+            //     },3000);
+            // });
         }
 
     }
