@@ -7,21 +7,16 @@ import { IInputs, IOutputs } from "../../../generated/ManifestTypes"
 import { useState, useEffect, useRef } from 'react'
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import {changeUpadated} from '../../store/actions'
-import {connect} from 'react-redux'
+
 import axios from 'axios';
 import { isNull } from 'util';
-import {Messages} from 'primereact/messages';
 type AppMonthProps = {
     data: any[];
     columns: any[];
     context: ComponentFramework.Context<IInputs>;
     IsUpdated: boolean,
-    campaign:any,
-    isUpdated:boolean,
-    changeUpadated:any,
-    pannelType:any,
     fileUpdated(boolean):any
+  
 }
 type monthState = {
     nodes: [],
@@ -33,11 +28,11 @@ type monthState = {
     rowEditedKey: [],
     monthDetails: any[],
     rowEditedKeyData: any[],
-    loading: boolean,
+    loading: boolean
 }
 
- class MonthlySummary extends Component<AppMonthProps, monthState>{
-    public messages =  React.createRef<any>();
+ class YearlyComponent extends Component<AppMonthProps, monthState>{
+
     constructor(props: AppMonthProps) {
 
         super(props);
@@ -60,6 +55,7 @@ type monthState = {
 
 
     componentDidUpdate(prevProps, prevState) {
+
         if(this.props.IsUpdated!=this.state.IsUpdated){
             let jsonData = this.createJsonTreestructure();
             this.setState({ nodes: jsonData, IsUpdated: this.props.IsUpdated });
@@ -69,14 +65,8 @@ type monthState = {
             let jsonData = this.createJsonTreestructure();
             this.setState({ nodes: jsonData, loading: false, isSaved: false });
         }
-        if(prevProps.data !=this.props.data)
-        {
-            let jsonData = this.createJsonTreestructure();
-            this.setState({ nodes: jsonData});
-        }
     }
     componentDidMount() {
-
         if(this.state.isSaved){
             this.forceUpdate();
         }
@@ -85,14 +75,6 @@ type monthState = {
     }
 
     onEditorValueChange(props: any, event) {
-
-        let data=this.messages.current.state.messages;
-        if(data.length===0){
-            this.messages.current.show({sticky: true,severity: 'warn', detail: 'There are unsaved changes'});
-        }
-           
-  
-        this.props.changeUpadated()
         this.props.fileUpdated(true);
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let nodes = this.state.nodes;
@@ -119,37 +101,25 @@ type monthState = {
         }
         months = this.state.monthDetails;
         var entity = {};
-        let total=0;
+        let totalForEach=0;
         let lineTotal;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             lineTotal = this.props.context.parameters.lineTotal.raw;
         }
+        let lineTotalData=editNode[lineTotal];
+         if (!isNull(lineTotalData)) {
+            var cur = this.convert(lineTotalData);
+            if(!isNull(cur)){
+                entity[lineTotal] = cur;
+                totalForEach=cur/12;
+            }                   
+        }
+
         for (let Column in editNode) {
-           
             if (months.includes(Column)) {
-
-                if (isNaN(entity[lineTotal])) {
-                    entity[lineTotal] = 0;
-                }
-                else if (isNaN(editNode[Column])) {
-                    var cur = this.convert(editNode[Column]);
-                    if(!isNull(cur)){
-                        entity[Column] = cur;
-                        total = total + (cur);
-                    }                   
-                }
-                else if (this.isEmpty(editNode[Column])) {
-                    total = total + 0;
-                }
-                else {
-                    var key = this.convert(editNode[Column]);
-                    entity[Column] =key;
-                    total = total + (parseFloat(editNode[Column]));
-                }
-
+                entity[Column] = totalForEach;
             }
         }
-        entity[lineTotal] = total;
         return entity;
     }
     // Function to convert 
@@ -210,6 +180,7 @@ type monthState = {
     }
 
     createMonthDefinition = () => {
+
         let expandYear, ppr, lineTotal, cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
@@ -244,14 +215,11 @@ type monthState = {
                     break;
             }
         });
-         this.setState({ monthDetails: month });
-        console.log(this.state.monthDetails);
+        this.setState({ monthDetails: month })
     }
 
-    createColDefinition = (isMonthlyEdit : Boolean) => {
-
-
-        let expandYear, ppr, lineTotal, cashFlow;
+    createColDefinition(isYearlyEdit : Boolean) {
+        let expandYear,ppr,lineTotal,cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
@@ -260,51 +228,46 @@ type monthState = {
         }
         else {
             expandYear = "FinacialYear";
-        }
-        // let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
+        }   
         let resultData = {};
         let cols: any[];
-        let month: any[] = [];
         cols = [];
         Object.values(this.props.columns).map(p => {
             let expander: boolean = false;
-            switch (p.fieldName) {
+            switch(p.fieldName){
                 case expandYear:
-                    resultData = {
-                        field: p.fieldName, header: "Year", expander: true,isEditable:false
-                    }
-                    cols.push(resultData);
-                    break;
+                resultData = {
+                    field: p.fieldName, header: "Year", expander: true,isEditable:false
+                }
+                cols.push(resultData);
+                break;
                 case cashFlow:
                     resultData = {
                         field: p.fieldName, header: "Cash Flow", expander: expander,isEditable:false
                     }
-                    cols.push(resultData);
-                    break;
+                 cols.push(resultData);
+                break;
                 case ppr:
                     resultData = {
                         field: p.fieldName, header: "PPR", expander: expander,isEditable:false
                     }
-                    cols.push(resultData);
-                    break;
+                cols.push(resultData);
+                break;
                 case lineTotal:
                     resultData = {
-                        field: p.fieldName, header: "Total", expander: expander,isEditable:false
+                        field: p.fieldName, header: "Total", expander: expander,isEditable:isYearlyEdit
                     }
-                    cols.push(resultData);
-                    break;
-                default:
-                    resultData = {
-                        field: p.fieldName, header: p.name, expander: expander,isEditable:isMonthlyEdit
-                    }
-                    cols.push(resultData);
-                    month.push(p.fieldName);
-                    break;
+                cols.push(resultData);
+                break;
+
             }
+
         });
         let datas = this.sortByKey(Object.values(cols), 'expander');
         return datas;
     }
+
+    
 
     sortByKey(array, key) {
         return array.sort(function (a, b) {
@@ -374,7 +337,6 @@ type monthState = {
 
     }
     saveGrid(): void {
-        this.messages.current.clear();
         this.props.fileUpdated(false);
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let gridrowKey = this.state.rowEditedKeyData;
@@ -412,8 +374,6 @@ type monthState = {
 
     }
 
-
-
     render() {
         let EditViewEnabled;
         if (typeof (this.props.context.parameters) !== 'undefined') {
@@ -421,7 +381,7 @@ type monthState = {
             EditViewEnabled = this.props.context.parameters.EditViewEnabled.raw;
         }
             let isViewEditable : Boolean;
-            if(EditViewEnabled =="Monthly")
+            if(EditViewEnabled =="Yearly")
             {
               isViewEditable = true;
             }
@@ -433,8 +393,8 @@ type monthState = {
         let inputData = {
 
             columns: coldef,
+            pannelType:"Y",
             actualColDef:this.props.columns,
-            pannelType:this.props.pannelType,
             context: this.props.context,
             IsUpdated: this.state.IsUpdated,
             monthDetails :this.state.monthDetails,
@@ -455,11 +415,9 @@ type monthState = {
             return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.isEditable ? this.vinEditor :undefined} style={{ width: '100px' }} headerClassName="p-col-d" />;
         });
         return (
-
             <div className="scrollbar scrollbar-primary">
-                            <Messages ref={this.messages} />
                 <div className="content-section implementation monthlyGrid month">
-             
+
                     <DialogDemo {...inputData} />
                     <Button label="Save" className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
                     <div>
@@ -475,11 +433,7 @@ type monthState = {
 
         )
     }
+
+
 }
-const mapStateToProps = (state: any) => {
-    return{
-        campaign:state.postReduce.campaign,
-        isUpdated : state.postReduce.isUpdated
-    }
-};
-export default connect(mapStateToProps,{changeUpadated})(MonthlySummary)
+export default YearlyComponent;

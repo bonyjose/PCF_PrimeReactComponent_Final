@@ -4,7 +4,11 @@ type DataSet = ComponentFramework.PropertyTypes.DataSet;
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {App,Props,State } from './App';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
+import configureStore from './GridComponents/store/configStore'
+const store = configureStore();
 export class PCFReactElementComponent implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
 	private childData:[];
@@ -16,7 +20,9 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	private _props: Props = {
 		data: [],
 		columns: [],
-		onChange : this.notifyChange.bind(this)
+		onChange : this.notifyChange.bind(this),
+		context: this.theContext,
+		IsUpdated:false
 	}
 
 	constructor()
@@ -38,7 +44,8 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 		// this.props.numberOfFaces = context.parameters.numberOfFaces.raw || 3;
 		this.theContainer = container;
 		this._props.data = context.parameters.sampleDataSet;
-		let arraData=this._props.data ;
+		// let arraData=this._props.data ;
+		// context.parameters.sampleDataSet.paging.setPageSize(50);
 		// const dataSet = context.parameters.sampleDataSet;
 		// let datasetColumns: any[] = this._columns(dataSet);
 		// let dataItems: any[] = this._items(dataSet, datasetColumns);
@@ -56,33 +63,53 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	 */
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
-		const dataSet = context.parameters.sampleDataSet;
-		debugger;
-		let datasetColumns: any = this._columns(dataSet);
-		let dataItems: any = this._items(dataSet, datasetColumns);
+		if (!context.parameters.sampleDataSet.loading) 
+		{
+			if(context.parameters.sampleDataSet.paging != null && context.parameters.sampleDataSet.paging.hasNextPage == true) 
+			{
+			//set page size
+				context.parameters.sampleDataSet.paging.setPageSize(100);
+				//load next paging
+				context.parameters.sampleDataSet.paging.loadNextPage();
+			} 
+			else 
+			{
+				const dataSet = context.parameters.sampleDataSet;
+				// dataSet.paging.setPageSize(50);
 
-		console.log(dataItems);
-		this._props.data =dataItems;
-		this._props.columns =datasetColumns;
+				let datasetColumns: any = this._columns(dataSet);
+				let dataItems: any = this._items(dataSet, datasetColumns);
 
-		const element = React.createElement(
-			App ,
-			this._props
-		);
-
-		ReactDOM.render(element ,
-			this.theContainer
-		);
+				console.log(dataItems);
+				this._props.data =dataItems;
+				this._props.columns =datasetColumns;
+				this._props.context=context;
+				// const element = React.createElement(
+				// 	App ,
+				// 	this._props
+				// );
+				const element =  React.createElement(Provider, {store: store}, 
+					React.createElement(App, this._props), 
+					
+				  )
+			
+				ReactDOM.render(element ,
+					this.theContainer
+				);
+			} 
+		}
 	}
 
 	// this event will collect the modified grid array from child react component 
 	notifyChange(value:[]){
-		debugger;
+
 		this.childData = value;
 		console.log(this.childData);
 		this.notifyOutputChanged();
 	}
-
+	ContextSetChange(){
+	return this.theContext;
+	}
 	/** 
 	 * It is called by the framework prior to a control receiving new data. 
 	 * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
@@ -110,10 +137,12 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 		let iColumns: any[] = [];
 
 		for (var column of dataSet.columns) {
+
 			let iColumn: any = {
 				key: column.name,
 				name: column.displayName,
 				fieldName: column.alias,
+				dataType:column.dataType,
 				currentWidth: column.visualSizeFactor,
 				data: { isPrimary: column.isPrimary },
 				minWidth: column.visualSizeFactor,
@@ -127,12 +156,9 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 				
 			}
 
-			//create links for primary field and entity reference.            
-			if (column.dataType.startsWith('Lookup.') || column.isPrimary) {
-				iColumn.dataType = "Lookup";
-			}
-			else if (column.dataType === 'SingleLine.Email') {
-				iColumn.dataType = "Email";
+
+			 if (column.dataType === 'SingleLine.Text') {
+				iColumn.dataType = "Number";
 			}
 			else if (column.dataType === 'SingleLine.Phone') {
 				iColumn.dataType = "Phone";
@@ -143,7 +169,7 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 			}
 			else
 			{
-				iColumn.dataType = "NA";
+				iColumn.dataType = "column.dataType";
 			}
 
 			let isSorted = dataSet?.sorting?.findIndex(s => s.name === column.name) !== -1 || false;

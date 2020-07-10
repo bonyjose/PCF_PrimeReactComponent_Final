@@ -147,7 +147,12 @@ componentWillMount()
 
   render() {
     debugger;
-    
+    let inputData={
+      // data: this.state.products,
+      // columns: this.state.columns,
+      // context:this.props.context,
+      // IsUpdated:this.state.IsUpdated
+    }
     let parsed = this.state.parsedJson;
     
     return (
@@ -175,92 +180,92 @@ componentWillMount()
             style={{ height: "3.5em" }}
           />
           <Column
-            field="alias"
+            field="FinacialYear"
             header="Fiscal year"
             editor={this.fiscalEdit}
             style={{ height: "3.5em" }}
           />
           <Column
-            field="name"
+            field="January"
             header="Jan"
             editor={this.janEdit}
             style={{ height: "3.5em" }}
           />
           <Column
-            field="name"
+            field="February"
             header="Feb"
             editor={this.febEdit}
             style={{ height: "3.5em" }}
           />
           <Column
-            field="name"
+            field="March"
             header="March"
             editor={this.marEdit}
             style={{ height: "3.5em" }}
           />
           <Column
-            field="name"
+            field="April"
             header="April"
             editor={this.aprEdit}
             style={{ height: "3.5em" }}
           />
           <Column
-            field="name"
+            field="May"
             header="May"
             editor={this.mayEdit}
             style={{ height: "3.5em" }}
           />
           <Column
-            field="name"
+            field="June"
             header="June"
             editor={this.junEdit}
             style={{ height: "3.5em" }}
           />
           <Column
-            field="name"
+            field="July"
             header="July"
             editor={this.julEdit}
             style={{ height: "3.5em" }}
           />
           <Column
-            field="name"
+            field="August"
             header="August"
             editor={this.augEdit}
             style={{ height: "3.5em" }}
           />
           <Column
-            field="name"
+            field="September"
             header="September"
             editor={this.sepEdit}
             style={{ height: "3.5em" }}
           />
           <Column
-            field="name"
+            field="October"
             header="October"
             editor={this.octEdit}
             style={{ height: "3.5em" }}
           />
           <Column
-            field="name"
+            field="November"
             header="November"
             editor={this.novEdit}
             style={{ height: "3.5em" }}
           />
           <Column
-            field="name"
+            field="December"
             header="December"
             editor={this.decEdit}
             style={{ height: "3.5em" }}
           />
           <Column
-            field="name"
+            field="LineTotal"
             header="Line total"
             editor={this.lineEdit}
             style={{ height: "3.5em" }}
           />
         </DataTable>
         <span>
-          <DialogDemo />
+          {/* <DialogDemo /> */}
         </span>
       </div>
     );

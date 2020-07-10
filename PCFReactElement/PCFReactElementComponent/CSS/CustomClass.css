@@ -1,14 +1,114 @@
 
 .p-button.p-component.addnewBtn.p-button-text-icon-left{
-    float: left;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    float: right;
+    margin-top: 0px;
+    z-index: 1;
+    margin-bottom: 6px;
+    margin-right: 35px;
 }
 body .p-treetable .p-treetable-tbody > tr.p-highlight_custom {
     background-color: #a5a0a00d;
+    color: #02016d;
+    pointer-events: none !important;
+    opacity: 2.1 !important;
+    transition-delay: 0s !important;
+}
+.monthlyGrid .p-treetable.p-component{
+    padding-right: 23px
+}
+.p-treetable-scrollable-body>table>.p-treetable-tbody>tr:first-child>td {
+    background-color: #a5a0a00d;
     color: #101010;
+    pointer-events: none !important;
+    opacity: 2.1 !important;
+    transition-delay: 0s !important;
+}
+body .p-tabview .p-tabview-panels{
+    width:78vw;
 }
 .p-treetable table{
     table-layout: fixed !important;
     word-wrap: break-word !important;
+}
+
+body .p-treetable .p-treetable-tbody > tr.p-highlight_custom > td .p-treetable-toggler{
+    pointer-events: visible;
+    background-color: #a5a0a00d;
+    color: #848484;;
+
+    opacity: 2.1 !important;
+    transition-delay: 0s !important;
+}
+.p-messages.p-component.p-messages-warn.p-messages-enter-done{
+    float: none !important;
+    margin-top: -7px !important;
+    margin-bottom: -30px !important;
+
+}
+.addnew .p-datatable-wrapper .p-datatable-row{
+    height: 40px !important;
+
+}
+.addnew .p-panel.p-component .p-panel-content{
+    border-top-style: solid;
+    border-top-width: 1px !important;
+    border-top-color: rgb(200, 200, 200);
+
+}
+
+
+
+
+
+.p-col-m {
+    display: none;
+
+}
+.ui-datatable tr.ui-datatable-even:hover, .ui-datatable tr.ui-datatable-odd:hover {
+    background: #78BCFF;
+}
+
+.implementation{
+    margin-top: 40px !important;
+}
+.p-button.p-component.saveBtn{
+    float: right;
+    margin-top: 0px;
+    z-index: 1;
+    margin-bottom: 6px;
+    margin-right: 145px;
+    width: 100px;
+}
+
+.spinnerdisplayinline{
+    position: absolute;
+    width: 50px;
+    height: 29px;
+    float: none;
+    margin-top: -134px;
+    display: inline-grid;
+}
+.spinnerdisplayNone{
+    position: absolute;
+    display: none;
+}
+.monthlyGrid .addnewBtn {
+    margin-top: -40px  !important;
+}
+span.pi.pi-save.p-c.p-button-icon-left{
+    padding-left: 10px;
+}
+.monthlyGrid .saveBtn {
+
+    margin-top: -40px  !important;
+}
+
+@media screen and (max-width: 64em) {
+    .p-col-d {
+        display: none;
+    }
+
+    .p-col-m {
+        display: inline-block;
+    }
 }
