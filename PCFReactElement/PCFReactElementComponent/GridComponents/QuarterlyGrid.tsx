@@ -128,7 +128,16 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     var tempCur=Number(string.replace(/[^0-9.-]+/g,""))
     var returnValue = 0;
     if (!isNaN(tempCur) && tempCur != null ) {
-      returnValue =tempCur;
+      returnValue = tempCur;
+    }
+    return returnValue;
+  }
+  numberTryParseQuater(string) {
+    debugger;
+   
+    var returnValue = 0;
+    if (!isNaN(string) && string != null && string != "") {
+      returnValue = Number.parseFloat(string);
     }
     return returnValue;
   }
@@ -276,7 +285,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     for (i = 0; i < 4; i++) {
 
       let row = {};
-      row["fieldName"] = "Q" + this.numberTryParse(i + 1);
+      row["fieldName"] = "Q" + this.numberTryParseQuater(i + 1);
       cols.push(row);
     }
 
