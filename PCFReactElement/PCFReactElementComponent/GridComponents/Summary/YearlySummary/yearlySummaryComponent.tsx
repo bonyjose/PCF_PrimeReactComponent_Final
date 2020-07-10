@@ -10,6 +10,7 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 
 import axios from 'axios';
 import { isNull } from 'util';
+import {Messages} from 'primereact/messages';
 type AppMonthProps = {
     data: any[];
     columns: any[];
@@ -32,7 +33,7 @@ type monthState = {
 }
 
  class YearlyComponent extends Component<AppMonthProps, monthState>{
-
+    public messages =  React.createRef<any>();
     constructor(props: AppMonthProps) {
 
         super(props);
@@ -75,6 +76,10 @@ type monthState = {
     }
 
     onEditorValueChange(props: any, event) {
+        let data=this.messages.current.state.messages;
+        if(data.length===0){
+            this.messages.current.show({sticky: true,severity: 'warn', detail: 'There are unsaved changes'});
+        }           
         this.props.fileUpdated(true);
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let nodes = this.state.nodes;
@@ -337,6 +342,7 @@ type monthState = {
 
     }
     saveGrid(): void {
+        this.messages.current.clear();
         this.props.fileUpdated(false);
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let gridrowKey = this.state.rowEditedKeyData;
@@ -416,6 +422,7 @@ type monthState = {
         });
         return (
             <div className="scrollbar scrollbar-primary">
+                <Messages ref={this.messages} />
                 <div className="content-section implementation monthlyGrid month">
 
                     <DialogDemo {...inputData} />

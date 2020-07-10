@@ -134,8 +134,8 @@ export class App extends React.Component<Props, State> {
             <MonthlySummary {...inputData} fileUpdated={this.fileUpdated} />
           </TabPanel>
           <TabPanel header="Quarter" >
-            <GridQuarterlyComponent  {...inputData} />;
-                        </TabPanel>
+            <GridQuarterlyComponent  {...inputData} fileUpdated={this.fileUpdated} />;
+          </TabPanel>
         </TabView>
       </div>
     );
