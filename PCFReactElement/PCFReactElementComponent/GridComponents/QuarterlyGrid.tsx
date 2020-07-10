@@ -440,8 +440,8 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
         total = total + this.convert(editNode[Column]);
       }
     }
-    var totalValue = this.convert(entity[lineTotal]);
-    entity[lineTotal] = totalValue + total;
+
+    entity[lineTotal] = total;
     return entity;
   }
 
