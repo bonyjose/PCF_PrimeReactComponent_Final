@@ -470,10 +470,10 @@ isEmpty = (str) => {
         }
     }
     temp = temp.replace(/, /, '');
-    if(temp == "")
-    {
-      temp = 0;
-    }
+    // if(temp == "")
+    // {
+    //   temp = 0;
+    // }
     return parseFloat(temp);
 }
 
