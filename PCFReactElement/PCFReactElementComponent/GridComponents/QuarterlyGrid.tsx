@@ -124,9 +124,11 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
 
 
   numberTryParse(string) {
+    debugger;
+    var tempCur=Number(string.replace(/[^0-9.-]+/g,""))
     var returnValue = 0;
-    if (!isNaN(string) && string != null && string != "") {
-      returnValue = Number.parseFloat(string);
+    if (!isNaN(tempCur) && tempCur != null ) {
+      returnValue =tempCur;
     }
     return returnValue;
   }
