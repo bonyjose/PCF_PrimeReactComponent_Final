@@ -264,7 +264,7 @@ type monthState = {
         }
         // let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
         let IsMonthlyEdit : Boolean;
-        if(EditViewEnabled =="Yearly")
+        if(EditViewEnabled =="Monthly")
         {
             IsMonthlyEdit = true;
         }
