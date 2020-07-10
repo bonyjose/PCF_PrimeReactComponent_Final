@@ -13,8 +13,8 @@ type AppProps = {
     columns: any[];
     monthDetails: any,
     pannelType: any,
-    actualColDef: any[]
-    // data :any;
+    actualColDef: any[],
+    isViewEditable :Boolean
 }
 
 type AppState = {
@@ -138,7 +138,6 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
 
     createApiUpdateRequest(editNode: any) {
-        // let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         let months = this.props.monthDetails;
         var entity = {};
         entity["m360_linetotal"] = 0;
@@ -187,7 +186,6 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
 
     successCallback() {
-        // console.log("api create success");
         console.log("api update success");
     }
 
@@ -316,7 +314,8 @@ export class DialogDemo extends Component<AppProps, AppState>{
             columns: this.props.columns,
             context: this.props.context,
             monthDetails: this.props.monthDetails,
-            pannelType: this.props.pannelType
+            pannelType: this.props.pannelType,
+            isViewEditable : this.props.isViewEditable
         }
         return (
             <div className="addNewButton">

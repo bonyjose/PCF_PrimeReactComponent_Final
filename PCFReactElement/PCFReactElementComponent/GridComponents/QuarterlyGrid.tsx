@@ -89,10 +89,10 @@ interface State {
             q4 =  this.convert(columns[October])+ this.convert(columns[November]) + this.convert(columns[December]) ;
           }
       
-          data[i].Q1 = q1 == 0 ? '': "$" + q1;
-          data[i].Q2 = q2 == 0 ? '': "$" + q2;
-          data[i].Q3 = q3 == 0 ? '': "$" + q3;
-          data[i].Q4 = q4 == 0 ? '': "$" + q4;
+          data[i].Q1 = q1 == 0 ? '': "$" + q1.toFixed(2);
+          data[i].Q2 = q2 == 0 ? '': "$" + q2.toFixed(2);
+          data[i].Q3 = q3 == 0 ? '': "$" + q3.toFixed(2);
+          data[i].Q4 = q4 == 0 ? '': "$" + q4.toFixed(2);
           if(data[i][lineTot] !== null && typeof (data[i][lineTot]) !== 'undefined' && data[i][lineTot] !=="")
           {
             if(data[i][lineTot] !==0)
@@ -211,7 +211,7 @@ interface State {
         expandYear = "FinacialYear";
     }
     const yearHead=expandYear.toString();
-    this.createColDefinition()
+    // this.createColDefinition()
     let product: any[] = Object.values(QuarterData);
     let cols = this.createfieldDef();
     let field = Object.values(cols).map(p => p.fieldName);
@@ -280,7 +280,7 @@ createfieldDef()
 
 }
 
-createColDefinition = () => {
+createColDefinition = (IsQuarterEdit : Boolean) => {
   let expandYear, ppr, lineTotal, cashFlow,EditViewEnabled;
   if (typeof (this.props.context.parameters) !== 'undefined') {
       expandYear = this.props.context.parameters.expandYear.raw;
@@ -291,15 +291,6 @@ createColDefinition = () => {
   }
   else {
       expandYear = "FinacialYear";
-  }
-   let IsQuarterEdit : Boolean;
-  if(EditViewEnabled =="Quarterly")
-  {
-    IsQuarterEdit = true;
-  }
-  else
-  {
-    IsQuarterEdit = false;
   }
   let resultData = {};
   let cols: any[];
@@ -469,12 +460,15 @@ isEmpty = (str) => {
         }
     }
     temp = temp.replace(/, /, '');
+    if(temp == "")
+    {
+      temp = 0;
+    }
     return parseFloat(temp);
 }
 
 successCallback()
 {
-  // console.log("api create success");
   console.log("api update success");
 }
 
@@ -549,11 +543,21 @@ saveGrid(): void {
 
 }
 
-
-  
     render() {
-
-      let coldef: any[] = this.createColDefinition();
+      let EditViewEnabled;
+      if (typeof (this.props.context.parameters) !== 'undefined') {
+          EditViewEnabled = this.props.context.parameters.EditViewEnabled.raw;
+        }
+          let isViewEditable : Boolean;
+          if(EditViewEnabled =="Quarterly")
+          {
+            isViewEditable = true;
+          }
+          else
+          {
+            isViewEditable = false;
+          }
+      let coldef: any[] = this.createColDefinition(isViewEditable);
       let inputData = {
         actualColDef:this.props.columns,
         columns: coldef,
@@ -561,6 +565,7 @@ saveGrid(): void {
         IsUpdated: this.state.IsUpdated,
         monthDetails :this.state.monthDetails,
         pannelType:"Q",
+        isViewEditable : isViewEditable
     }
 
     let datanode: any[] = this.state.nodes;

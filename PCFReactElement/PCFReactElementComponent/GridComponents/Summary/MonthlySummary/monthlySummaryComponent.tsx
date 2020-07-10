@@ -248,30 +248,20 @@ type monthState = {
         console.log(this.state.monthDetails);
     }
 
-    createColDefinition = () => {
+    createColDefinition = (isMonthlyEdit : Boolean) => {
 
 
-        let expandYear, ppr, lineTotal, cashFlow,EditViewEnabled;
+        let expandYear, ppr, lineTotal, cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
             cashFlow = this.props.context.parameters.cashFlow.raw;
-            EditViewEnabled = this.props.context.parameters.EditViewEnabled.raw;
         }
         else {
             expandYear = "FinacialYear";
         }
         // let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
-        let IsMonthlyEdit : Boolean;
-        if(EditViewEnabled =="Monthly")
-        {
-            IsMonthlyEdit = true;
-        }
-        else
-        {
-            IsMonthlyEdit = false;
-        }
         let resultData = {};
         let cols: any[];
         let month: any[] = [];
@@ -305,7 +295,7 @@ type monthState = {
                     break;
                 default:
                     resultData = {
-                        field: p.fieldName, header: p.name, expander: expander,isEditable:IsMonthlyEdit
+                        field: p.fieldName, header: p.name, expander: expander,isEditable:isMonthlyEdit
                     }
                     cols.push(resultData);
                     month.push(p.fieldName);
@@ -425,8 +415,21 @@ type monthState = {
 
 
     render() {
-
-        let coldef: any[] = this.createColDefinition();
+        let EditViewEnabled;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+      
+            EditViewEnabled = this.props.context.parameters.EditViewEnabled.raw;
+        }
+            let isViewEditable : Boolean;
+            if(EditViewEnabled =="Yearly")
+            {
+              isViewEditable = true;
+            }
+            else
+            {
+              isViewEditable = false;
+            }
+        let coldef: any[] = this.createColDefinition(isViewEditable);
         let inputData = {
 
             columns: coldef,
@@ -434,7 +437,8 @@ type monthState = {
             pannelType:this.props.pannelType,
             context: this.props.context,
             IsUpdated: this.state.IsUpdated,
-            monthDetails :this.state.monthDetails
+            monthDetails :this.state.monthDetails,
+            isViewEditable : isViewEditable
         }
         const { loading } = this.state;
 

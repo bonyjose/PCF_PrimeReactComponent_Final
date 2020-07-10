@@ -12,8 +12,8 @@ type AppProps = {
     context: ComponentFramework.Context<IInputs>;
     setData: any;
     monthDetails: any
-    pannelType: any
-    // data :any
+    pannelType: any,
+    isViewEditable:Boolean
 }
 
 type AppState = {
@@ -209,13 +209,13 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             switch (p.field) {
                 case expandYear:
                     resultData = {
-                        field: p.field, header: "Year", expander: true, isEditable: true
+                        field: p.field, header: "Year", expander: true, isEditable: this.props.isViewEditable
                     }
                     cols.push(resultData);
                     break;
                 case cashFlow:
                     resultData = {
-                        field: p.field, header: "Cash Flow", expander: expander, isEditable: true
+                        field: p.field, header: "Cash Flow", expander: expander, isEditable: this.props.isViewEditable
                     }
                     cols.push(resultData);
                     break;
@@ -223,7 +223,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                     break;
                 case lineTotal:
                     var isVisible: Boolean = false
-                    if (this.props.pannelType === 'Y') {
+                    if (this.props.pannelType === 'Y' && this.props.isViewEditable) {
                         isVisible = true;
                     }
                     resultData = {
@@ -233,7 +233,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                     break;
                 default:
                     resultData = {
-                        field: p.field, header: p.header, expander: expander, isEditable: true
+                        field: p.field, header: p.header, expander: expander, isEditable: this.props.isViewEditable
                     }
                     cols.push(resultData);
                     month.push(p.fieldName);
