@@ -7,7 +7,6 @@ import { InputText } from "primereact/inputtext";
 import { DialogDemo } from "../GridComponents/Summary/Common/popupComponent"
 import { IInputs, IOutputs } from "../generated/ManifestTypes"
 import { Button } from "primereact/button";
-import { isNull } from "util";
 interface Props {
   data: any[];
   columns: any[];
@@ -49,6 +48,7 @@ interface State {
 
     ParseToQuarter(month : any)
     {
+      debugger;
       let months =month;
         let  lineTot
      if (typeof (this.props.context.parameters) !== 'undefined') {
@@ -78,42 +78,52 @@ interface State {
       let q2 = 0;
       let q3 = 0;
       let q4 = 0;
+      debugger;
       try
       {
         for (let columns of data) {
           if (typeof (columns[months[3]]) !== 'undefined' && columns[months[3]] !==null)
           {
-            q1 =  this.convert(columns[January]) + this.convert(columns[February]) + this.convert(columns[March]) ;
-            q2 =  this.convert(columns[April]) + this.convert(columns[May]) + this.convert(columns[June]) ;
-            q3 =  this.convert(columns[July]) +this.convert(columns[August]) + this.convert(columns[September]) ;
-            q4 =  this.convert(columns[October])+ this.convert(columns[November]) + this.convert(columns[December]) ;
+            try
+            {
+                q1 =  this.convert(columns[January]) + this.convert(columns[February]) + this.convert(columns[March]) ;
+                q2 =  this.convert(columns[April]) + this.convert(columns[May]) + this.convert(columns[June]) ;
+                q3 =  this.convert(columns[July]) +this.convert(columns[August]) + this.convert(columns[September]) ;
+                q4 =  this.convert(columns[October])+ this.convert(columns[November]) + this.convert(columns[December]) ;
+            }
+            catch{
+              console.log("add failed");
+            }
           }
-      
-          data[i].Q1 = q1 == 0 ? '': "$" + q1.toFixed(2);
-          data[i].Q2 = q2 == 0 ? '': "$" + q2.toFixed(2);
-          data[i].Q3 = q3 == 0 ? '': "$" + q3.toFixed(2);
-          data[i].Q4 = q4 == 0 ? '': "$" + q4.toFixed(2);
-          if(data[i][lineTot] !== null && typeof (data[i][lineTot]) !== 'undefined' && data[i][lineTot] !=="")
+
+          try
           {
-            if(data[i][lineTot] !==0)
-            {
-              data[i][lineTot] = "$" + this.numberTryParse(data[i][lineTot]).toFixed(2);
-            }
-            else
-            {
-              data[i][lineTot] =  "$" + 0.00;
-            }
-            
+              data[i].Q1 = q1 == 0 ? '': "$" + q1.toFixed(2);
+              data[i].Q2 = q2 == 0 ? '': "$" + q2.toFixed(2);
+              data[i].Q3 = q3 == 0 ? '': "$" + q3.toFixed(2);
+              data[i].Q4 = q4 == 0 ? '': "$" + q4.toFixed(2);
+              if(data[i][lineTot] !== null && typeof (data[i][lineTot]) !== 'undefined' && data[i][lineTot] !=="")
+              {
+                if(data[i][lineTot] ! ==0 )
+                {
+                  data[i][lineTot] = "$" + this.numberTryParse(data[i][lineTot]).toFixed(2);
+                }
+                else
+                {
+                  data[i][lineTot] =  "$" + 0.00;
+                }
+              }
           }
-          console.log(data[i]);
+          catch{
+            console.log("add list failed");
+          }
+          // console.log(data[i]);
           i++;
         }
       }
       catch{
         console.log("Parse failed");
       }
-      
-      console.log("parse");
       console.log(data);
       return data;
     }
@@ -548,7 +558,7 @@ saveGrid(): void {
       if (typeof (this.props.context.parameters) !== 'undefined') {
           EditViewEnabled = this.props.context.parameters.EditViewEnabled.raw;
         }
-          let isViewEditable : Boolean;
+          let isViewEditable : boolean;
           if(EditViewEnabled =="Quarterly")
           {
             isViewEditable = true;
