@@ -421,7 +421,7 @@ type monthState = {
             EditViewEnabled = this.props.context.parameters.EditViewEnabled.raw;
         }
             let isViewEditable : Boolean;
-            if(EditViewEnabled =="Yearly")
+            if(EditViewEnabled =="Monthly")
             {
               isViewEditable = true;
             }
