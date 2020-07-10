@@ -131,7 +131,7 @@ type monthState = {
                 if (isNaN(entity[lineTotal])) {
                     entity[lineTotal] = 0;
                 }
-                else if (isNaN(editNode[Column])) {
+                 if (isNaN(editNode[Column])) {
                     var cur = this.convert(editNode[Column]);
                     if(!isNull(cur)){
                         entity[Column] = cur;
