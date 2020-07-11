@@ -101,7 +101,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
           data[i].Q4 = q4 == 0 ? '' : "$" + q4.toFixed(2);
           if (data[i][lineTot] !== null && typeof (data[i][lineTot]) !== 'undefined' && data[i][lineTot] !== "") 
           {
-              data[i][lineTot] = "$" + this.numberTryParseQuarter(data[i][lineTot]).toFixed(2);
+              data[i][lineTot] = "$" + this.numberTryParse(data[i][lineTot]).toFixed(2);
           }
         }
         catch
