@@ -99,19 +99,15 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
           data[i].Q2 = q2 == 0 ? '' : "$" + q2.toFixed(2);
           data[i].Q3 = q3 == 0 ? '' : "$" + q3.toFixed(2);
           data[i].Q4 = q4 == 0 ? '' : "$" + q4.toFixed(2);
-          if (data[i][lineTot] !== null && typeof (data[i][lineTot]) !== 'undefined' && data[i][lineTot] !== "") {
-
-              data[i][lineTot] = "$" + this.numberTryParse(data[i][lineTot]).toFixed(2);
-
-            // else {
-            //   data[i][lineTot] = "$" + 0.00;
-            // }
+          if (data[i][lineTot] !== null && typeof (data[i][lineTot]) !== 'undefined' && data[i][lineTot] !== "") 
+          {
+              data[i][lineTot] = "$" + this.numberTryParseQuarter(data[i][lineTot]).toFixed(2);
           }
         }
-        catch{
+        catch
+        {
           console.log("add list failed");
         }
-        // console.log(data[i]);
         i++;
       }
     }
@@ -132,7 +128,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     }
     return returnValue;
   }
-  numberTryParseQuater(string) {
+  numberTryParseQuarter(string) {
     debugger;
    
     var returnValue = 0;
@@ -285,7 +281,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     for (i = 0; i < 4; i++) {
 
       let row = {};
-      row["fieldName"] = "Q" + this.numberTryParseQuater(i + 1);
+      row["fieldName"] = "Q" + this.numberTryParseQuarter(i + 1);
       cols.push(row);
     }
 

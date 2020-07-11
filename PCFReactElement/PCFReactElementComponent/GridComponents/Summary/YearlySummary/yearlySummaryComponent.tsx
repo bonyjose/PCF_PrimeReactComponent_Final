@@ -95,14 +95,12 @@ type monthState = {
             rowEditedKey: props.node.key as any,
             rowEditedKeyData: rowEdited
         });
-
     }
 
     createApiUpdateRequest(editNode: any) {
         let months: any[] = [];
         if (this.state.monthDetails.length == 0) {
             this.createMonthDefinition();//Define Months
-
         }
         months = this.state.monthDetails;
         var entity = {};
@@ -119,7 +117,6 @@ type monthState = {
                 totalForEach=cur/12;
             }                   
         }
-
         for (let Column in editNode) {
             if (months.includes(Column)) {
                 entity[Column] = totalForEach;

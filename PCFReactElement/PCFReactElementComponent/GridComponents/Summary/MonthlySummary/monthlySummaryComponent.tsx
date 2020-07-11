@@ -119,19 +119,17 @@ type monthState = {
         }
         months = this.state.monthDetails;
         var entity = {};
-        let total=0;
+        let total = 0;
         let lineTotal;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             lineTotal = this.props.context.parameters.lineTotal.raw;
         }
         for (let Column in editNode) {
-           
             if (months.includes(Column)) {
-
-                if (isNaN(entity[lineTotal])) {
-                    entity[lineTotal] = 0;
-                }
-                else if (isNaN(editNode[Column])) {
+                // if (isNaN(entity[lineTotal])) {
+                //     entity[lineTotal] = 0;
+                // }
+                if (isNaN(editNode[Column])) {
                     var cur = this.convert(editNode[Column]);
                     if(!isNull(cur)){
                         entity[Column] = cur;
@@ -143,15 +141,15 @@ type monthState = {
                 }
                 else {
                     var key = this.convert(editNode[Column]);
-                    entity[Column] =key;
+                    entity[Column] = key;
                     total = total + (parseFloat(editNode[Column]));
                 }
-
             }
         }
         entity[lineTotal] = total;
         return entity;
     }
+
     // Function to convert 
     convert = (currency) => {
         var k, temp;
