@@ -189,7 +189,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     let month: any[] = [];
     cols = [];
     Object.values(this.props.columns).map(p => {
-      let expander: boolean = false;
+      let expander: boolean = true;
       switch (p.fieldName) {
         case expandYear:
         case cashFlow:
@@ -306,7 +306,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     let month: any[] = [];
     cols = [];
     Object.values(this.props.columns).map(p => {
-      let expander: boolean = false;
+      let expander: boolean = true;
       switch (p.fieldName) {
         case expandYear:
           resultData = {
@@ -335,23 +335,24 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
         default:
       }
     });
+    let expander: boolean = true;
     resultData = {
-      field: "Q1", header: "Quarter 1", expander: false, isEditable: IsQuarterEdit
+      field: "Q1", header: "Quarter 1", expander: expander, isEditable: IsQuarterEdit
     }
     cols.push(resultData);
 
     resultData = {
-      field: "Q2", header: "Quarter 2", expander: false, isEditable: IsQuarterEdit
+      field: "Q2", header: "Quarter 2", expander: expander, isEditable: IsQuarterEdit
     }
     cols.push(resultData);
 
     resultData = {
-      field: "Q3", header: "Quarter 3", expander: false, isEditable: IsQuarterEdit
+      field: "Q3", header: "Quarter 3", expander: expander, isEditable: IsQuarterEdit
     }
     cols.push(resultData);
 
     resultData = {
-      field: "Q4", header: "Quarter 4", expander: false, isEditable: IsQuarterEdit
+      field: "Q4", header: "Quarter 4", expander: expander, isEditable: IsQuarterEdit
     }
     cols.push(resultData);
     let datas = this.sortByKey(Object.values(cols), 'expander');
