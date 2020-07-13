@@ -45,10 +45,20 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom > td .p-treetable-t
     margin-bottom: -30px !important;
 
 }
+.addnew.gridstyle .p-datatable table{
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+}
 .addnew .p-datatable-wrapper .p-datatable-row{
     height: 40px !important;
 
 }
+.addnew.gridstyle .p-datatable-thead > tr > th{
+    padding-left: 4px
+}
+
 .addnew .p-panel.p-component .p-panel-content{
     border-top-style: solid;
     border-top-width: 1px !important;

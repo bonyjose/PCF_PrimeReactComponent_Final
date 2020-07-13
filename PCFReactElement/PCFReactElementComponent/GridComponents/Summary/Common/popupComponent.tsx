@@ -320,7 +320,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         return (
             <div className="addNewButton">
                 <Button label="Add New" disabled ={!this.props.isViewEditable} className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
-                <Dialog position="top" header="Add New Record" visible={this.state.displayBasic2} style={{ width: '90vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
+                <Dialog position="top" header="Add New Record" visible={this.state.displayBasic2} style={{ width: '96vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
                     <DataTableAddNew setData={this.setData}  {...inputData} />
                     {/* <label style={{float:"left",color:"#ab9999"}} >CFName*: Cash Flow Item Name</label> */}
                 </Dialog>
