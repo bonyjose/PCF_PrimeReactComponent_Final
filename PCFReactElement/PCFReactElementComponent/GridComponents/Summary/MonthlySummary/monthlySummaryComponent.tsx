@@ -224,7 +224,7 @@ type monthState = {
         let month: any[] = [];
         cols = [];
         Object.values(this.props.columns).map(p => {
-            let expander: boolean = true;
+            let expander: boolean = false;
             switch (p.fieldName) {
                 case expandYear:
                 case cashFlow:
@@ -265,7 +265,7 @@ type monthState = {
         let month: any[] = [];
         cols = [];
         Object.values(this.props.columns).map(p => {
-            let expander: boolean = true;
+            let expander: boolean = false;
             switch (p.fieldName) {
                 case expandYear:
                     resultData = {
