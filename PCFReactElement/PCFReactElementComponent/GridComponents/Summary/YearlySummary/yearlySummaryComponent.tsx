@@ -327,6 +327,7 @@ type monthState = {
                 }
             });
             let resultData = {
+                expanded:true,
                 key: i.toString(),
                 data: {
                     [expandYear]: year,
