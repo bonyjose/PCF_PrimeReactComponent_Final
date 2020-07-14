@@ -65,7 +65,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     }
     /* Cell Editing */
     onEditorValueChange(props: any, event) {
-        debugger;
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let newNodes = this.state.popupColDef;
         let expandYear, ppr, lineTotal, cashFlow;
@@ -75,14 +74,36 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             lineTotal = this.props.context.parameters.lineTotal.raw;
             cashFlow = this.props.context.parameters.cashFlow.raw;
         }
-        // let editedNode = this.findNodeByKey(newNodes, props.node.key);
         let editedNode = newNodes[0];
+        debugger;
+        if(this.props.pannelType === "Q")
+        {
+            if(props.field == "Q1" ||props.field == "Q2"||props.field == "Q3"||props.field == "Q4")
+            {
+                event = parseInt(event) ? parseInt(event) : '';
+            }
+        }
+        else if(this.props.pannelType === "M")
+        {
+            let months = this.state.monthDetails;
+            if (months.includes(props.field)) 
+            {
+                event = parseInt(event) ? parseInt(event) : '';
+            }
+        }
+        else if(this.props.pannelType === "Y")
+        {
+            if (lineTotal == props.field) 
+            {
+                event = parseInt(event) ? parseInt(event) : '';
+            }
+        }
+        debugger;
         newNodes[0][props.field] = event;
         if (this.props.pannelType === "Q") {
             let months = this.state.monthDetails;
             let Total = 0;
             for (let Column in newNodes[0]) {
-
                 if (months.includes(Column)) {
 
                     Total += this.numberTryParse(newNodes[0][Column]);
@@ -98,7 +119,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                 newNode = newNodes;
             }
         }
-
         this.setState({
             popupColDef: newNodes
         });
@@ -268,13 +288,16 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         return this.inputTextEditor(props, 'year');
     }
     requiredValidator(props: any) {
+        debugger;
         let value = props.rowData[props.field];
+        value.replace(/\+|-/ig, '');
         let isValid = value.length > 0;
         if (isValid) {
             return value && value.length > 0;
         }
         else {
-            alert("Cells cannot be empty");
+            // alert("Cells cannot be empty");
+            props.style = {'Color': 'Red'}
             return value;
         }
 
@@ -302,7 +325,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         var colData = this.state.colDef;
         console.log(colDefition);
         colDefition = colDefition.map((col, i) => {
-            return <Column key={col.field} field={col.field} editor={col.isEditable ? this.vinEditor : undefined} header={col.header} />;  // editorValidator={this.requiredValidator}
+            return <Column key={col.field} field={col.field} editor={col.isEditable ? this.vinEditor : undefined}  editorValidator={this.requiredValidator} header={col.header} />;  // editorValidator={this.requiredValidator}
         });
 
         let emptyCell = Array.from("1");

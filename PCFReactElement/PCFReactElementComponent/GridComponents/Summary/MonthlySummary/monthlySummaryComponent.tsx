@@ -90,8 +90,6 @@ type monthState = {
         if(data.length===0){
             this.messages.current.show({sticky: true,severity: 'warn', detail: 'There are unsaved changes'});
         }
-           
-  
         this.props.changeUpadated()
         this.props.fileUpdated(true);
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
@@ -433,7 +431,7 @@ type monthState = {
 
             columns: coldef,
             actualColDef:this.props.columns,
-            pannelType:this.props.pannelType,
+            pannelType:"M",
             context: this.props.context,
             IsUpdated: this.state.IsUpdated,
             monthDetails :this.state.monthDetails,
