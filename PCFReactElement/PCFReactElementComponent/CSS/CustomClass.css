@@ -65,6 +65,12 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom > td .p-treetable-t
     border-top-color: rgb(200, 200, 200);
 
 }
+.scrollbar.scrollbar-primary .p-treetable.p-component .p-treetable-tbody > tr > td{
+    text-align: left;
+}
+.scrollbar.scrollbar-primary .p-treetable.p-component .p-treetable-tbody > tr > td.p-editable-column{
+    text-align: right;
+}
 
 
 
