@@ -164,7 +164,7 @@ type monthState = {
     }
 
     inputTextEditor = (props: any, field: any) => {
-        return <InputText type="text" defaultValue={props.node.data[field]}
+        return <InputText  keyfilter="money" defaultValue={props.node.data[field]}
 
             onChange={(e) =>
                 this.onEditorValueChange(props, e)}
@@ -424,7 +424,7 @@ type monthState = {
                 <div className="content-section implementation monthlyGrid month">
 
                     <DialogDemo {...inputData} />
-                    <Button label="Save" className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
+                    <Button label="Save" disabled ={!isViewEditable} className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
                     <div>
                         <TreeTable value={datanode} rowClassName={this.rowClassName} className="monthlyGrid" paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh">
                             {dynamicColumns}

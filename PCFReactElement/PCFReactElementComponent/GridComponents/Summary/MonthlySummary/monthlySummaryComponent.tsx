@@ -188,7 +188,7 @@ type monthState = {
     }
 
     inputTextEditor = (props: any, field: any) => {
-        return <InputText type="text" defaultValue={props.node.data[field]}
+        return <InputText  keyfilter="money" defaultValue={props.node.data[field] }
 
             onChange={(e) =>
                 this.onEditorValueChange(props, e)}
@@ -408,9 +408,16 @@ type monthState = {
         }
 
     }
+    requiredValidator=(props)=> {
+       debugger;
+        let value = props.node.data[props.field];
+        value.replace(/\+|-/ig, '');
+        let isValid = value.length > 0;
+
+            return value && value.length > 0;
 
 
-
+    }
     render() {
         let EditViewEnabled;
         if (typeof (this.props.context.parameters) !== 'undefined') {
@@ -449,7 +456,7 @@ type monthState = {
         
         let datanode: any[] = this.state.nodes;
         const dynamicColumns = Object.values(coldef).map((col, i) => {
-            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.isEditable ? this.vinEditor :undefined} style={{ width: '100px' }} headerClassName="p-col-d" />;
+            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.isEditable ? this.vinEditor :undefined} style={{ width: '100px' }} editorValidator={this.requiredValidator} headerClassName="p-col-d" />;
         });
         return (
 
@@ -458,7 +465,7 @@ type monthState = {
                 <div className="content-section implementation monthlyGrid month">
              
                     <DialogDemo {...inputData} />
-                    <Button label="Save" className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
+                    <Button label="Save" disabled ={!isViewEditable} className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
                     <div>
                         <TreeTable value={datanode} rowClassName={this.rowClassName} className="monthlyGrid" paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh">
                             {dynamicColumns}

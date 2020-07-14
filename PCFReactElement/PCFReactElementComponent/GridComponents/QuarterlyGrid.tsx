@@ -8,6 +8,7 @@ import { DialogDemo } from "../GridComponents/Summary/Common/popupComponent"
 import { IInputs, IOutputs } from "../generated/ManifestTypes"
 import { Button } from "primereact/button";
 import {Messages} from 'primereact/messages';
+import { ProgressSpinner } from 'primereact/progressspinner';
 interface Props {
   data: any[];
   columns: any[];
@@ -497,7 +498,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     return node;
   }
   inputTextEditor = (props: any, field: any) => {
-    return <InputText type="text" defaultValue={props.node.data[field]}
+    return <InputText  keyfilter="money" defaultValue={props.node.data[field]}
       onChange={(e) =>
         this.onEditorValueChange(props, e)}
     />
@@ -574,6 +575,14 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       isViewEditable: isViewEditable
     }
 
+    let spinnerClass;
+    if (this.state.loading) {
+        spinnerClass = "spinnerdisplayinline"
+    }
+    else {
+        spinnerClass = "spinnerdisplayNone"
+    }
+
     let datanode: any[] = this.state.nodes;
     const dynamicColumns = Object.values(coldef).map((col, i) => {
       return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.isEditable ? this.vinEditor : undefined} style={{ width: '100px' }} headerClassName="p-col-d" />;
@@ -584,11 +593,14 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       <Messages ref={this.messages} />
         <div className="content-section implementation monthlyGrid">
           <DialogDemo {...inputData} />
-          <Button label="Save" className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
+          
+          <Button label="Save" disabled ={!isViewEditable} className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
           <TreeTable value={datanode} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: '1000px' }} scrollHeight="400px">
             {dynamicColumns}
           </TreeTable >
-
+          {
+             <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" className={spinnerClass} fill="#EEEEEE" />
+          }
         </div>
       </div>
 
