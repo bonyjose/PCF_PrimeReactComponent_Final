@@ -595,7 +595,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
           <DialogDemo {...inputData} />
           
           <Button label="Save" disabled ={!isViewEditable} className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
-          <TreeTable value={datanode} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: '1000px' }} scrollHeight="400px">
+          <TreeTable value={datanode} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh">
             {dynamicColumns}
           </TreeTable >
           {

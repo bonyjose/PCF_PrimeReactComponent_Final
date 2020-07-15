@@ -252,13 +252,13 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             switch (p.field) {
                 case expandYear:
                     resultData = {
-                        field: p.field, header: "Year", expander: true, isEditable: this.props.isViewEditable,IsDropdDown : true
+                        field: p.field, header: "Year", expander: true, isEditable: false,IsDropdDown : true
                     }
                     cols.push(resultData);
                     break;
                 case cashFlow:
                     resultData = {
-                        field: p.field, header: "Cash Flow", expander: expander, isEditable: this.props.isViewEditable
+                        field: p.field, header: "Cash Flow", expander: expander, isEditable: this.props.isViewEditable,IsDropdDown : false
                     }
                     cols.push(resultData);
                     break;
@@ -270,13 +270,13 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                         isVisible = true;
                     }
                     resultData = {
-                        field: p.field, header: "Total", expander: expander, isEditable: isVisible
+                        field: p.field, header: "Total", expander: expander, isEditable: isVisible,IsDropdDown : false
                     }
                     cols.push(resultData);
                     break;
                 default:
                     resultData = {
-                        field: p.field, header: p.header, expander: expander, isEditable: this.props.isViewEditable
+                        field: p.field, header: p.header, expander: expander, isEditable: this.props.isViewEditable,IsDropdDown : false
                     }
                     cols.push(resultData);
                     month.push(p.fieldName);
@@ -302,7 +302,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         return node;
     }
     vinEditor(props: any) {
-
+debugger;
         let field = props.field
         return this.inputTextEditor(props, field);
     }
@@ -329,7 +329,9 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 
     handleChange(props:any,event) {
         debugger;
-        this.setState({city:event.target.value})
+        var jsonArr = [{}];
+        jsonArr[0][this.props.columns[0].field] = event.name;
+        this.setState({ popupColDef: jsonArr,city:event.name });
     }
     editorDropdown= (props: any) => {
         debugger;
@@ -339,10 +341,9 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 
     DropdownEditor = (props: any, field: any) => {
         debugger;
-        let city =  this.state.city;
+        let city =  this.props.columns[0].field;
         return <Dropdown value={city} 
-            onChange={(e) =>
-                this.handleChange(props, e)}
+        onChange={(e) => {this.handleChange(props,e.value)}}
         options={[
             {name: 'New York', code: 'NY'},
             {name: 'Rome', code: 'RM'},
@@ -350,7 +351,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             {name: 'Istanbul', code: 'IST'},
             {name: 'Paris', code: 'PRS'}
         ]} 
-         placeholder="Select a City" optionLabel="name" style={{width: '12em'}}/>
+         placeholder="Select a City" optionLabel="name" style={{width: '8em'}}/>
     }
 
 
@@ -360,7 +361,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         var colData = this.state.colDef;
         console.log(colDefition);
         colDefition = colDefition.map((col, i) => {
-            return <Column key={col.field} field={col.field} editor={col.isEditable ? this.vinEditor : this.editorDropdown}   header={col.header} />;  // editorValidator={this.requiredValidator}
+            return <Column key={col.field} field={col.field} editor={col.isEditable ? this.vinEditor : (col.IsDropdDown? this.editorDropdown:undefined)}   header={col.header}  className={col.IsDropdDown?"dropColumn":"normalColumn"}/>;  // editorValidator={this.requiredValidator}
         });
 
         let emptyCell = Array.from("1");
