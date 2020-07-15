@@ -139,8 +139,12 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
     createApiUpdateRequest(editNode: any) {
         let months = this.props.monthDetails;
+        let lineTotal;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            lineTotal = this.props.context.parameters.lineTotal.raw;
+        }
         var entity = {};
-        entity["m360_linetotal"] = 0;
+        entity[lineTotal] = 0;
 
         // @ts-ignore 
         let ContextId = this.props.context.page.entityId;
@@ -152,7 +156,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         else {
             for (let Column in editNode) {
                 if (months.includes(Column)) {
-                    entity["m360_linetotal"] += Number(editNode[Column]);
+                    entity[lineTotal] += Number(editNode[Column]);
                     entity[Column] = Number(editNode[Column]);
                 }
                 else if (Column == "m360_ppr") {
@@ -171,7 +175,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     // entity[Column] = Number(editNode[Column]);
                 }
             }
-            entity["m360_linetotal"] = Number(entity["m360_linetotal"]);
+            entity[lineTotal] = Number(entity[lineTotal]);
             return entity;
         }
     }

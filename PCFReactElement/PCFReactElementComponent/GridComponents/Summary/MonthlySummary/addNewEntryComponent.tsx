@@ -21,23 +21,42 @@ type AppState = {
     rowEditedData: [];
     popupColDef: any[];
     monthDetails: any;
+    city : string;
+    cars:{
+        name:"",
+        car: null,
+        }
 }
 
 export class DataTableAddNew extends Component<AppProps, AppState> {
 
     private carservice = new CarService();
+    citySelectItems: any[] | undefined;
     constructor(props: any) {
         super(props);
         this.state = {
             colDef: [],
             rowEditedData: [],
             popupColDef: [],
-            monthDetails: []
+            monthDetails: [],
+            city : "",
+            cars:{
+                name:"",
+                car: null,
+                }
         };
         this.vinEditor = this.vinEditor.bind(this);
         this.yearEditor = this.yearEditor.bind(this);
         this.requiredValidator = this.requiredValidator.bind(this);
+         this.citySelectItems = [
+            {label: 'New York', value: 'NY'},
+            {label: 'Rome', value: 'RM'},
+            {label: 'London', value: 'LDN'},
+            {label: 'Istanbul', value: 'IST'},
+            {label: 'Paris', value: 'PRS'}
+        ];
     }
+    
 
     componentDidMount() {
 
@@ -65,6 +84,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     }
     /* Cell Editing */
     onEditorValueChange(props: any, event) {
+        debugger;
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
         let newNodes = this.state.popupColDef;
         let expandYear, ppr, lineTotal, cashFlow;
@@ -74,6 +94,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             lineTotal = this.props.context.parameters.lineTotal.raw;
             cashFlow = this.props.context.parameters.cashFlow.raw;
         }
+        // let editedNode = this.findNodeByKey(newNodes, props.node.key);
         let editedNode = newNodes[0];
         debugger;
         if(this.props.pannelType === "Q")
@@ -104,6 +125,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             let months = this.state.monthDetails;
             let Total = 0;
             for (let Column in newNodes[0]) {
+
                 if (months.includes(Column)) {
 
                     Total += this.numberTryParse(newNodes[0][Column]);
@@ -119,6 +141,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                 newNode = newNodes;
             }
         }
+
         this.setState({
             popupColDef: newNodes
         });
@@ -229,7 +252,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             switch (p.field) {
                 case expandYear:
                     resultData = {
-                        field: p.field, header: "Year", expander: true, isEditable: this.props.isViewEditable
+                        field: p.field, header: "Year", expander: true, isEditable: this.props.isViewEditable,IsDropdDown : true
                     }
                     cols.push(resultData);
                     break;
@@ -260,6 +283,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                     break;
             }
         });
+        debugger;
         return cols;
     }
 
@@ -290,42 +314,53 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     requiredValidator(props: any) {
         debugger;
         let value = props.rowData[props.field];
-        value.replace(/\+|-/ig, '');
+ 		value.replace(/\+|-/ig, '');
         let isValid = value.length > 0;
         if (isValid) {
             return value && value.length > 0;
         }
         else {
             // alert("Cells cannot be empty");
-            props.style = {'Color': 'Red'}
+			props.style = {'Color': 'Red'}
             return value;
         }
 
     }
 
-    // requiredValidator(props) {
-    //     let isValid = this.state.updatedData && this.state.updatedData.length > 0;
-    //     if (isValid){
-    //       //update data
-    //       let updatedDataSet = [...this.state.dataSet];
-    //       updatedDataSet[props.rowIndex][props.field] = this.state.updatedData;
-    //       this.setState({dataSet: updatedDataSet, updatedData: ""});
-    //     } else {
-    //       //show error message
-    //       alert("Validation failed.")
-    //     }
-    //     return isValid;
-    //   }
+    handleChange(props:any,event) {
+        debugger;
+        this.setState({city:event.target.value})
+    }
+    editorDropdown= (props: any) => {
+        debugger;
+        let field = props.field
+        return this.DropdownEditor(props, field);
+    }
+
+    DropdownEditor = (props: any, field: any) => {
+        debugger;
+        let city =  {name: 'New York', code: 'NY'};
+        return <Dropdown value={city} 
+            onChange={(e) =>
+                this.handleChange(props, e)}
+        options={[
+            {name: 'New York', code: 'NY'},
+            {name: 'Rome', code: 'RM'},
+            {name: 'London', code: 'LDN'},
+            {name: 'Istanbul', code: 'IST'},
+            {name: 'Paris', code: 'PRS'}
+        ]} 
+         placeholder="Select a City" optionLabel="name" style={{width: '12em'}}/>
+    }
+
 
     render() {
 
         var colDefition = this.createColDefinition();
-
-
         var colData = this.state.colDef;
         console.log(colDefition);
         colDefition = colDefition.map((col, i) => {
-            return <Column key={col.field} field={col.field} editor={col.isEditable ? this.vinEditor : undefined}  editorValidator={this.requiredValidator} header={col.header} />;  // editorValidator={this.requiredValidator}
+            return <Column key={col.field} field={col.field} editor={col.isEditable ? this.vinEditor : this.editorDropdown}   header={col.header} />;  // editorValidator={this.requiredValidator}
         });
 
         let emptyCell = Array.from("1");
