@@ -339,7 +339,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 
     DropdownEditor = (props: any, field: any) => {
         debugger;
-        let city =  {name: 'New York', code: 'NY'};
+        let city =  this.state.city;
         return <Dropdown value={city} 
             onChange={(e) =>
                 this.handleChange(props, e)}
