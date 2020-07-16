@@ -392,11 +392,13 @@ debugger;
 
     DropdownEditor = (props: any, field: any) => {
         debugger;
-        let currentYear =  this.props.columns[0].field;
+         // @ts-ignore 
+        let currentYear =  this.state.currentYear.Text;
+        
         return <Dropdown value={currentYear} 
         onChange={(e) => {this.handleChange(props,e.value)}}
         options={this.state.yearData}
-         placeholder="Year" optionLabel="name" style={{width: '8em'}}/>
+         placeholder="Year" optionLabel="Text" style={{width: '8em'}}/>
     }
 
 
