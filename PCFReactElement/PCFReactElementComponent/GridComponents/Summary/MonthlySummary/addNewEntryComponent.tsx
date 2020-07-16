@@ -21,7 +21,8 @@ type AppState = {
     rowEditedData: [];
     popupColDef: any[];
     monthDetails: any;
-    city : string;
+    currentYear : string;
+    yearData: any[];
     cars:{
         name:"",
         car: null,
@@ -39,7 +40,8 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             rowEditedData: [],
             popupColDef: [],
             monthDetails: [],
-            city : "",
+            currentYear : "",
+            yearData :[],
             cars:{
                 name:"",
                 car: null,
@@ -68,8 +70,11 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             jsonArr[0][this.props.columns[i].field] = "";
 
         }
-        console.log(jsonArr);
         this.setState({ popupColDef: jsonArr });
+        var yeardate = this.createDropDownDef();
+        this.setState({yearData : yeardate});
+        this.setState({currentYear :yeardate[0] })
+
     }
 
     inputTextEditor = (props: any, field: any) => {
@@ -313,10 +318,25 @@ createDropDownDef()
 		req1.send();
 }
 req1.send();
-yearData = req1.response;
-console.log("api outer respnse " + req1.response);
+yearData = JSON.parse(req1.response).OptionSet.Options;
+let yearDropdownDef = [];
 
-return yearData;
+        if((yearData!=null)&&(yearData!="")&&(yearData!="undefined"))
+        {
+            yearData.forEach(function(option)
+             {
+                var optionitem:HTMLOptionElement = document.createElement("option");
+                    // @ts-ignore 
+                optionitem.value=option!.Value;
+                    // @ts-ignore 
+                optionitem.text = option!.Label.UserLocalizedLabel.Label;
+                    // @ts-ignore 
+                    yearDropdownDef.add(optionitem);
+        });
+    }
+console.log("api outer respnse " + yearDropdownDef);
+
+return yearDropdownDef;
 }
 
     findNodeByKey(nodes: any, key: any) {
@@ -362,7 +382,7 @@ debugger;
         debugger;
         var jsonArr = this.state.popupColDef;
         jsonArr[0][this.props.columns[0].field] = event.name;
-        this.setState({ popupColDef: jsonArr,city:event.name });
+        this.setState({ popupColDef: jsonArr,currentYear:event.name });
     }
     editorDropdown= (props: any) => {
         debugger;
@@ -372,16 +392,10 @@ debugger;
 
     DropdownEditor = (props: any, field: any) => {
         debugger;
-        let city =  this.props.columns[0].field;
-        return <Dropdown value={city} 
+        let currentYear =  this.props.columns[0].field;
+        return <Dropdown value={currentYear} 
         onChange={(e) => {this.handleChange(props,e.value)}}
-        options={[
-            {name: '2010', code: '2010'},
-            {name: '2011', code: '2011'},
-            {name: '2012', code: '2012'},
-            {name: '2013', code: '2013'},
-            {name: '2014', code: '2014'}
-        ]} 
+        options={this.state.yearData}
          placeholder="Year" optionLabel="name" style={{width: '8em'}}/>
     }
 
@@ -389,16 +403,12 @@ debugger;
     render() {
 
         var colDefition = this.createColDefinition();
-        var yeardate = this.createDropDownDef();
+        
         var colData = this.state.colDef;
         console.log(colDefition);
         colDefition = colDefition.map((col, i) => {
             return <Column key={col.field} field={col.field} editor={col.isEditable ? this.vinEditor : (col.IsDropdDown? this.editorDropdown:undefined)}   header={col.header}  className={col.IsDropdDown?"dropColumn":"normalColumn"}/>;  // editorValidator={this.requiredValidator}
         });
-
-        let emptyCell = Array.from("1");
-        let fin = Array.from(emptyCell);
-        console.log(fin);
 
         return (
             <div className="addnew gridstyle">
