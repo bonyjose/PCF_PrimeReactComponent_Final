@@ -289,10 +289,11 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 createDropDownDef()
 {
     let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+    let expandYear = this.props.context.parameters.expandYear.raw;
     var yearData ;
     var req1 = new XMLHttpRequest();
 						// @ts-ignore 
-			req1.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v9.0/EntityDefinitions(LogicalName='"+gridEntity+"')/Attributes(LogicalName='"+"Fiscal Year"+"')/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet($select=Options)", false);
+			req1.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v9.0/EntityDefinitions(LogicalName='"+gridEntity+"')/Attributes(LogicalName='"+expandYear+"')/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet($select=Options)", false);
 			req1.setRequestHeader("OData-MaxVersion", "4.0");			
 			req1.setRequestHeader("OData-Version", "4.0");
 			req1.setRequestHeader("Accept", "application/json");
