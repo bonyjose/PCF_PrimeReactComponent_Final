@@ -286,7 +286,55 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         debugger;
         return cols;
     }
+createDropDownDef()
+{
+    let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+    var yearData ;
+    var req1 = new XMLHttpRequest();
+						// @ts-ignore 
+			req1.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v9.0/EntityDefinitions(LogicalName='"+gridEntity+"')/Attributes(LogicalName='"+"Fiscal Year"+"')/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet($select=Options)", false);
+			req1.setRequestHeader("OData-MaxVersion", "4.0");			
+			req1.setRequestHeader("OData-Version", "4.0");
+			req1.setRequestHeader("Accept", "application/json");
+			req1.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+			req1.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+			req1.onreadystatechange = function() {
+            if (this.readyState === 4) 
+            {
+				req1.onreadystatechange = null;
+				if (this.status === 200) {
+                    var resultdata = JSON.parse(this.response);
+                    yearData = resultdata;
+                    console.log(resultdata);
+                }
+				// 	if((resultdata.OptionSet!=null)&&(resultdata.OptionSet!="")&&(resultdata.OptionSet!="undefined"))
+				// {
+					  
+				// 	// @ts-ignore 
+				// 	resultdata.OptionSet.Options.forEach(function(option) {
+				// 	var optionitem:HTMLOptionElement = document.createElement("option");
+				// 		// @ts-ignore 
+				// 	optionitem.value=option!.Value;
+				// 		// @ts-ignore 
+				// 	optionitem.text = option!.Label.UserLocalizedLabel.Label;
+				// 		// @ts-ignore 
+				// 	_select.add(optionitem);
 
+
+
+			// 	});
+				
+			// 	}
+			// 	} 
+			// 	else {
+			// 		alert("smartgrid:03: and error occured while getting entity metadata for options"+this.statusText);
+			// 	}
+			// }
+		};
+		req1.send();
+}
+return yearData;
+}
 
     findNodeByKey(nodes: any, key: any) {
 
@@ -358,6 +406,7 @@ debugger;
     render() {
 
         var colDefition = this.createColDefinition();
+        var yeardate = this.createDropDownDef();
         var colData = this.state.colDef;
         console.log(colDefition);
         colDefition = colDefition.map((col, i) => {
