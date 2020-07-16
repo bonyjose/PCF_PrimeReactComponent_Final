@@ -300,40 +300,22 @@ createDropDownDef()
 			req1.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 			req1.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
 			req1.onreadystatechange = function() {
-            if (this.readyState === 4) 
+            if (req1.readyState === 4) 
             {
 				req1.onreadystatechange = null;
-				if (this.status === 200) {
-                    var resultdata = JSON.parse(this.response);
+				if (req1.status === 200) {
+                    var resultdata = JSON.parse(req1.response);
                     yearData = resultdata;
-                    console.log(resultdata);
+                    console.log("api inner respnse " + req1.response);
                 }
-				// 	if((resultdata.OptionSet!=null)&&(resultdata.OptionSet!="")&&(resultdata.OptionSet!="undefined"))
-				// {
-					  
-				// 	// @ts-ignore 
-				// 	resultdata.OptionSet.Options.forEach(function(option) {
-				// 	var optionitem:HTMLOptionElement = document.createElement("option");
-				// 		// @ts-ignore 
-				// 	optionitem.value=option!.Value;
-				// 		// @ts-ignore 
-				// 	optionitem.text = option!.Label.UserLocalizedLabel.Label;
-				// 		// @ts-ignore 
-				// 	_select.add(optionitem);
-
-
-
-			// 	});
 				
-			// 	}
-			// 	} 
-			// 	else {
-			// 		alert("smartgrid:03: and error occured while getting entity metadata for options"+this.statusText);
-			// 	}
-			// }
 		};
 		req1.send();
 }
+req1.send();
+yearData = req1.response;
+console.log("api outer respnse " + req1.response);
+
 return yearData;
 }
 
