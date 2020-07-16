@@ -7,14 +7,15 @@ import { InputText } from "primereact/inputtext";
 import { DialogDemo } from "../GridComponents/Summary/Common/popupComponent"
 import { IInputs, IOutputs } from "../generated/ManifestTypes"
 import { Button } from "primereact/button";
-import {Messages} from 'primereact/messages';
+import { Messages } from 'primereact/messages';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import LoadingOverlay from 'react-loading-overlay';
 interface Props {
   data: any[];
   columns: any[];
   context: ComponentFramework.Context<IInputs>;
   IsUpdated: boolean;
-  fileUpdated(boolean):any
+  fileUpdated(boolean): any
   // parentCallback :any;
 
 }
@@ -31,7 +32,7 @@ interface State {
   isSaved: boolean
 }
 export class GridQuarterlyComponent extends React.Component<Props, State> {
-  public messages =  React.createRef<any>();
+  public messages = React.createRef<any>();
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -50,7 +51,6 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
   }
 
   ParseToQuarter(month: any) {
-    debugger;
     let months = month;
     let lineTot
     if (typeof (this.props.context.parameters) !== 'undefined') {
@@ -80,7 +80,6 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     let q2 = 0;
     let q3 = 0;
     let q4 = 0;
-    debugger;
     try {
       for (let columns of data) {
         if (typeof (columns[months[3]]) !== 'undefined' && columns[months[3]] !== null) {
@@ -100,9 +99,8 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
           data[i].Q2 = q2 == 0 ? '' : "$" + q2.toFixed(2);
           data[i].Q3 = q3 == 0 ? '' : "$" + q3.toFixed(2);
           data[i].Q4 = q4 == 0 ? '' : "$" + q4.toFixed(2);
-          if (data[i][lineTot] !== null && typeof (data[i][lineTot]) !== 'undefined' && data[i][lineTot] !== "") 
-          {
-              data[i][lineTot] = "$" + this.numberTryParse(data[i][lineTot]).toFixed(2);
+          if (data[i][lineTot] !== null && typeof (data[i][lineTot]) !== 'undefined' && data[i][lineTot] !== "") {
+            data[i][lineTot] = "$" + this.numberTryParse(data[i][lineTot]).toFixed(2);
           }
         }
         catch
@@ -121,17 +119,14 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
 
 
   numberTryParse(string) {
-    debugger;
-    var tempCur=Number(string.replace(/[^0-9.-]+/g,""))
+    var tempCur = Number(string.replace(/[^0-9.-]+/g, ""))
     var returnValue = 0;
-    if (!isNaN(tempCur) && tempCur != null ) {
+    if (!isNaN(tempCur) && tempCur != null) {
       returnValue = tempCur;
     }
     return returnValue;
   }
   numberTryParseQuarter(string) {
-    debugger;
-   
     var returnValue = 0;
     if (!isNaN(string) && string != null && string != "") {
       returnValue = Number.parseFloat(string);
@@ -367,11 +362,11 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
   }
 
   onEditorValueChange(props: any, event) {
-    let data=this.messages.current.state.messages;
-    if(data.length===0){
-        this.messages.current.show({sticky: true,severity: 'warn', detail: 'There are unsaved changes'});
+    let data = this.messages.current.state.messages;
+    if (data.length === 0) {
+      this.messages.current.show({ sticky: true, severity: 'warn', detail: 'There are unsaved changes' });
     }
-       
+
     let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
     let nodes = this.state.nodes;
     this.props.fileUpdated(true);
@@ -460,7 +455,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
 
   // Function to convert 
   convert = (currency) => {
-    var k, temp;
+    var k, temp = "";
     for (var i = 0; i < currency.length; i++) {
 
       k = currency.charCodeAt(i);
@@ -469,7 +464,10 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
         break;
       }
     }
-    temp = temp.replace(/, /, '');
+    if (temp != "") {
+      temp = temp.replace(/, /, '');
+    }
+
     // if(temp == "")
     // {
     //   temp = 0;
@@ -498,7 +496,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     return node;
   }
   inputTextEditor = (props: any, field: any) => {
-    return <InputText  keyfilter="money" defaultValue={props.node.data[field]}
+    return <InputText keyfilter="money" defaultValue={props.node.data[field]}
       onChange={(e) =>
         this.onEditorValueChange(props, e)}
     />
@@ -529,15 +527,12 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     context = this.props.context;
     let stateVariable = this;
     for (let i = 0; i < uniqueKeys.length; i++) {
-
       this.setState({ loading: true }, () => {
         setTimeout(() => {
           let rowKey = uniqueKeys[i];
           let editedNode = this.findNodeByKey(nodes, rowKey);
           let editedObject = this.createApiUpdateRequest(editedNode.data);
           var data = this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(function (result) {
-
-
             if (i === uniqueKeys.length - 1) {
               context.parameters.sampleDataSet.refresh();
               stateVariable.setState({ isSaved: true, loading: false, rowEditedKeyData: [] });
@@ -575,34 +570,25 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       isViewEditable: isViewEditable
     }
 
-    let spinnerClass;
-    if (this.state.loading) {
-        spinnerClass = "spinnerdisplayinline"
-    }
-    else {
-        spinnerClass = "spinnerdisplayNone"
-    }
-
     let datanode: any[] = this.state.nodes;
     const dynamicColumns = Object.values(coldef).map((col, i) => {
       return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.isEditable ? this.vinEditor : undefined} style={{ width: '100px' }} headerClassName="p-col-d" />;
     });
     return (
-
-      <div className="scrollbar scrollbar-primary">
-      <Messages ref={this.messages} />
-        <div className="content-section implementation monthlyGrid">
-          <DialogDemo {...inputData} />
-          
-          <Button label="Save" disabled ={!isViewEditable} className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
-          <TreeTable value={datanode} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh">
-            {dynamicColumns}
-          </TreeTable >
-          {
-             <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" className={spinnerClass} fill="#EEEEEE" />
-          }
+      <LoadingOverlay
+        active={this.state.loading}
+        spinner>
+        <div className="scrollbar scrollbar-primary">
+          <Messages ref={this.messages} />
+          <div className="content-section implementation monthlyGrid">
+            <DialogDemo {...inputData} />
+            <Button label="Save" disabled={!isViewEditable} className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
+            <TreeTable value={datanode} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh">
+              {dynamicColumns}
+            </TreeTable >
+          </div>
         </div>
-      </div>
+      </LoadingOverlay>
 
     )
   }

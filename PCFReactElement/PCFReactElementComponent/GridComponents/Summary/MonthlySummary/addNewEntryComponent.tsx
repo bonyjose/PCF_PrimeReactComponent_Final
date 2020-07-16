@@ -329,7 +329,7 @@ debugger;
 
     handleChange(props:any,event) {
         debugger;
-        var jsonArr = [{}];
+        var jsonArr = this.state.popupColDef;
         jsonArr[0][this.props.columns[0].field] = event.name;
         this.setState({ popupColDef: jsonArr,city:event.name });
     }
