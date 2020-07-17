@@ -333,7 +333,7 @@ let yearDropdownDef = [];
                     // @ts-ignore 
                 optionitem.text = option!.Label.UserLocalizedLabel.Label;
                     // @ts-ignore 
-                yearDropdownDef.add(optionitem);
+                yearDropdownDef.push(optionitem);
             }
         }
     }
