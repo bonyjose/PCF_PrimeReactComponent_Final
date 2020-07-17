@@ -305,14 +305,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         });
         return month;
     }
-
-    //------------------------------------------------End Region
-
-
-
-
-
-
+    
     render() {
         let inputData = {
             columns: this.props.columns,

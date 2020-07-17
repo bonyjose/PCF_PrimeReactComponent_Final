@@ -327,7 +327,7 @@ let yearDropdownDef = [];
             for (let option of yearData)
             {
                 // var optionitem:HTMLOptionElement = document.createElement("option");
-                var optionitem;
+                let optionitem = {};
                     // @ts-ignore 
                 optionitem.value=option!.Value;
                     // @ts-ignore 
@@ -398,14 +398,12 @@ debugger;
     DropdownEditor = (props: any, field: any) => {
         debugger;
          // @ts-ignore 
-        let currentYear =  this.state.currentYear.Text;
-        
+        let currentYear =  this.state.currentYear.value;
         return <Dropdown value={currentYear} 
         onChange={(e) => {this.handleChange(props,e.value)}}
         options={this.state.yearData}
-         placeholder="Year" optionLabel="Text" style={{width: '8em'}}/>
+        placeholder="Year" optionLabel="Text" optionValue="Value" style={{width: '8em'}}/>
     }
-
 
     render() {
 
