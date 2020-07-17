@@ -329,9 +329,9 @@ let yearDropdownDef = [];
                 // var optionitem:HTMLOptionElement = document.createElement("option");
                 let optionitem = {};
                     // @ts-ignore 
-                optionitem.value=option!.Value;
+                optionitem.Value=option!.Value;
                     // @ts-ignore 
-                optionitem.text = option!.Label.UserLocalizedLabel.Label;
+                optionitem.Text = option!.Label.UserLocalizedLabel.Label;
                     // @ts-ignore 
                 yearDropdownDef.push(optionitem);
             }
