@@ -98,6 +98,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
             cashFlow = this.props.context.parameters.cashFlow.raw;
+            expandYear = this.props.context.parameters.expandYear.raw;
         }
         // let editedNode = this.findNodeByKey(newNodes, props.node.key);
         let editedNode = newNodes[0];
@@ -150,7 +151,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         this.setState({
             popupColDef: newNodes
         });
-        let editedField = props.field;
         let childproduct = this.state.popupColDef;
         this.sendData(childproduct);
     }
@@ -388,6 +388,8 @@ debugger;
         var jsonArr = this.state.popupColDef;
         jsonArr[0][this.props.columns[0].field] = event.name;
         this.setState({ popupColDef: jsonArr,currentYear:event.name });
+        let childproduct = jsonArr;
+        this.sendData(childproduct);
     }
     editorDropdown= (props: any) => {
         debugger;

@@ -139,9 +139,12 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
     createApiUpdateRequest(editNode: any) {
         let months = this.props.monthDetails;
-        let lineTotal;
+        let lineTotal,ppr,cashFlow,expandYear;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             lineTotal = this.props.context.parameters.lineTotal.raw;
+            ppr = this.props.context.parameters.ppr.raw;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
+            expandYear = this.props.context.parameters.expandYear.raw;
         }
         var entity = {};
         entity[lineTotal] = 0;
@@ -159,16 +162,17 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     entity[lineTotal] += Number(editNode[Column]);
                     entity[Column] = Number(editNode[Column]);
                 }
-                else if (Column == "m360_ppr") {
-                    entity["m360_PPR" + "@odata.bind"] = "/" + "m360_pprs" + "(" + ContextId + ")";
+                else if (Column == ppr) {
+                    entity[ppr + "@odata.bind"] = "/" + "m360_pprs" + "(" + ContextId + ")";
                     // entity[primaryLookupschemaName+"@odata.bind"] = "/"+entitySetName+"(" + ContextId+ ")";
                     // entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
                 }
-                else if (Column == "m360_cashflowitemname") {
-                    entity["m360_cashflowitemname"] = editNode[Column];
+                else if (Column == cashFlow) {
+                    entity[cashFlow] = editNode[Column];
                 }
-                else if (Column == "m360_fiscalyear") {
-                    entity["m360_fiscalyear"] = "555080002";
+                else if (Column == expandYear) {
+                     entity[expandYear] = editNode[Column];
+                    // entity[expandYear] = "555080002";
                 }
                 else {
                     // let stri
@@ -245,7 +249,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                 //entity[ppr + "@odata.bind"] = "/" + ppr + "(" + contextId + ")";
             }
             else if (Column == expandYear) {
-                entity[expandYear] = "555080002";
+                entity[expandYear] = editNode[Column];
             }
             else if (Column == cashFlow) {
                 entity[Column] = editNode[Column];
@@ -305,7 +309,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         });
         return month;
     }
-    
+
     render() {
         let inputData = {
             columns: this.props.columns,
