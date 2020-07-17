@@ -71,9 +71,9 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 
         }
         this.setState({ popupColDef: jsonArr });
-        var yeardate = this.createDropDownDef();
-        this.setState({yearData : yeardate});
-        this.setState({currentYear :yeardate[0] })
+        var yeardata = this.createDropDownDef();
+        this.setState({yearData : yeardata});
+        this.setState({currentYear :yeardata[0] })
 
     }
 
@@ -291,12 +291,13 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         debugger;
         return cols;
     }
-createDropDownDef()
-{
-    let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-    let expandYear = this.props.context.parameters.expandYear.raw;
-    var yearData ;
-    var req1 = new XMLHttpRequest();
+
+    createDropDownDef()
+    {
+        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let expandYear = this.props.context.parameters.expandYear.raw;
+        var yearData ;
+        var req1 = new XMLHttpRequest();
 						// @ts-ignore 
 			req1.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v9.0/EntityDefinitions(LogicalName='"+gridEntity+"')/Attributes(LogicalName='"+expandYear+"')/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet($select=Options)", false);
 			req1.setRequestHeader("OData-MaxVersion", "4.0");			
@@ -313,30 +314,34 @@ createDropDownDef()
                     yearData = resultdata;
                     console.log("api inner respnse " + req1.response);
                 }
-				
 		};
 		req1.send();
-}
+    }
 req1.send();
 yearData = JSON.parse(req1.response).OptionSet.Options;
 let yearDropdownDef = [];
 
+    try{
         if((yearData!=null)&&(yearData!="")&&(yearData!="undefined"))
         {
-            yearData.forEach(function(option)
-             {
-                var optionitem:HTMLOptionElement = document.createElement("option");
+            for (let option of yearData)
+            {
+                // var optionitem:HTMLOptionElement = document.createElement("option");
+                var optionitem;
                     // @ts-ignore 
                 optionitem.value=option!.Value;
                     // @ts-ignore 
                 optionitem.text = option!.Label.UserLocalizedLabel.Label;
                     // @ts-ignore 
-                    yearDropdownDef.add(optionitem);
-        });
+                yearDropdownDef.add(optionitem);
+            }
+        }
     }
-console.log("api outer respnse " + yearDropdownDef);
-
-return yearDropdownDef;
+    catch{
+    console.log("fetch failed");
+    }      
+    console.log("api outer respnse " + yearDropdownDef);
+    return yearDropdownDef;
 }
 
     findNodeByKey(nodes: any, key: any) {
