@@ -98,7 +98,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
             cashFlow = this.props.context.parameters.cashFlow.raw;
-            expandYear = this.props.context.parameters.expandYear.raw;
         }
         // let editedNode = this.findNodeByKey(newNodes, props.node.key);
         let editedNode = newNodes[0];
@@ -386,8 +385,8 @@ debugger;
     handleChange(props:any,event) {
         debugger;
         var jsonArr = this.state.popupColDef;
-        jsonArr[0][this.props.columns[0].field] = event.name;
-        this.setState({ popupColDef: jsonArr,currentYear:event.name });
+        jsonArr[0][this.props.columns[0].field] = event;
+        this.setState({ popupColDef: jsonArr,currentYear:event });
         let childproduct = jsonArr;
         this.sendData(childproduct);
     }
