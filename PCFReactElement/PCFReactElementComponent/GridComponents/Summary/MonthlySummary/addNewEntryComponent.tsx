@@ -73,7 +73,8 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         this.setState({ popupColDef: jsonArr });
         var yeardata = this.createDropDownDef();
         this.setState({yearData : yeardata});
-        this.setState({currentYear :yeardata[0] })
+        // @ts-ignore 
+        this.setState({currentYear :yeardata[0].Value})
 
     }
 
@@ -386,6 +387,7 @@ debugger;
         debugger;
         var jsonArr = this.state.popupColDef;
         jsonArr[0][this.props.columns[0].field] = event;
+        // @ts-ignore 
         this.setState({ popupColDef: jsonArr,currentYear:event });
         let childproduct = jsonArr;
         this.sendData(childproduct);
@@ -399,7 +401,7 @@ debugger;
     DropdownEditor = (props: any, field: any) => {
         debugger;
          // @ts-ignore 
-        let currentYear =  this.state.currentYear.value;
+        let currentYear =  this.state.currentYear.Value;
         return <Dropdown value={currentYear} 
         onChange={(e) => {this.handleChange(props,e.value)}}
         options={this.state.yearData}
