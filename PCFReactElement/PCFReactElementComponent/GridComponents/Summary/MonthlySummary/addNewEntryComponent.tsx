@@ -407,14 +407,14 @@ let yearDropdownDef = [];
 
     }
 
-    handleChange=(props:any,yearText:any,yearValue:any)=> {
+    handleChange=(props:any,e:any)=> {
         debugger;
         var jsonArr = this.state.popupColDef;
-        jsonArr[0][this.props.columns[0].field] = yearText;
+        jsonArr[0][this.props.columns[0].field] ="";
         // @ts-ignore 
-        this.setState({ popupColDef: jsonArr,currentYear:yearText });
+        this.setState({ popupColDef: jsonArr,currentYear:"" });
         let newJsonArray=this.state.popupColDef;
-        newJsonArray[0][this.props.columns[0].field]=yearValue; //Set Year Value;
+        newJsonArray[0][this.props.columns[0].field]=""; //Set Year Value;
         let childproduct = newJsonArray;
         this.sendData(childproduct);
     }
@@ -434,7 +434,7 @@ let yearDropdownDef = [];
          // @ts-ignore 
         let currentYear = this.state.yearData[0].Text;
         return <Dropdown value={currentYear} 
-        onChange={(e) => {this.handleChange(props,e.target.name,e.value)}}
+        onChange={(e) => {this.handleChange(props,e.value)}}
         options={this.state.yearData}
         placeholder="Year" optionLabel="Text"  style={{width: '8em'}}/>
     }
