@@ -410,11 +410,11 @@ let yearDropdownDef = [];
     handleChange=(props:any,e:any)=> {
         debugger;
         var jsonArr = this.state.popupColDef;
-        jsonArr[0][this.props.columns[0].field] ="";
+        jsonArr[0][this.props.columns[0].field] =e.Text;
         // @ts-ignore 
-        this.setState({ popupColDef: jsonArr,currentYear:"" });
+        this.setState({ popupColDef: jsonArr,currentYear:e.Text });
         let newJsonArray=this.state.popupColDef;
-        newJsonArray[0][this.props.columns[0].field]=""; //Set Year Value;
+        newJsonArray[0][this.props.columns[0].field]=e.Value; //Set Year Value;
         let childproduct = newJsonArray;
         this.sendData(childproduct);
     }
