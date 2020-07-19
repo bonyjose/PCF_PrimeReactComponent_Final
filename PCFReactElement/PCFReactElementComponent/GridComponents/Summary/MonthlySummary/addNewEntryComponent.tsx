@@ -71,10 +71,10 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         for (var i = 0; i < this.props.columns.length; i++) {
             jsonArr[0][this.props.columns[i].field] = "";
 
-        }
-        this.setState({ popupColDef: jsonArr });
+        }    
+      
         var yeardata = this.createDropDownDef();
-        this.setState({yearData : yeardata});
+        this.setState({ popupColDef: jsonArr ,yearData : yeardata});
         // @ts-ignore 
         this.setState({currentYear :yeardata[0].currentYear})
 
