@@ -52,7 +52,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         this.requiredValidator = this.requiredValidator.bind(this);
         this.editorDropdown = this.editorDropdown.bind(this);
         this.DropdownEditor = this.DropdownEditor.bind(this);
-        this.handleChange = this.handleChange.bind(this);
          this.citySelectItems = [
             {label: 'New York', value: 'NY'},
             {label: 'Rome', value: 'RM'},
@@ -408,7 +407,7 @@ let yearDropdownDef = [];
 
     }
 
-    handleChange(props:any,yearText:any,yearValue:any) {
+    handleChange=(props:any,yearText:any,yearValue:any)=> {
         debugger;
         var jsonArr = this.state.popupColDef;
         jsonArr[0][this.props.columns[0].field] = yearText;
@@ -431,7 +430,7 @@ let yearDropdownDef = [];
         var jsonArr = this.state.popupColDef;
         jsonArr[0][this.props.columns[0].field] = year;
         // @ts-ignore 
-        this.setState({ popupColDef: jsonArr,currentYear:event });
+        this.setState({ popupColDef: jsonArr,currentYear:year });
          // @ts-ignore 
         let currentYear = this.state.yearData[0].Text;
         return <Dropdown value={currentYear} 
