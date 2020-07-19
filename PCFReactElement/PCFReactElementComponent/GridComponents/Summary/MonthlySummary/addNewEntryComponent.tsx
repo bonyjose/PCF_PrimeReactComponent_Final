@@ -77,7 +77,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         var yeardata = this.createDropDownDef();
         this.setState({yearData : yeardata});
         // @ts-ignore 
-        this.setState({currentYear :yeardata[0].Value})
+        this.setState({currentYear :yeardata[0].currentYear})
 
     }
 
@@ -408,13 +408,15 @@ let yearDropdownDef = [];
 
     }
 
-    handleChange(props:any,event) {
+    handleChange(props:any,event,yearValue:any) {
         debugger;
         var jsonArr = this.state.popupColDef;
         jsonArr[0][this.props.columns[0].field] = event;
         // @ts-ignore 
         this.setState({ popupColDef: jsonArr,currentYear:event });
-        let childproduct = jsonArr;
+        let newJsonArray=this.state.popupColDef;
+        newJsonArray[0][this.props.columns[0].field]=yearValue; //Set Year Value;
+        let childproduct = newJsonArray;
         this.sendData(childproduct);
     }
     editorDropdown= (props: any) => {
@@ -425,10 +427,14 @@ let yearDropdownDef = [];
 
     DropdownEditor = (props: any, field: any) => {
         debugger;
+        var jsonArr = this.state.popupColDef;
+        jsonArr[0][this.props.columns[0].field] = this.state.currentYear;
+        // @ts-ignore 
+        this.setState({ popupColDef: jsonArr,currentYear:event });
          // @ts-ignore 
         let currentYear =  this.state.currentYear;
         return <Dropdown value={currentYear} 
-        onChange={(e) => {this.handleChange(props,e.value)}}
+        onChange={(e) => {this.handleChange(props,e.target.name,e.value)}}
         options={this.state.yearData}
         placeholder="Year" optionLabel="Text"  style={{width: '8em'}}/>
     }

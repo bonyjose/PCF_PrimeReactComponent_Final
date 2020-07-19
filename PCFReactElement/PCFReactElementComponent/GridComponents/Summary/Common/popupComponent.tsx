@@ -1,7 +1,7 @@
 
 import React, { Component, Props } from 'react';
 import { Dialog } from 'primereact/dialog';
-
+import LoadingOverlay from 'react-loading-overlay';
 import { Button } from 'primereact/button';
 import { DataTableAddNew } from '../MonthlySummary/addNewEntryComponent'
 import { IInputs } from '../../../generated/ManifestTypes';
@@ -27,6 +27,7 @@ type AppState = {
     position: string;
     updatedData: any[];
     monthDetails: any;
+    loading: boolean;
 }
 interface inputData {
     SetData(): any,
@@ -46,7 +47,8 @@ export class DialogDemo extends Component<AppProps, AppState>{
             displayPosition: false,
             position: 'center',
             updatedData: [],
-            monthDetails: []
+            monthDetails: [],
+            loading:false
 
         };
     }
@@ -81,20 +83,19 @@ export class DialogDemo extends Component<AppProps, AppState>{
         let editedObject = this.createApiUpdateRequest(updatedDatas[0]);
 
         console.log(editedObject);
-        try {
+        this.setState({ loading: true }, () => {
+            setTimeout(() => {
             this.props.context.webAPI.createRecord(gridEntity, editedObject).then(function (result) {
-
-
                 context.parameters.sampleDataSet.refresh();
-            }
-                ,
+                stateVariable.setState({ loading: false });
+            },
                 function (result) {
+                    stateVariable.setState({ loading: false });
                 })
             this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
-        }
-        catch (Error) {
-            console.log(Error.message);
-        }
+
+        }, 3000);
+    });
         // this.forceUpdate();
 
     }
@@ -325,6 +326,9 @@ export class DialogDemo extends Component<AppProps, AppState>{
             isViewEditable : this.props.isViewEditable
         }
         return (
+            <LoadingOverlay
+            active={this.state.loading}
+            spinner>
             <div className="addNewButton">
                 <Button label="Add New" disabled ={!this.props.isViewEditable} className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
                 <Dialog position="top" header="Add New Record" visible={this.state.displayBasic2} style={{ width: '96vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
@@ -332,6 +336,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     {/* <label style={{float:"left",color:"#ab9999"}} >CFName*: Cash Flow Item Name</label> */}
                 </Dialog>
             </div>
+            </LoadingOverlay>
 
         )
     }
