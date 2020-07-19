@@ -142,11 +142,32 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             let newNode: any;
 
             if (typeof (newNodes[0].Q1) !== 'undefined') {
-                newNode = this.parseQuartertoMonth(newNodes);
+                newNodes = this.parseQuartertoMonth(newNodes);
             }
             else {
-                newNode = newNodes;
+                newNodes = newNodes;
             }
+        }
+
+        if (this.props.pannelType === "M") {
+            let months = this.state.monthDetails;
+            let Total = 0;
+            for (let Column in newNodes[0]) {
+
+                if (months.includes(Column)) {
+
+                    Total += this.numberTryParse(newNodes[0][Column]);
+                }
+            }
+            newNodes[0][lineTotal] = Total;
+            // let newNode: any;
+
+            // if (typeof (newNodes[0].Q1) !== 'undefined') {
+            //     newNodes = this.parseQuartertoMonth(newNodes);
+            // }
+            // else {
+            //     newNodes = newNodes;
+            // }
         }
 
         this.setState({
@@ -359,7 +380,7 @@ let yearDropdownDef = [];
         return node;
     }
     vinEditor(props: any) {
-debugger;
+        debugger;
         let field = props.field
         return this.inputTextEditor(props, field);
     }
