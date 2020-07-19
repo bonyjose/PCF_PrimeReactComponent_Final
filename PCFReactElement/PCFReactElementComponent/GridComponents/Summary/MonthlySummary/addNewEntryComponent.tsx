@@ -66,7 +66,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 
         this.createMonthDefinition();
         this.setState({ colDef: this.props.columns });
-        var jsonArr = this.state.popupColDef;
+        var jsonArr = [{}];
 
         for (var i = 0; i < this.props.columns.length; i++) {
             jsonArr[0][this.props.columns[i].field] = "";
@@ -74,12 +74,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         }
         this.setState({ popupColDef: jsonArr });
         var yeardata = this.createDropDownDef();
-
-        var year=this.state.yearData[0].Text;
-        jsonArr[0][this.props.columns[0].field] = year;
-        // @ts-ignore 
-        this.setState({ popupColDef: jsonArr,currentYear:year });
-
         this.setState({yearData : yeardata});
         // @ts-ignore 
         this.setState({currentYear :yeardata[0].currentYear})
@@ -342,7 +336,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 				if (req1.status === 200) {
                     var resultdata = JSON.parse(req1.response);
                     yearData = resultdata;
-                    
                     console.log("api inner respnse " + req1.response);
                 }
 		};
@@ -432,8 +425,7 @@ let yearDropdownDef = [];
     }
 
     DropdownEditor = (props: any, field: any) => {
-        debugger;
-         // @ts-ignore 
+        debugger; 
         let currentYear = this.state.yearData[0].Text;
         return <Dropdown value={currentYear} 
         onChange={(e) => {this.handleChange(props,e.value)}}
