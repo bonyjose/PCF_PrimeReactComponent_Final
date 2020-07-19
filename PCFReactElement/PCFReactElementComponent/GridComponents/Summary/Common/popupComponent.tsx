@@ -51,6 +51,10 @@ export class DialogDemo extends Component<AppProps, AppState>{
         };
     }
 
+    componentDidMount() {
+        debugger;
+        this.createMonthDefinition();
+    }
 
 
 
@@ -131,14 +135,15 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     break;
             }
         });
-
+        // return month;
         this.setState({ monthDetails: month });
         console.log(this.state.monthDetails);
     }
 
 
     createApiUpdateRequest(editNode: any) {
-        this.createMonthDefinition;
+        // let months = this.createMonthDefinition;
+        // this.setState({ monthDetails: months });
         let months = this.props.monthDetails;
         let lineTotal,ppr,cashFlow,expandYear;
         if (typeof (this.props.context.parameters) !== 'undefined') {
