@@ -50,6 +50,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         this.vinEditor = this.vinEditor.bind(this);
         this.yearEditor = this.yearEditor.bind(this);
         this.requiredValidator = this.requiredValidator.bind(this);
+        this.editorDropdown = this.editorDropdown.bind(this);
          this.citySelectItems = [
             {label: 'New York', value: 'NY'},
             {label: 'Rome', value: 'RM'},
