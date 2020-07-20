@@ -13,8 +13,8 @@ type AppProps = {
     setData: any;
     monthDetails: any
     pannelType: any,
-    isViewEditable:Boolean;
-    dropDownData : any;
+    dropDownData:any;
+    isViewEditable:Boolean
 }
 
 type AppState = {
@@ -78,7 +78,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         this.setState({ popupColDef: jsonArr ,yearData : yeardata});
         // @ts-ignore 
         this.setState({currentYear :yeardata[0].currentYear})
-        this.sendDropDownData(yeardata);
 
     }
 
@@ -286,6 +285,10 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                         field: p.field, header: "Year", expander: true, isEditable: false,IsDropdDown : true
                     }
                     cols.push(resultData);
+                    resultData = {
+                        field: p.field, header: "Year", expander: true, isEditable: false,IsDropdDown : true
+                    }
+                    cols.push(resultData);
                     break;
                 case cashFlow:
                     resultData = {
@@ -415,9 +418,8 @@ let yearDropdownDef = [];
         jsonArr[0][this.props.columns[0].field] =e.Text;
         // @ts-ignore 
         this.setState({ popupColDef: jsonArr,currentYear:e.Text });
-        let newJsonArray=this.state.popupColDef;
-        newJsonArray[0][this.props.columns[0].field]=e.Value; //Set Year Value;
-        let childproduct = newJsonArray;
+        this.props.dropDownData(e.Value);
+        let childproduct = jsonArr;
         this.sendData(childproduct);
     }
     editorDropdown= (props: any) => {
@@ -463,10 +465,6 @@ let yearDropdownDef = [];
 
     sendData = (childproduct: any) => {
         this.props.setData(childproduct);
-    }
-
-    sendDropDownData = (dropDownOptions: any) => {
-        this.props.dropDownData(dropDownOptions);
     }
 
 }

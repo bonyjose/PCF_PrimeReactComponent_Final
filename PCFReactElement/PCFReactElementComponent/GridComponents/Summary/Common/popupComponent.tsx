@@ -28,7 +28,7 @@ type AppState = {
     updatedData: any[];
     monthDetails: any;
     loading: boolean;
-    dropDownData : any[];
+    dropDownData : any;
 }
 interface inputData {
     SetData(): any,
@@ -49,7 +49,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             position: 'center',
             updatedData: [],
             monthDetails: [],
-            dropDownData :[],
+            dropDownData :"",
             loading:false
 
         };
@@ -228,8 +228,8 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
     setDropDownData =(data)=>{
         debugger;
-        let dropDown : any[] = data;
-        this.setState({dropDownData : dropDown})
+        let currentYearValue : any= data;
+        this.setState({dropDownData : currentYearValue})
     }
 
     //------------------------------------------------Year Region-----------------------------------------
