@@ -145,7 +145,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
     createApiUpdateRequest(editNode: any) {
         // let months = this.createMonthDefinition;
         // this.setState({ monthDetails: months });
-        let months = this.props.monthDetails;
+        let months = this.state.monthDetails;
         let lineTotal,ppr,cashFlow,expandYear;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             lineTotal = this.props.context.parameters.lineTotal.raw;
