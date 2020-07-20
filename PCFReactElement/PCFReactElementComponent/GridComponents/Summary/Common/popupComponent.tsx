@@ -28,6 +28,7 @@ type AppState = {
     updatedData: any[];
     monthDetails: any;
     loading: boolean;
+    dropDownData : any[];
 }
 interface inputData {
     SetData(): any,
@@ -48,6 +49,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             position: 'center',
             updatedData: [],
             monthDetails: [],
+            dropDownData :[],
             loading:false
 
         };
@@ -224,6 +226,12 @@ export class DialogDemo extends Component<AppProps, AppState>{
         this.setState({ updatedData: updatedDatas });
     }
 
+    setDropDownData =(data)=>{
+        debugger;
+        let dropDown : any[] = data;
+        this.setState({dropDownData : dropDown})
+    }
+
     //------------------------------------------------Year Region-----------------------------------------
     createMonthRequest = (editNode: any, contextId: any) => {
         debugger;
@@ -332,7 +340,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             <div className="addNewButton">
                 <Button label="Add New" disabled ={!this.props.isViewEditable} className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
                 <Dialog position="top" header="Add New Record" visible={this.state.displayBasic2} style={{ width: '96vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
-                    <DataTableAddNew setData={this.setData}  {...inputData} />
+                    <DataTableAddNew setData={this.setData} dropDownData = {this.setDropDownData}   {...inputData} />
                     {/* <label style={{float:"left",color:"#ab9999"}} >CFName*: Cash Flow Item Name</label> */}
                 </Dialog>
             </div>
