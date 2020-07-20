@@ -284,11 +284,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                     resultData = {
                         field: p.field, header: "Year", expander: true, isEditable: false,IsDropdDown : true
                     }
-                    cols.push(resultData);
-                    resultData = {
-                        field: p.field, header: "Year", expander: true, isEditable: false,IsDropdDown : true
-                    }
-                    cols.push(resultData);
+                    cols.push(resultData);                   
                     break;
                 case cashFlow:
                     resultData = {

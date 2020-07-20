@@ -14,7 +14,7 @@ type AppProps = {
     monthDetails: any,
     pannelType: any,
     actualColDef: any[],
-    isViewEditable :boolean
+    isViewEditable: boolean
 }
 
 type AppState = {
@@ -28,7 +28,7 @@ type AppState = {
     updatedData: any[];
     monthDetails: any;
     loading: boolean;
-    dropDownData : any;
+    dropDownData: any;
 }
 interface inputData {
     SetData(): any,
@@ -49,8 +49,8 @@ export class DialogDemo extends Component<AppProps, AppState>{
             position: 'center',
             updatedData: [],
             monthDetails: [],
-            dropDownData :"",
-            loading:false
+            dropDownData: "",
+            loading: false
 
         };
     }
@@ -87,17 +87,17 @@ export class DialogDemo extends Component<AppProps, AppState>{
         console.log(editedObject);
         this.setState({ loading: true }, () => {
             setTimeout(() => {
-            this.props.context.webAPI.createRecord(gridEntity, editedObject).then(function (result) {
-                context.parameters.sampleDataSet.refresh();
-                stateVariable.setState({ loading: false });
-            },
-                function (result) {
+                this.props.context.webAPI.createRecord(gridEntity, editedObject).then(function (result) {
+                    context.parameters.sampleDataSet.refresh();
                     stateVariable.setState({ loading: false });
-                })
-            this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
+                },
+                    function (result) {
+                        stateVariable.setState({ loading: false });
+                    })
+                this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
 
-        }, 3000);
-    });
+            }, 3000);
+        });
         // this.forceUpdate();
 
     }
@@ -148,7 +148,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         // let months = this.createMonthDefinition;
         // this.setState({ monthDetails: months });
         let months = this.state.monthDetails;
-        let lineTotal,ppr,cashFlow,expandYear;
+        let lineTotal, ppr, cashFlow, expandYear;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             lineTotal = this.props.context.parameters.lineTotal.raw;
             ppr = this.props.context.parameters.ppr.raw;
@@ -180,7 +180,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     entity[cashFlow] = editNode[Column];
                 }
                 else if (Column == expandYear) {
-                     entity[expandYear] = editNode[Column];
+                    entity[expandYear] = this.state.dropDownData;
                     // entity[expandYear] = "555080002";
                 }
                 else {
@@ -226,10 +226,10 @@ export class DialogDemo extends Component<AppProps, AppState>{
         this.setState({ updatedData: updatedDatas });
     }
 
-    setDropDownData =(data)=>{
+    setDropDownData = (data) => {
         debugger;
-        let currentYearValue : any= data;
-        this.setState({dropDownData : currentYearValue})
+        let currentYearValue: any = data;
+        this.setState({ dropDownData: currentYearValue })
     }
 
     //------------------------------------------------Year Region-----------------------------------------
@@ -264,7 +264,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                 //entity[ppr + "@odata.bind"] = "/" + ppr + "(" + contextId + ")";
             }
             else if (Column == expandYear) {
-                entity[expandYear] = editNode[Column];
+                entity[expandYear] = this.state.dropDownData;
             }
             else if (Column == cashFlow) {
                 entity[Column] = editNode[Column];
@@ -331,20 +331,23 @@ export class DialogDemo extends Component<AppProps, AppState>{
             context: this.props.context,
             monthDetails: this.props.monthDetails,
             pannelType: this.props.pannelType,
-            isViewEditable : this.props.isViewEditable
+            isViewEditable: this.props.isViewEditable
         }
         return (
-            <LoadingOverlay
-            active={this.state.loading}
-            spinner>
+
             <div className="addNewButton">
-                <Button label="Add New" disabled ={!this.props.isViewEditable} className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
-                <Dialog position="top" header="Add New Record" visible={this.state.displayBasic2} style={{ width: '96vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
-                    <DataTableAddNew setData={this.setData} dropDownData = {this.setDropDownData}   {...inputData} />
-                    {/* <label style={{float:"left",color:"#ab9999"}} >CFName*: Cash Flow Item Name</label> */}
-                </Dialog>
+
+                <Button label="Add New" disabled={!this.props.isViewEditable} className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
+                <LoadingOverlay
+                    active={this.state.loading}
+                    spinner>
+                    <Dialog position="top" header="Add New Record" visible={this.state.displayBasic2} style={{ width: '96vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
+                        <DataTableAddNew setData={this.setData} dropDownData={this.setDropDownData}   {...inputData} />
+                        {/* <label style={{float:"left",color:"#ab9999"}} >CFName*: Cash Flow Item Name</label> */}
+                    </Dialog>
+                </LoadingOverlay>
             </div>
-            </LoadingOverlay>
+
 
         )
     }
