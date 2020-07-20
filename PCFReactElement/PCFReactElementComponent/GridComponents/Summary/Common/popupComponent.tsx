@@ -170,7 +170,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     entity[Column] = Number(editNode[Column]);
                 }
                 else if (Column == ppr) {
-                    entity[ppr + "@odata.bind"] = "/" + "m360_pprs" + "(" + ContextId + ")";
+                    entity["m360_PPR" + "@odata.bind"] = "/" + "m360_pprs" + "(" + ContextId + ")";
                     // entity[primaryLookupschemaName+"@odata.bind"] = "/"+entitySetName+"(" + ContextId+ ")";
                     // entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
                 }
