@@ -6,6 +6,7 @@ import { Button } from 'primereact/button';
 import { DataTableAddNew } from '../MonthlySummary/addNewEntryComponent'
 import { IInputs } from '../../../generated/ManifestTypes';
 import { isNull } from 'util';
+import { Messages } from 'primereact/messages';
 type AppProps = {
     test?: any;
     context: ComponentFramework.Context<IInputs>;
@@ -36,7 +37,7 @@ interface inputData {
 
 }
 export class DialogDemo extends Component<AppProps, AppState>{
-
+    public messages = React.createRef<any>();
     constructor(props: AppProps) {
         super(props);
         this.state = {
@@ -57,6 +58,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
     componentDidMount() {
         debugger;
+        this.messages.current.clear();
         this.createMonthDefinition();
     }
 
@@ -76,28 +78,28 @@ export class DialogDemo extends Component<AppProps, AppState>{
     }
     onSave(name: string) {
         debugger;
+
+     
         let updatedDatas: any[] = this.state.updatedData;
+        let isValid = true;
+        for (let Column in updatedDatas[0]) {
+            if(updatedDatas[0][Column] == "")
+            {
+                isValid = false;
+                return;
+            }
+        }
+        let data = this.messages.current.state.messages;
+        if (!isValid) // data.length === 0 && 
+        {
+          this.messages.current.show({ sticky: true, severity: 'warn', detail: 'All fields are mandatory' });
+          return;
+        }
         let context: ComponentFramework.Context<IInputs>;
         context = this.props.context;
         let stateVariable = this;
 
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
-        let isValid = true;
-        for (let Column in updatedDatas[0]) {
-                if(Column)
-                {
-                }
-                else
-                {
-                    isValid = false;
-                    return;
-                }
-        }
-        if(!isValid)
-        {
-            alert("All the fields are mandatory!")
-            return;
-        }
         let editedObject = this.createApiUpdateRequest(updatedDatas[0]);
 
         console.log(editedObject);
@@ -355,6 +357,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             <div className="addNewButton">
                 <Button label="Add New" disabled={!this.props.isViewEditable} className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
                 <Dialog position="top" header="Add New Record" visible={this.state.displayBasic2} style={{ width: '96vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
+                <Messages ref={this.messages} />
                     <DataTableAddNew setData={this.setData} dropDownData={this.setDropDownData}   {...inputData} />
                 </Dialog>
             </div>
