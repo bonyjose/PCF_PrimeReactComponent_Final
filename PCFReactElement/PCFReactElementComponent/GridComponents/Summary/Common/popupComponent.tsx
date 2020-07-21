@@ -82,6 +82,22 @@ export class DialogDemo extends Component<AppProps, AppState>{
         let stateVariable = this;
 
         let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let isValid = true;
+        for (let Column in updatedDatas[0]) {
+                if(Column)
+                {
+                }
+                else
+                {
+                    isValid = false;
+                    return;
+                }
+        }
+        if(!isValid)
+        {
+            alert("All the fields are mandatory!")
+            return;
+        }
         let editedObject = this.createApiUpdateRequest(updatedDatas[0]);
 
         console.log(editedObject);
