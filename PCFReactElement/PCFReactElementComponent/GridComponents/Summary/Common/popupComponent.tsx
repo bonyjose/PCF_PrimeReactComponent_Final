@@ -50,7 +50,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             updatedData: [],
             monthDetails: [],
             dropDownData: "",
-            loading: false
+            loading: true
 
         };
     }
