@@ -58,7 +58,6 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
     componentDidMount() {
         debugger;
-        this.messages.current.clear();
         this.createMonthDefinition();
     }
 
@@ -90,11 +89,21 @@ export class DialogDemo extends Component<AppProps, AppState>{
             }
         }
         let data = this.messages.current.state.messages;
-        if (!isValid) // data.length === 0 && 
-        {
-          this.messages.current.show({ sticky: true, severity: 'warn', detail: 'All fields are mandatory' });
-          return;
+        try{
+            if (!isValid) // data.length === 0 && 
+            {
+              this.messages.current.show({ sticky: true, severity: 'warn', detail: 'All fields are mandatory' });
+              return;
+            }
+            else
+            {
+                this.messages.current.clear();
+            }
         }
+        catch{
+            console.log("validation failed");
+        }
+        
         let context: ComponentFramework.Context<IInputs>;
         context = this.props.context;
         let stateVariable = this;
