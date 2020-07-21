@@ -320,7 +320,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
         let product: any[] = Object.values(this.props.data);
         let field = Object.values(this.props.columns).map(p => p.fieldName);
         let uniqYear = product.map(i => i[expandYear]);
-        var uniqueItems = Array.from(new Set(uniqYear))
+        var uniqueItems = Array.from(new Set(uniqYear)).sort();
         let result = {};
         let ChildResultArray: any[];
         let ResultArray: any[];
@@ -443,7 +443,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
         let datanode: any[] = this.state.nodes;
         const dynamicColumns = Object.values(coldef).map((col, i) => {
-            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.isEditable ? this.vinEditor : undefined} style={{ width: '100px' }} editorValidator={this.requiredValidator} headerClassName="p-col-d" />;
+            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} sortable={col.expander} editor={col.isEditable ? this.vinEditor : undefined} style={{ width: '100px' }} editorValidator={this.requiredValidator} headerClassName="p-col-d" />;
         });
         return (
             <LoadingOverlay
@@ -456,7 +456,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
                         <DialogDemo {...inputData} />
                         <Button label="Save" disabled={!isViewEditable} className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
                         <div>
-                            <TreeTable value={datanode} rowClassName={this.rowClassName} className="monthlyGrid" paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh">
+                            <TreeTable value={datanode} rowClassName={this.rowClassName} className="monthlyGrid" paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh" defaultSortOrder={-1}>
                                 {dynamicColumns}
                             </TreeTable >
                         </div>

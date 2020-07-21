@@ -222,7 +222,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     let cols = this.createfieldDef();
     let field = Object.values(cols).map(p => p.fieldName);
     let uniqYear = product.map(i => i[expandYear]);
-    var uniqueItems = Array.from(new Set(uniqYear))
+    var uniqueItems = Array.from(new Set(uniqYear)).sort()
     let result = {};
     let ChildResultArray: any[];
     let ResultArray: any[];
@@ -572,7 +572,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
 
     let datanode: any[] = this.state.nodes;
     const dynamicColumns = Object.values(coldef).map((col, i) => {
-      return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.isEditable ? this.vinEditor : undefined} style={{ width: '100px' }} headerClassName="p-col-d" />;
+      return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} sortable={col.expander} editor={col.isEditable ? this.vinEditor : undefined} style={{ width: '100px' }} headerClassName="p-col-d" />;
     });
     return (
       <LoadingOverlay
@@ -583,7 +583,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
           <div className="content-section implementation monthlyGrid">
             <DialogDemo {...inputData} />
             <Button label="Save" disabled={!isViewEditable} className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
-            <TreeTable value={datanode} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh">
+            <TreeTable value={datanode} rowClassName={this.rowClassName} paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh" defaultSortOrder={-1}>
               {dynamicColumns}
             </TreeTable >
           </div>

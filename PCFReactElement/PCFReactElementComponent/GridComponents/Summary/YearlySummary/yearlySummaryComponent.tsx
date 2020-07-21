@@ -30,7 +30,8 @@ type monthState = {
     rowEditedKey: [],
     monthDetails: any[],
     rowEditedKeyData: any[],
-    loading: boolean
+    loading: boolean,
+    sortField:any
 }
 
 class YearlyComponent extends Component<AppMonthProps, monthState>{
@@ -50,7 +51,8 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
             rowEditedKey: [],
             rowEditedKeyData: [],
             monthDetails: [],
-            loading: false
+            loading: false,
+            sortField:this.props.context.parameters.expandYear.raw
         };
 
     }
@@ -186,6 +188,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
         let expandYear, ppr, lineTotal, cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
+            this.setState({sortField:expandYear});
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
             cashFlow = this.props.context.parameters.cashFlow.raw;
@@ -291,7 +294,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
         let product: any[] = Object.values(this.props.data);
         let field = Object.values(this.props.columns).map(p => p.fieldName);
         let uniqYear = product.map(i => i[expandYear]);
-        var uniqueItems = Array.from(new Set(uniqYear))
+        var uniqueItems = Array.from(new Set(uniqYear)).sort()
         let result = {};
         let ChildResultArray: any[];
         let ResultArray: any[];
@@ -306,7 +309,6 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
             ChildResultArray = [];
             let x: number = 0;
             let childrenData: any[];
-
             data.map(p => {
                 if (p[expandYear] === year) {
                     let result = {};
@@ -337,6 +339,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
             }
             ResultArray.push(resultData);
         }
+        console.log("Year Data:",ResultArray);
         return JSON.parse(JSON.stringify(ResultArray));
 
     }
@@ -405,7 +408,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
         }
         let datanode: any[] = this.state.nodes;
         const dynamicColumns = Object.values(coldef).map((col, i) => {
-            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} editor={col.isEditable ? this.vinEditor : undefined} style={{ width: '100px' }} headerClassName="p-col-d" />;
+            return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} sortable={col.expander} editor={col.isEditable ? this.vinEditor : undefined} style={{ width: '100px' }} headerClassName="p-col-d" />;
         });
         return (
             <LoadingOverlay
@@ -418,7 +421,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
                         <DialogDemo {...inputData} />
                         <Button label="Save" disabled={!isViewEditable} className="saveBtn" icon="pi pi-save" onClick={() => this.saveGrid()} iconPos="left" />
                         <div>
-                            <TreeTable value={datanode} rowClassName={this.rowClassName} className="monthlyGrid" paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh">
+                            <TreeTable value={datanode} rowClassName={this.rowClassName} className="monthlyGrid" paginator={true} rows={5} scrollable style={{ width: 75 + "vw" }} scrollHeight="55vh" defaultSortOrder={-1}>
                                 {dynamicColumns}
                             </TreeTable >
                         </div>
