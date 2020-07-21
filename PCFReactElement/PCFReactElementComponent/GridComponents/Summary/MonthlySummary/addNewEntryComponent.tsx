@@ -6,7 +6,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Panel } from 'primereact/panel';
 import { CarService } from '../../service/carService';
 import { IInputs } from '../../../generated/ManifestTypes';
-
+import LoadingOverlay from 'react-loading-overlay';
 type AppProps = {
     columns: any[];
     context: ComponentFramework.Context<IInputs>;
@@ -14,7 +14,8 @@ type AppProps = {
     monthDetails: any
     pannelType: any,
     dropDownData:any;
-    isViewEditable:Boolean
+    isViewEditable:Boolean,
+    isLoading:Boolean
 }
 
 type AppState = {
@@ -444,6 +445,9 @@ let yearDropdownDef = [];
         });
 
         return (
+            <LoadingOverlay
+                    active={this.props.isLoading}
+                    spinner>
             <div className="addnew gridstyle">
                 <Panel>
                     <div className="content-section implementation">
@@ -456,6 +460,7 @@ let yearDropdownDef = [];
                 </Panel>
 
             </div>
+            </LoadingOverlay>
         );
     }
 
