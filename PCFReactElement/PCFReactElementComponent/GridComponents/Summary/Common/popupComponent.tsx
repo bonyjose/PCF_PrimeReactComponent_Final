@@ -60,7 +60,13 @@ export class DialogDemo extends Component<AppProps, AppState>{
         debugger;
         this.createMonthDefinition();
     }
-
+	showError() {
+		this.messages.current.show({
+			severity: 'warn',
+			summary: 'Error Message',
+			detail: 'All fields are mandatory'
+		});
+	}
 
 
     onClick(name: string) {
@@ -94,13 +100,14 @@ export class DialogDemo extends Component<AppProps, AppState>{
         try{
             if (!isValid) // data.length === 0 && 
             {
-                this.messages.current.state.messages.clear();
-                this.messages.current.show({ sticky: true, severity: 'warn', detail: 'All fields are mandatory' });
+                // this.messages.current.clear;
+                // this.messages.current.show({ sticky: true, severity: 'warn', detail: 'All fields are mandatory' });
+                this.showError();
                 return;
             }
             else
             {
-                this.messages.current.state.messages.clear();
+                this.messages.current.clear();
             }
         }
         catch{
