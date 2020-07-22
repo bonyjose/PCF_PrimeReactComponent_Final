@@ -85,7 +85,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             if(updatedDatas[0][Column] == "")
             {
                 isValid = false;
-                return;
+                // break;
             }
         }
         let data = this.messages.current.state.messages;
