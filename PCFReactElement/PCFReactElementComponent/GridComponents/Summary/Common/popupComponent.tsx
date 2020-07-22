@@ -94,13 +94,13 @@ export class DialogDemo extends Component<AppProps, AppState>{
         try{
             if (!isValid) // data.length === 0 && 
             {
-                this.messages.current.clear();
-              this.messages.current.show({ sticky: true, severity: 'warn', detail: 'All fields are mandatory' });
-              return;
+                this.messages.current.state.messages.clear();
+                this.messages.current.show({ sticky: true, severity: 'warn', detail: 'All fields are mandatory' });
+                return;
             }
             else
             {
-                this.messages.current.clear();
+                this.messages.current.state.messages.clear();
             }
         }
         catch{
