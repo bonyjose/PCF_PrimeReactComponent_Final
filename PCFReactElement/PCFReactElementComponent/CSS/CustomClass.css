@@ -85,7 +85,7 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom > td .p-treetable-t
 }
 
 .implementation{
-    margin-top: 10px !important;
+    margin-top: 50px !important;
     margin-bottom: 10px !important;
 }
 .p-button.p-component.saveBtn{
@@ -133,6 +133,6 @@ span.pi.pi-save.p-c.p-button-icon-left{
         display: inline-block;
     }
 }
-.validationMessage{
-    height: 120px;
+.p-dialog-content .validationMessage{
+    height: 50px;
 }
