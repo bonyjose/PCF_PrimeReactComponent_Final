@@ -3,7 +3,7 @@ import React, { Component, Props } from 'react';
 import { Dialog } from 'primereact/dialog';
 import LoadingOverlay from 'react-loading-overlay';
 import { Button } from 'primereact/button';
-import { DataTableAddNew } from '../MonthlySummary/addNewEntryComponent'
+import { DataTableAddNew } from '../Common/addNewEntryComponent'
 import { IInputs } from '../../../generated/ManifestTypes';
 import { isNull } from 'util';
 import { Messages } from 'primereact/messages';
@@ -146,7 +146,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
-            cashFlow = this.props.context.parameters.cashFlow.raw;
+            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
         }
         else {
             expandYear = "FinacialYear";
@@ -189,7 +189,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         if (typeof (this.props.context.parameters) !== 'undefined') {
             lineTotal = this.props.context.parameters.lineTotal.raw;
             ppr = this.props.context.parameters.ppr.raw;
-            cashFlow = this.props.context.parameters.cashFlow.raw;
+            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
             expandYear = this.props.context.parameters.expandYear.raw;
         }
         var entity = {};
@@ -281,7 +281,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             lineTotal = this.props.context.parameters.lineTotal.raw;
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
-            cashFlow = this.props.context.parameters.cashFlow.raw;
+            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
         }
         let lineTotalData = editNode[lineTotal];
         if (!isNull(lineTotalData)) {
@@ -330,7 +330,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
-            cashFlow = this.props.context.parameters.cashFlow.raw;
+            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
         }
         else {
             expandYear = "FinacialYear";

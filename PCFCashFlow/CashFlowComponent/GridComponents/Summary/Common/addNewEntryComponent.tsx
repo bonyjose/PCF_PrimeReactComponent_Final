@@ -102,7 +102,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
-            cashFlow = this.props.context.parameters.cashFlow.raw;
+            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
         }
         // let editedNode = this.findNodeByKey(newNodes, props.node.key);
         let editedNode = newNodes[0];
@@ -228,7 +228,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
-            cashFlow = this.props.context.parameters.cashFlow.raw;
+            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
         }
         else {
             expandYear = "FinacialYear";
@@ -267,7 +267,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
-            cashFlow = this.props.context.parameters.cashFlow.raw;
+            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
         }
         else {
             expandYear = "FinacialYear";

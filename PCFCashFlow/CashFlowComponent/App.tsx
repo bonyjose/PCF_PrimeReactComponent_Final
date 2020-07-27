@@ -2,9 +2,9 @@ import React from "react";
 import { Dropdown } from "primereact/dropdown";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { GridQuarterlyComponent } from './GridComponents/QuarterlyGrid'
-import { GridMonthlyComponent } from './GridComponents/MonthlyGrid'
-import { GridYearlyComponent } from './GridComponents/YearlyGrid'
+import { GridQuarterlyComponent } from './GridComponents/Summary/QuarterlySummary/QuarterlyGrid'
+// import { GridMonthlyComponent } from './GridComponents/MonthlyGrid'
+// import { GridYearlyComponent } from './GridComponents/YearlyGrid'
 import MonthlySummary from './GridComponents/Summary/MonthlySummary/monthlySummaryComponent'
 import { RecordOverviewProps } from './GridComponents/interface/contextInterface'
 import { IInputs, IOutputs } from "../CashFlowComponent/generated/ManifestTypes"

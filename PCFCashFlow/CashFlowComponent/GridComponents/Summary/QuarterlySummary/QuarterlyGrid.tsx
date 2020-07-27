@@ -4,8 +4,8 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { TreeTable } from "primereact/treetable";
 import { InputText } from "primereact/inputtext";
-import { DialogDemo } from "../GridComponents/Summary/Common/popupComponent"
-import { IInputs, IOutputs } from "../generated/ManifestTypes"
+import { DialogDemo } from "../Common/popupComponent"
+import { IInputs, IOutputs } from "../../../generated/ManifestTypes"
 import { Button } from "primereact/button";
 import { Messages } from 'primereact/messages';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -174,7 +174,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       expandYear = this.props.context.parameters.expandYear.raw;
       ppr = this.props.context.parameters.ppr.raw;
       lineTotal = this.props.context.parameters.lineTotal.raw;
-      cashFlow = this.props.context.parameters.cashFlow.raw;
+      cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
     }
     else {
       expandYear = "FinacialYear";
@@ -291,7 +291,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       expandYear = this.props.context.parameters.expandYear.raw;
       ppr = this.props.context.parameters.ppr.raw;
       lineTotal = this.props.context.parameters.lineTotal.raw;
-      cashFlow = this.props.context.parameters.cashFlow.raw;
+      cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
       EditViewEnabled = this.props.context.parameters.EditViewEnabled.raw;
     }
     else {
@@ -395,7 +395,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     let total = 0;
     let lineTotal;
     if (typeof (this.props.context.parameters) !== 'undefined') {
-      lineTotal = this.props.context.parameters.lineTotal.raw;
+      lineTotal = this.props.context. parameters.lineTotal.raw;
     }
     let January, February, March, April, May, June, July, August, September, October, November, December;
     if (typeof (this.props.context.parameters) !== 'undefined') {

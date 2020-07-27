@@ -9,7 +9,7 @@ import { createStore } from 'redux';
 
 import configureStore from './GridComponents/store/configStore'
 const store = configureStore();
-export class PCFReactElementComponent implements ComponentFramework.StandardControl<IInputs, IOutputs> {
+export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
 	private childData:[];
 	private notifyOutputChanged: () => void;

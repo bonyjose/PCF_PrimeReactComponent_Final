@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="PCFReactElementNamespace" constructor="PCFReactElementComponent" version="0.0.2" display-name-key="PCFReactElementComponent" description-key="PCFReactElementComponent description" control-type="standard">
+  <control namespace="PCFCashFlow" constructor="PCFCashFlow" version="0.0.2" display-name-key="PCFCashFlow" description-key="PCF CashFlow " control-type="standard">
     <!-- dataset node represents a set of entity records on CDS; allow more than one datasets -->
     <data-set name="cashFlowDataSet" display-name-key="Dataset_Display_Key">
-       <property-set name="PPRName" display-name-key="PPR"  description-key="enter " of-type="SingleLine.Text" usage="input" required="true" />
-      <property-set name="Total" display-name-key="LineTotal" description-key="enter row gr" of-type="SingleLine.Text" usage="input" required="true" />
-      <property-set name="cashFlowName" display-name-key="CashFlow" description-key="enter row " of-type="SingleLine.Text" usage="input" required="true" />
+      <!-- <property-set name="Total" display-name-key="LineTotal" description-key="enter row gr" of-type="SingleLine.Text" usage="input" required="true" /> -->
+      <property-set name="cashFlow" display-name-key="CashFlow" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
+     
     </data-set>
-      <property name="expandYear" display-name-key="ExpandYear" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
 	    <property name="ppr" display-name-key="PPR"  description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
-      <property name="lineTotal" display-name-key="LineTotal" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
-      <property name="cashFlow" display-name-key="CashFlow" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
+      <property name="EditViewEnabled" display-name-key="EditViewEnabled" description-key="enter row " of-type="SingleLine.Text" usage="input" required="true" />
+       <property name="lineTotal" display-name-key="LineTotal" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
+      <property name="expandYear" display-name-key="ExpandYear" description-key="enter row group column name" of-type="OptionSet" usage="input" required="true" />
       <property name="January" display-name-key="Jan" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
 	    <property name="February" display-name-key="Feb" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
 	    <property name="March" display-name-key="Mar" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
@@ -23,10 +23,6 @@
 		  <property name="October" display-name-key="Oct" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
 	    <property name="November" display-name-key="Nov" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
 	    <property name="December" display-name-key="Dec" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
-      <property name="FiscalYear" display-name-key="ExpandYear" description-key="enter" of-type="SingleLine.Text" usage="input" required="true" />
-     
-      <property name="EditViewEnabled" display-name-key="EditViewEnabled" description-key="enter row " of-type="SingleLine.Text" usage="input" required="true" />
-    
     <resources>
       <code path="index.ts" order="1"/>
       <css path="CSS/primereact.min.css" order="2" />
@@ -41,11 +37,6 @@
       <css path="CSS/fonts/primeicons.ttf" order="1"/>
       <css path="CSS/fonts/primeicons.woff" order="1"/>
       <img path="CSS/external-link.svg" />
-       <!-- <css path="../src/index.css" order="2" />
-        <css path="../src/App.css" order="3" />  -->      <!-- UNCOMMENT TO ADD MORE RESOURCES
-      <css path="css/PCFReactElementComponent.css" order="1" />
-      <resx path="strings/PCFReactElementComponent.1033.resx" version="1.0.0" />
-      -->
     </resources>
     <!-- UNCOMMENT TO ENABLE THE SPECIFIED API -->
     <feature-usage>
