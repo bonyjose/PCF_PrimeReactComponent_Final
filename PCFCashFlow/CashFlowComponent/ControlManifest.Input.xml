@@ -3,7 +3,9 @@
   <control namespace="PCFReactElementNamespace" constructor="PCFReactElementComponent" version="0.0.2" display-name-key="PCFReactElementComponent" description-key="PCFReactElementComponent description" control-type="standard">
     <!-- dataset node represents a set of entity records on CDS; allow more than one datasets -->
     <data-set name="sampleDataSet" display-name-key="Dataset_Display_Key">
-      <!-- 'property-set' node represents a unique, configurable property that each record in the dataset must provide. -->
+       <property-set name="PPRName" display-name-key="PPR"  description-key="enter " of-type="SingleLine.Text" usage="input" required="true" />
+      <property-set name="Total" display-name-key="LineTotal" description-key="enter row gr" of-type="SingleLine.Text" usage="input" required="true" />
+      <property-set name="cashFlowName" display-name-key="CashFlow" description-key="enter row " of-type="SingleLine.Text" usage="input" required="true" />
     </data-set>
       <property name="expandYear" display-name-key="ExpandYear" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
 	    <property name="ppr" display-name-key="PPR"  description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
@@ -22,9 +24,7 @@
 	    <property name="November" display-name-key="Nov" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
 	    <property name="December" display-name-key="Dec" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
       <property name="FiscalYear" display-name-key="ExpandYear" description-key="enter" of-type="SingleLine.Text" usage="input" required="true" />
-      <property name="PPRName" display-name-key="PPR"  description-key="enter " of-type="SingleLine.Text" usage="input" required="true" />
-      <property name="Total" display-name-key="LineTotal" description-key="enter row gr" of-type="SingleLine.Text" usage="input" required="true" />
-      <property name="cashFlowName" display-name-key="CashFlow" description-key="enter row " of-type="SingleLine.Text" usage="input" required="true" />
+     
       <property name="EditViewEnabled" display-name-key="EditViewEnabled" description-key="enter row " of-type="SingleLine.Text" usage="input" required="true" />
     
     <resources>

@@ -7,7 +7,7 @@ import { GridMonthlyComponent } from './GridComponents/MonthlyGrid'
 import { GridYearlyComponent } from './GridComponents/YearlyGrid'
 import MonthlySummary from './GridComponents/Summary/MonthlySummary/monthlySummaryComponent'
 import { RecordOverviewProps } from './GridComponents/interface/contextInterface'
-import { IInputs, IOutputs } from "../PCFReactElementComponent/generated/ManifestTypes"
+import { IInputs, IOutputs } from "../CashFlowComponent/generated/ManifestTypes"
 import { TabView, TabPanel } from 'primereact/tabview';
 import YearlyComponent from './GridComponents/Summary/YearlySummary/yearlySummaryComponent';
 import { threadId } from "worker_threads";
