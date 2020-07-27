@@ -2,7 +2,7 @@
 <manifest>
   <control namespace="PCFReactElementNamespace" constructor="PCFReactElementComponent" version="0.0.2" display-name-key="PCFReactElementComponent" description-key="PCFReactElementComponent description" control-type="standard">
     <!-- dataset node represents a set of entity records on CDS; allow more than one datasets -->
-    <data-set name="sampleDataSet" display-name-key="Dataset_Display_Key">
+    <data-set name="cashFlowDataSet" display-name-key="Dataset_Display_Key">
        <property-set name="PPRName" display-name-key="PPR"  description-key="enter " of-type="SingleLine.Text" usage="input" required="true" />
       <property-set name="Total" display-name-key="LineTotal" description-key="enter row gr" of-type="SingleLine.Text" usage="input" required="true" />
       <property-set name="cashFlowName" display-name-key="CashFlow" description-key="enter row " of-type="SingleLine.Text" usage="input" required="true" />

@@ -91,7 +91,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
         this.props.changeUpadated()
         this.props.fileUpdated(true);
-        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let nodes = this.state.nodes;
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
@@ -371,7 +371,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
     saveGrid(): void {
         this.messages.current.clear();
         this.props.fileUpdated(false);
-        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let gridrowKey = this.state.rowEditedKeyData;
 
         let rowKeys: any[] = Object.values(gridrowKey);
@@ -395,7 +395,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
 
 
                         if (i === uniqueKeys.length - 1) {
-                            context.parameters.sampleDataSet.refresh();
+                            context.parameters.cashFlowDataSet.refresh();
                             stateVariable.setState({ isSaved: true, loading: false, rowEditedKeyData: [] });
                         }
                     },

@@ -367,7 +367,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       this.messages.current.show({ sticky: true, severity: 'warn', detail: 'There are unsaved changes' });
     }
 
-    let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+    let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
     let nodes = this.state.nodes;
     this.props.fileUpdated(true);
     let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
@@ -514,7 +514,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
 
   saveGrid(): void {
     this.messages.current.clear();
-    let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+    let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
     let gridrowKey = this.state.rowEditedKeyData;
     this.props.fileUpdated(false);
     let rowKeys: any[] = Object.values(gridrowKey);
@@ -534,7 +534,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
           let editedObject = this.createApiUpdateRequest(editedNode.data);
           var data = this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(function (result) {
             if (i === uniqueKeys.length - 1) {
-              context.parameters.sampleDataSet.refresh();
+              context.parameters.cashFlowDataSet.refresh();
               stateVariable.setState({ isSaved: true, loading: false, rowEditedKeyData: [] });
             }
           },

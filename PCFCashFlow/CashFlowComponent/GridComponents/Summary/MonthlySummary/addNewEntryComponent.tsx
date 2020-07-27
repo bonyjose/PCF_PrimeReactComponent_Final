@@ -95,7 +95,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     /* Cell Editing */
     onEditorValueChange(props: any, event) {
         debugger;
-        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let newNodes = this.state.popupColDef;
         let expandYear, ppr, lineTotal, cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
@@ -320,7 +320,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 
     createDropDownDef()
     {
-        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let expandYear = this.props.context.parameters.expandYear.raw;
         var yearData ;
         var req1 = new XMLHttpRequest();

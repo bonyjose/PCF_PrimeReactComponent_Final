@@ -83,7 +83,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
             this.messages.current.show({ sticky: true, severity: 'warn', detail: 'There are unsaved changes' });
         }
         this.props.fileUpdated(true);
-        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let nodes = this.state.nodes;
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
@@ -346,7 +346,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
     saveGrid(): void {
         this.messages.current.clear();
         this.props.fileUpdated(false);
-        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let gridrowKey = this.state.rowEditedKeyData;
 
         let rowKeys: any[] = Object.values(gridrowKey);
@@ -369,7 +369,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
 
 
                         if (i === uniqueKeys.length - 1) {
-                            context.parameters.sampleDataSet.refresh();
+                            context.parameters.cashFlowDataSet.refresh();
                             stateVariable.setState({ isSaved: true, loading: false, rowEditedKeyData: [] });
                         }
                     },

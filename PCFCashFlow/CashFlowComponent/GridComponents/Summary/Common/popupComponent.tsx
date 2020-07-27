@@ -118,14 +118,14 @@ export class DialogDemo extends Component<AppProps, AppState>{
         context = this.props.context;
         let stateVariable = this;
 
-        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let editedObject = this.createApiUpdateRequest(updatedDatas[0]);
 
         console.log(editedObject);
         this.setState({ loading: true }, () => {
             setTimeout(() => {
                 this.props.context.webAPI.createRecord(gridEntity, editedObject).then(function (result) {
-                    context.parameters.sampleDataSet.refresh();
+                    context.parameters.cashFlowDataSet.refresh();
                     stateVariable.setState({ loading: false });
                 },
                     function (result) {
