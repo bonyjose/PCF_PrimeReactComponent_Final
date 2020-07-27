@@ -2685,7 +2685,7 @@ body .p-dialog {
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16); }
   body .p-dialog .p-dialog-titlebar {
     border: 1px solid #c8c8c8;
-    background-color: #007ad9;
+    background-color: #efefef;
     color: #333333;
     padding: 1em;
     font-weight: 700;

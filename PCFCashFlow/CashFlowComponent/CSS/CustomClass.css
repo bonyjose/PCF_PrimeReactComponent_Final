@@ -88,6 +88,9 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom > td .p-treetable-t
     margin-top: 50px !important;
     margin-bottom: 10px !important;
 }
+.addnew.gridstyle .implementation {
+    margin-top: 10px !important;
+}
 .p-button.p-component.saveBtn{
     float: right;
     margin-top: 0px;
