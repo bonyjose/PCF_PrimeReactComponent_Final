@@ -51,6 +51,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
   }
 
   ParseToQuarter(month: any) {
+    debugger;
     let months = month;
     let lineTot
     if (typeof (this.props.context.parameters) !== 'undefined') {
@@ -59,22 +60,73 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     console.log(months);
     let product: any[] = Object.values(this.props.data);
     let data = Object.values(product);
-
     let January, February, March, April, May, June, July, August, September, October, November, December;
-    if (typeof (this.props.context.parameters) !== 'undefined') {
-      January = this.props.context.parameters.January.raw;
-      February = this.props.context.parameters.February.raw;
-      March = this.props.context.parameters.March.raw;
-      April = this.props.context.parameters.April.raw;
-      May = this.props.context.parameters.May.raw;
-      June = this.props.context.parameters.June.raw;
-      July = this.props.context.parameters.July.raw;
-      August = this.props.context.parameters.August.raw;
-      September = this.props.context.parameters.September.raw;
-      October = this.props.context.parameters.October.raw;
-      November = this.props.context.parameters.November.raw;
-      December = this.props.context.parameters.December.raw;
+    for (let columns of this.props.columns) {
+
+      if(columns.fieldName == "January")
+      {
+        January = columns.fieldName;
+      }
+      else if(columns.fieldName == "February")
+      {
+        February = columns.fieldName;
+      }
+      else if(columns.fieldName == "March")
+      {
+        March = columns.fieldName;
+      }
+      else if(columns.fieldName == "April")
+      {
+        April = columns.fieldName;
+      }
+      else if(columns.fieldName == "May")
+      {
+        May = columns.fieldName;
+      }
+      else if(columns.fieldName == "June")
+      {
+        June = columns.fieldName;
+      }
+      else if(columns.fieldName == "July")
+      {
+        July = columns.fieldName;
+      }
+      else if(columns.fieldName == "August")
+      {
+        August = columns.fieldName;
+      }
+      else if(columns.fieldName == "September")
+      {
+        September = columns.fieldName;
+      }
+      else if(columns.fieldName == "October")
+      {
+        October = columns.fieldName;
+      }
+      else if(columns.fieldName == "November")
+      {
+        November = columns.fieldName;
+      }
+      else if(columns.fieldName == "December")
+      {
+        December = columns.fieldName;
+      }
     }
+    
+    // if (typeof (this.props.context.parameters) !== 'undefined') {
+    
+    //   February = this.props.columns["January"];
+    //   March = this.props.columns["January"];
+    //   April = this.props.columns["January"];
+    //   May = this.props.columns["January"];
+    //   June = this.props.columns["January"];
+    //   July = this.props.columns["January"];
+    //   August = this.props.columns["January"];
+    //   September = this.props.columns["January"];
+    //   October = this.props.columns["January"];
+    //   November = this.props.columns["January"];
+    //   December = this.props.columns["January"];
+    // }
     let i = 0;
     let q1 = 0;
     let q2 = 0;
@@ -174,7 +226,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       expandYear = this.props.context.parameters.expandYear.raw;
       ppr = this.props.context.parameters.ppr.raw;
       lineTotal = this.props.context.parameters.lineTotal.raw;
-      cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
+      cashFlow = this.props.context.parameters.cashFlow.raw;
     }
     else {
       expandYear = "FinacialYear";
@@ -291,7 +343,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       expandYear = this.props.context.parameters.expandYear.raw;
       ppr = this.props.context.parameters.ppr.raw;
       lineTotal = this.props.context.parameters.lineTotal.raw;
-      cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
+      cashFlow = this.props.context.parameters.cashFlow.raw;
       EditViewEnabled = this.props.context.parameters.EditViewEnabled.raw;
     }
     else {
@@ -397,20 +449,22 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     if (typeof (this.props.context.parameters) !== 'undefined') {
       lineTotal = this.props.context. parameters.lineTotal.raw;
     }
+
+
     let January, February, March, April, May, June, July, August, September, October, November, December;
     if (typeof (this.props.context.parameters) !== 'undefined') {
-      January = this.props.context.parameters.January.raw;
-      February = this.props.context.parameters.February.raw;
-      March = this.props.context.parameters.March.raw;
-      April = this.props.context.parameters.April.raw;
-      May = this.props.context.parameters.May.raw;
-      June = this.props.context.parameters.June.raw;
-      July = this.props.context.parameters.July.raw;
-      August = this.props.context.parameters.August.raw;
-      September = this.props.context.parameters.September.raw;
-      October = this.props.context.parameters.October.raw;
-      November = this.props.context.parameters.November.raw;
-      December = this.props.context.parameters.December.raw;
+      January = this.props.columns["January"];
+      February = this.props.columns["January"];
+      March = this.props.columns["January"];
+      April = this.props.columns["January"];
+      May = this.props.columns["January"];
+      June = this.props.columns["January"];
+      July = this.props.columns["January"];
+      August = this.props.columns["January"];
+      September = this.props.columns["January"];
+      October = this.props.columns["January"];
+      November = this.props.columns["January"];
+      December = this.props.columns["January"];
     }
     for (let Column in editNode) {
 

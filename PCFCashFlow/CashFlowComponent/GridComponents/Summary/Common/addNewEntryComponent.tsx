@@ -102,7 +102,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
-            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
         }
         // let editedNode = this.findNodeByKey(newNodes, props.node.key);
         let editedNode = newNodes[0];
@@ -181,20 +181,58 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     }
     parseQuartertoMonth(newNodes: any) {
         let January, February, March, April, May, June, July, August, September, October, November, December;
-        if (typeof (this.props.context.parameters) !== 'undefined') {
-            January = this.props.context.parameters.January.raw;
-            February = this.props.context.parameters.February.raw;
-            March = this.props.context.parameters.March.raw;
-            April = this.props.context.parameters.April.raw;
-            May = this.props.context.parameters.May.raw;
-            June = this.props.context.parameters.June.raw;
-            July = this.props.context.parameters.July.raw;
-            August = this.props.context.parameters.August.raw;
-            September = this.props.context.parameters.September.raw;
-            October = this.props.context.parameters.October.raw;
-            November = this.props.context.parameters.November.raw;
-            December = this.props.context.parameters.December.raw;
-        }
+    for (let columns of this.props.columns) {
+
+      if(columns.fieldName == "January")
+      {
+        January = columns.fieldName;
+      }
+      else if(columns.fieldName == "February")
+      {
+        February = columns.fieldName;
+      }
+      else if(columns.fieldName == "March")
+      {
+        March = columns.fieldName;
+      }
+      else if(columns.fieldName == "April")
+      {
+        April = columns.fieldName;
+      }
+      else if(columns.fieldName == "May")
+      {
+        May = columns.fieldName;
+      }
+      else if(columns.fieldName == "June")
+      {
+        June = columns.fieldName;
+      }
+      else if(columns.fieldName == "July")
+      {
+        July = columns.fieldName;
+      }
+      else if(columns.fieldName == "August")
+      {
+        August = columns.fieldName;
+      }
+      else if(columns.fieldName == "September")
+      {
+        September = columns.fieldName;
+      }
+      else if(columns.fieldName == "October")
+      {
+        October = columns.fieldName;
+      }
+      else if(columns.fieldName == "November")
+      {
+        November = columns.fieldName;
+      }
+      else if(columns.fieldName == "December")
+      {
+        December = columns.fieldName;
+      }
+    
+}
         newNodes[0][January] = this.numberTryParse(newNodes[0].Q1 / 3).toFixed(2);
         newNodes[0][February] = this.numberTryParse(newNodes[0].Q1 / 3).toFixed(2);
         newNodes[0][March] = this.numberTryParse(newNodes[0].Q1 / 3).toFixed(2);
@@ -228,7 +266,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
-            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
         }
         else {
             expandYear = "FinacialYear";
@@ -267,7 +305,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
-            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
         }
         else {
             expandYear = "FinacialYear";

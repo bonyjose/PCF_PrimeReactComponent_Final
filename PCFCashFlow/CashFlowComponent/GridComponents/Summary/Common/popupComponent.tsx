@@ -146,7 +146,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
-            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
         }
         else {
             expandYear = "FinacialYear";
@@ -189,7 +189,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         if (typeof (this.props.context.parameters) !== 'undefined') {
             lineTotal = this.props.context.parameters.lineTotal.raw;
             ppr = this.props.context.parameters.ppr.raw;
-            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
             expandYear = this.props.context.parameters.expandYear.raw;
         }
         var entity = {};
@@ -281,7 +281,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             lineTotal = this.props.context.parameters.lineTotal.raw;
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
-            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
         }
         let lineTotalData = editNode[lineTotal];
         if (!isNull(lineTotalData)) {
@@ -330,7 +330,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
-            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
         }
         else {
             expandYear = "FinacialYear";

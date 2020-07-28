@@ -191,7 +191,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
             this.setState({sortField:expandYear});
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
-            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
         }
         else {
             expandYear = "FinacialYear";
@@ -229,7 +229,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
             expandYear = this.props.context.parameters.expandYear.raw;
             ppr = this.props.context.parameters.ppr.raw;
             lineTotal = this.props.context.parameters.lineTotal.raw;
-            cashFlow = this.props.context.parameters.cashFlowDataSet.records.cashFlow;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
         }
         else {
             expandYear = "FinacialYear";
