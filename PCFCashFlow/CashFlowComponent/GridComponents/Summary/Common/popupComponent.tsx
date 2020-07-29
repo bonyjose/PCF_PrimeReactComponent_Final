@@ -1,11 +1,12 @@
 
 import React, { Component, Props } from 'react';
 import { Dialog } from 'primereact/dialog';
-
+import LoadingOverlay from 'react-loading-overlay';
 import { Button } from 'primereact/button';
-import { DataTableAddNew } from '../MonthlySummary/addNewEntryComponent'
+import { DataTableAddNew } from '../Common/addNewEntryComponent'
 import { IInputs } from '../../../generated/ManifestTypes';
 import { isNull } from 'util';
+import { Messages } from 'primereact/messages';
 type AppProps = {
     test?: any;
     context: ComponentFramework.Context<IInputs>;
@@ -14,7 +15,7 @@ type AppProps = {
     monthDetails: any,
     pannelType: any,
     actualColDef: any[],
-    isViewEditable :Boolean
+    isViewEditable: boolean
 }
 
 type AppState = {
@@ -27,6 +28,8 @@ type AppState = {
     position: string;
     updatedData: any[];
     monthDetails: any;
+    loading: boolean;
+    dropDownData: any;
 }
 interface inputData {
     SetData(): any,
@@ -34,7 +37,7 @@ interface inputData {
 
 }
 export class DialogDemo extends Component<AppProps, AppState>{
-
+    public messages = React.createRef<any>();
     constructor(props: AppProps) {
         super(props);
         this.state = {
@@ -46,12 +49,24 @@ export class DialogDemo extends Component<AppProps, AppState>{
             displayPosition: false,
             position: 'center',
             updatedData: [],
-            monthDetails: []
+            monthDetails: [],
+            dropDownData: "",
+            loading: false
 
         };
     }
 
-
+    componentDidMount() {
+        debugger;
+        this.createMonthDefinition();
+    }
+	showError() {
+		this.messages.current.show({
+			severity: 'warn',
+			summary: 'Error Message',
+			detail: 'All fields are mandatory'
+		});
+	}
 
 
     onClick(name: string) {
@@ -68,29 +83,58 @@ export class DialogDemo extends Component<AppProps, AppState>{
     }
     onSave(name: string) {
         debugger;
+
+        let ppr = this.props.context.parameters.ppr.raw;
         let updatedDatas: any[] = this.state.updatedData;
+        let isValid = true;
+        for (let Column in updatedDatas[0]) {
+            if(updatedDatas[0][Column] == "")
+            {
+                if(Column != ppr)
+                {
+                    isValid = false;
+                }
+            }
+        }
+        let data = this.messages.current.state.messages;
+        try{
+            if (!isValid && data.length === 0 )
+            {
+                this.messages.current.clear;
+                // this.messages.current.show({ sticky: true, severity: 'warn', detail: 'All fields are mandatory' });
+                this.showError();
+                return;
+            }
+            else
+            {
+                this.messages.current.clear();
+            }
+        }
+        catch{
+            console.log("validation failed");
+        }
+        
         let context: ComponentFramework.Context<IInputs>;
         context = this.props.context;
         let stateVariable = this;
 
-        let gridEntity: string = this.props.context.parameters.sampleDataSet.getTargetEntityType().toString();
+        let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let editedObject = this.createApiUpdateRequest(updatedDatas[0]);
 
         console.log(editedObject);
-        try {
-            this.props.context.webAPI.createRecord(gridEntity, editedObject).then(function (result) {
+        this.setState({ loading: true }, () => {
+            setTimeout(() => {
+                this.props.context.webAPI.createRecord(gridEntity, editedObject).then(function (result) {
+                    context.parameters.cashFlowDataSet.refresh();
+                    stateVariable.setState({ loading: false });
+                },
+                    function (result) {
+                        stateVariable.setState({ loading: false });
+                    })
+                this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
 
-
-                context.parameters.sampleDataSet.refresh();
-            }
-                ,
-                function (result) {
-                })
-            this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
-        }
-        catch (Error) {
-            console.log(Error.message);
-        }
+            }, 3000);
+        });
         // this.forceUpdate();
 
     }
@@ -131,16 +175,25 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     break;
             }
         });
-
+        // return month;
         this.setState({ monthDetails: month });
         console.log(this.state.monthDetails);
     }
 
 
     createApiUpdateRequest(editNode: any) {
-        let months = this.props.monthDetails;
+        // let months = this.createMonthDefinition;
+        // this.setState({ monthDetails: months });
+        let months = this.state.monthDetails;
+        let lineTotal, ppr, cashFlow, expandYear;
+        if (typeof (this.props.context.parameters) !== 'undefined') {
+            lineTotal = this.props.context.parameters.lineTotal.raw;
+            ppr = this.props.context.parameters.ppr.raw;
+            cashFlow = this.props.context.parameters.cashFlow.raw;
+            expandYear = this.props.context.parameters.expandYear.raw;
+        }
         var entity = {};
-        entity["m360_linetotal"] = 0;
+        entity[lineTotal] = 0;
 
         // @ts-ignore 
         let ContextId = this.props.context.page.entityId;
@@ -152,26 +205,27 @@ export class DialogDemo extends Component<AppProps, AppState>{
         else {
             for (let Column in editNode) {
                 if (months.includes(Column)) {
-                    entity["m360_linetotal"] += Number(editNode[Column]);
+                    entity[lineTotal] += Number(editNode[Column]);
                     entity[Column] = Number(editNode[Column]);
                 }
-                else if (Column == "m360_ppr") {
+                else if (Column == ppr) {
                     entity["m360_PPR" + "@odata.bind"] = "/" + "m360_pprs" + "(" + ContextId + ")";
                     // entity[primaryLookupschemaName+"@odata.bind"] = "/"+entitySetName+"(" + ContextId+ ")";
                     // entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
                 }
-                else if (Column == "m360_cashflowitemname") {
-                    entity["m360_cashflowitemname"] = editNode[Column];
+                else if (Column == cashFlow) {
+                    entity[cashFlow] = editNode[Column];
                 }
-                else if (Column == "m360_fiscalyear") {
-                    entity["m360_fiscalyear"] = "555080002";
+                else if (Column == expandYear) {
+                    entity[expandYear] = this.state.dropDownData;
+                    // entity[expandYear] = "555080002";
                 }
                 else {
                     // let stri
                     // entity[Column] = Number(editNode[Column]);
                 }
             }
-            entity["m360_linetotal"] = Number(entity["m360_linetotal"]);
+            entity[lineTotal] = Number(entity[lineTotal]);
             return entity;
         }
     }
@@ -209,6 +263,12 @@ export class DialogDemo extends Component<AppProps, AppState>{
         this.setState({ updatedData: updatedDatas });
     }
 
+    setDropDownData = (data) => {
+        debugger;
+        let currentYearValue: any = data;
+        this.setState({ dropDownData: currentYearValue })
+    }
+
     //------------------------------------------------Year Region-----------------------------------------
     createMonthRequest = (editNode: any, contextId: any) => {
         debugger;
@@ -241,7 +301,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                 //entity[ppr + "@odata.bind"] = "/" + ppr + "(" + contextId + ")";
             }
             else if (Column == expandYear) {
-                entity[expandYear] = "555080002";
+                entity[expandYear] = this.state.dropDownData;
             }
             else if (Column == cashFlow) {
                 entity[Column] = editNode[Column];
@@ -302,30 +362,24 @@ export class DialogDemo extends Component<AppProps, AppState>{
         return month;
     }
 
-    //------------------------------------------------End Region
-
-
-
-
-
-
     render() {
         let inputData = {
             columns: this.props.columns,
             context: this.props.context,
             monthDetails: this.props.monthDetails,
             pannelType: this.props.pannelType,
-            isViewEditable : this.props.isViewEditable
+            isViewEditable: this.props.isViewEditable,
+            isLoading: this.state.loading
         }
         return (
+
             <div className="addNewButton">
-                <Button label="Add New" className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
-                <Dialog position="top" header="Add New Record" visible={this.state.displayBasic2} style={{ width: '90vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
-                    <DataTableAddNew setData={this.setData}  {...inputData} />
-                    {/* <label style={{float:"left",color:"#ab9999"}} >CFName*: Cash Flow Item Name</label> */}
+                <Button label="Add New" disabled={!this.props.isViewEditable} className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
+                <Dialog position="top" header="Add New Record" visible={this.state.displayBasic2} style={{ width: '96vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
+                <Messages ref={this.messages} className="validationMessage" />
+                    <DataTableAddNew setData={this.setData} dropDownData={this.setDropDownData}   {...inputData} />
                 </Dialog>
             </div>
-
         )
     }
 }

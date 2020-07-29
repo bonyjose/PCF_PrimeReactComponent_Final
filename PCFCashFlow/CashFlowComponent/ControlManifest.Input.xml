@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="PCFCashFlow" constructor="PCFCashFlow" version="0.0.2" display-name-key="PCFCashFlow" description-key="PCF CashFlow " control-type="standard">
+    <!-- dataset node represents a set of entity records on CDS; allow more than one datasets -->
+    <data-set name="cashFlowDataSet" display-name-key="Dataset_Display_Key">
+      <!-- <property-set name="Total" display-name-key="LineTotal" description-key="enter row gr" of-type="SingleLine.Text" usage="input" required="true" /> -->
+     
+      <property-set name="January" display-name-key="Jan" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+	    <property-set name="February" display-name-key="Feb" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+	    <property-set name="March" display-name-key="Mar" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property-set name="April" display-name-key="Apr" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property-set name="May" display-name-key="May" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property-set name="June" display-name-key="Jun" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property-set name="July" display-name-key="Jul" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property-set name="August" display-name-key="Aug" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property-set name="September" display-name-key="Sept" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+		  <property-set name="October" display-name-key="Oct" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+	    <property-set name="November" display-name-key="Nov" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+	    <property-set name="December" display-name-key="Dec" description-key="Property_Desc_Key" of-type="Currency" usage="input" required="true" />
+     
+    </data-set>
+      <property name="cashFlow" display-name-key="CashFlow" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
+	    <property name="ppr" display-name-key="PPR"  description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
+      <property name="EditViewEnabled" display-name-key="EditViewEnabled" description-key="enter row " of-type="SingleLine.Text" usage="input" required="true" />
+       <property name="lineTotal" display-name-key="LineTotal" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
+      <property name="expandYear" display-name-key="ExpandYear" description-key="enter row group column name" of-type="OptionSet" usage="input" required="true" />
+
+    <resources>
+      <code path="index.ts" order="1"/>
+      <css path="CSS/primereact.min.css" order="2" />
+      <css path="CSS/theme.css" order="2" />
+      <css path="CSS/primeicons.css" order="2" />
+      <css path="CSS/App.css" order="2" />
+      <css path ="CSS/Dialog.css" order="2"/>
+      <css path="CSS/CustomClass.css" order="2"/>
+      <css path="CSS/Button.css" order="2"/>
+      <css path="CSS/fonts/primeicons.eot" order="1"/>
+      <css path="CSS/fonts/primeicons.svg" order="1"/>
+      <css path="CSS/fonts/primeicons.ttf" order="1"/>
+      <css path="CSS/fonts/primeicons.woff" order="1"/>
+      <img path="CSS/external-link.svg" />
+    </resources>
+    <!-- UNCOMMENT TO ENABLE THE SPECIFIED API -->
+    <feature-usage>
+      <!-- <uses-feature name="Device.captureAudio" required="true" />
+      <uses-feature name="Device.captureImage" required="true" />
+      <uses-feature name="Device.captureVideo" required="true" />
+      <uses-feature name="Device.getBarcodeValue" required="true" />
+      <uses-feature name="Device.getCurrentPosition" required="true" />
+      <uses-feature name="Device.pickFile" required="true" />
+      <uses-feature name="Utility" required="true" /> -->
+      <uses-feature name="WebAPI" required="true" />
+    </feature-usage>
+   
+  </control>
+</manifest>

@@ -45,15 +45,31 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom > td .p-treetable-t
     margin-bottom: -30px !important;
 
 }
+.addnew.gridstyle .p-datatable table{
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+}
 .addnew .p-datatable-wrapper .p-datatable-row{
     height: 40px !important;
 
 }
+.addnew.gridstyle .p-datatable-thead > tr > th{
+    padding-left: 4px
+}
+
 .addnew .p-panel.p-component .p-panel-content{
     border-top-style: solid;
     border-top-width: 1px !important;
     border-top-color: rgb(200, 200, 200);
 
+}
+.scrollbar.scrollbar-primary .p-treetable.p-component .p-treetable-tbody > tr > td{
+    text-align: left;
+}
+.scrollbar.scrollbar-primary .p-treetable.p-component .p-treetable-tbody > tr > td.p-editable-column{
+    text-align: right;
 }
 
 
@@ -69,7 +85,11 @@ body .p-treetable .p-treetable-tbody > tr.p-highlight_custom > td .p-treetable-t
 }
 
 .implementation{
-    margin-top: 40px !important;
+    margin-top: 50px !important;
+    margin-bottom: 10px !important;
+}
+.addnew.gridstyle .implementation {
+    margin-top: 10px !important;
 }
 .p-button.p-component.saveBtn{
     float: right;
@@ -103,6 +123,10 @@ span.pi.pi-save.p-c.p-button-icon-left{
     margin-top: -40px  !important;
 }
 
+.addnew.gridstyle .p-datatable-thead > tr > th.dropColumn{
+    width: 135px;
+}
+
 @media screen and (max-width: 64em) {
     .p-col-d {
         display: none;
@@ -111,4 +135,7 @@ span.pi.pi-save.p-c.p-button-icon-left{
     .p-col-m {
         display: inline-block;
     }
+}
+.p-dialog-content .validationMessage{
+    height: 50px;
 }

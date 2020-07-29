@@ -9,7 +9,7 @@ import { createStore } from 'redux';
 
 import configureStore from './GridComponents/store/configStore'
 const store = configureStore();
-export class PCFReactElementComponent implements ComponentFramework.StandardControl<IInputs, IOutputs> {
+export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
 	private childData:[];
 	private notifyOutputChanged: () => void;
@@ -43,10 +43,10 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 		this.notifyOutputChanged = notifyOutputChanged;
 		// this.props.numberOfFaces = context.parameters.numberOfFaces.raw || 3;
 		this.theContainer = container;
-		this._props.data = context.parameters.sampleDataSet;
+		this._props.data = context.parameters.cashFlowDataSet;
 		// let arraData=this._props.data ;
-		// context.parameters.sampleDataSet.paging.setPageSize(50);
-		// const dataSet = context.parameters.sampleDataSet;
+		// context.parameters.cashFlowDataSet.paging.setPageSize(50);
+		// const dataSet = context.parameters.cashFlowDataSet;
 		// let datasetColumns: any[] = this._columns(dataSet);
 		// let dataItems: any[] = this._items(dataSet, datasetColumns);
 		// this._props.data = dataItems;
@@ -63,18 +63,18 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	 */
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
-		if (!context.parameters.sampleDataSet.loading) 
+		if (!context.parameters.cashFlowDataSet.loading) 
 		{
-			if(context.parameters.sampleDataSet.paging != null && context.parameters.sampleDataSet.paging.hasNextPage == true) 
+			if(context.parameters.cashFlowDataSet.paging != null && context.parameters.cashFlowDataSet.paging.hasNextPage == true) 
 			{
 			//set page size
-				context.parameters.sampleDataSet.paging.setPageSize(100);
+				context.parameters.cashFlowDataSet.paging.setPageSize(100);
 				//load next paging
-				context.parameters.sampleDataSet.paging.loadNextPage();
+				context.parameters.cashFlowDataSet.paging.loadNextPage();
 			} 
 			else 
 			{
-				const dataSet = context.parameters.sampleDataSet;
+				const dataSet = context.parameters.cashFlowDataSet;
 				// dataSet.paging.setPageSize(50);
 
 				let datasetColumns: any = this._columns(dataSet);
@@ -207,13 +207,13 @@ export class PCFReactElementComponent implements ComponentFramework.StandardCont
 	private navigateToPage(pageCommand: string): void {
 		switch (pageCommand) {
 			case 'next':
-				if (this.theContext.parameters.sampleDataSet.paging.hasNextPage) {
-					this.theContext.parameters.sampleDataSet.paging.loadNextPage();
+				if (this.theContext.parameters.cashFlowDataSet.paging.hasNextPage) {
+					this.theContext.parameters.cashFlowDataSet.paging.loadNextPage();
 				}
 				break;
 			case 'previous':
-				if (this.theContext.parameters.sampleDataSet.paging.hasPreviousPage) {
-					this.theContext.parameters.sampleDataSet.paging.loadPreviousPage();
+				if (this.theContext.parameters.cashFlowDataSet.paging.hasPreviousPage) {
+					this.theContext.parameters.cashFlowDataSet.paging.loadPreviousPage();
 				}
 				break;
 		}
