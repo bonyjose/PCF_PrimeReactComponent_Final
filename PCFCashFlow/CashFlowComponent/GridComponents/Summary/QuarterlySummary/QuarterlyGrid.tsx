@@ -65,68 +65,53 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
 
       if(columns.fieldName == "January")
       {
-        January = columns.fieldName;
+        January = columns.key;
       }
       else if(columns.fieldName == "February")
       {
-        February = columns.fieldName;
+        February = columns.key;
       }
       else if(columns.fieldName == "March")
       {
-        March = columns.fieldName;
+        March = columns.key;
       }
       else if(columns.fieldName == "April")
       {
-        April = columns.fieldName;
+        April = columns.key;
       }
       else if(columns.fieldName == "May")
       {
-        May = columns.fieldName;
+        May = columns.key;
       }
       else if(columns.fieldName == "June")
       {
-        June = columns.fieldName;
+        June = columns.key;
       }
       else if(columns.fieldName == "July")
       {
-        July = columns.fieldName;
+        July = columns.key;
       }
       else if(columns.fieldName == "August")
       {
-        August = columns.fieldName;
+        August = columns.key;
       }
       else if(columns.fieldName == "September")
       {
-        September = columns.fieldName;
+        September = columns.key;
       }
       else if(columns.fieldName == "October")
       {
-        October = columns.fieldName;
+        October = columns.key;
       }
       else if(columns.fieldName == "November")
       {
-        November = columns.fieldName;
+        November = columns.key;
       }
       else if(columns.fieldName == "December")
       {
-        December = columns.fieldName;
+        December = columns.key;
       }
     }
-    
-    // if (typeof (this.props.context.parameters) !== 'undefined') {
-    
-    //   February = this.props.columns["January"];
-    //   March = this.props.columns["January"];
-    //   April = this.props.columns["January"];
-    //   May = this.props.columns["January"];
-    //   June = this.props.columns["January"];
-    //   July = this.props.columns["January"];
-    //   August = this.props.columns["January"];
-    //   September = this.props.columns["January"];
-    //   October = this.props.columns["January"];
-    //   November = this.props.columns["January"];
-    //   December = this.props.columns["January"];
-    // }
     let i = 0;
     let q1 = 0;
     let q2 = 0;
@@ -449,22 +434,57 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     if (typeof (this.props.context.parameters) !== 'undefined') {
       lineTotal = this.props.context. parameters.lineTotal.raw;
     }
-
-
     let January, February, March, April, May, June, July, August, September, October, November, December;
-    if (typeof (this.props.context.parameters) !== 'undefined') {
-      January = this.props.columns["January"];
-      February = this.props.columns["January"];
-      March = this.props.columns["January"];
-      April = this.props.columns["January"];
-      May = this.props.columns["January"];
-      June = this.props.columns["January"];
-      July = this.props.columns["January"];
-      August = this.props.columns["January"];
-      September = this.props.columns["January"];
-      October = this.props.columns["January"];
-      November = this.props.columns["January"];
-      December = this.props.columns["January"];
+    for (let columns of this.props.columns) {
+
+      if(columns.fieldName == "January")
+      {
+        January = columns.key;
+      }
+      else if(columns.fieldName == "February")
+      {
+        February = columns.key;
+      }
+      else if(columns.fieldName == "March")
+      {
+        March = columns.key;
+      }
+      else if(columns.fieldName == "April")
+      {
+        April = columns.key;
+      }
+      else if(columns.fieldName == "May")
+      {
+        May = columns.key;
+      }
+      else if(columns.fieldName == "June")
+      {
+        June = columns.key;
+      }
+      else if(columns.fieldName == "July")
+      {
+        July = columns.key;
+      }
+      else if(columns.fieldName == "August")
+      {
+        August = columns.key;
+      }
+      else if(columns.fieldName == "September")
+      {
+        September = columns.key;
+      }
+      else if(columns.fieldName == "October")
+      {
+        October = columns.key;
+      }
+      else if(columns.fieldName == "November")
+      {
+        November = columns.key;
+      }
+      else if(columns.fieldName == "December")
+      {
+        December = columns.key;
+      }
     }
     for (let Column in editNode) {
 

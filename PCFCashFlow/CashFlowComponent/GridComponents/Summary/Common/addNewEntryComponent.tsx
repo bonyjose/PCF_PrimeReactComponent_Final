@@ -185,51 +185,51 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
 
       if(columns.fieldName == "January")
       {
-        January = columns.fieldName;
+        January = columns.key;
       }
       else if(columns.fieldName == "February")
       {
-        February = columns.fieldName;
+        February = columns.key;
       }
       else if(columns.fieldName == "March")
       {
-        March = columns.fieldName;
+        March = columns.key;
       }
       else if(columns.fieldName == "April")
       {
-        April = columns.fieldName;
+        April = columns.key;
       }
       else if(columns.fieldName == "May")
       {
-        May = columns.fieldName;
+        May = columns.key;
       }
       else if(columns.fieldName == "June")
       {
-        June = columns.fieldName;
+        June = columns.key;
       }
       else if(columns.fieldName == "July")
       {
-        July = columns.fieldName;
+        July = columns.key;
       }
       else if(columns.fieldName == "August")
       {
-        August = columns.fieldName;
+        August = columns.key;
       }
       else if(columns.fieldName == "September")
       {
-        September = columns.fieldName;
+        September = columns.key;
       }
       else if(columns.fieldName == "October")
       {
-        October = columns.fieldName;
+        October = columns.key;
       }
       else if(columns.fieldName == "November")
       {
-        November = columns.fieldName;
+        November = columns.key;
       }
       else if(columns.fieldName == "December")
       {
-        December = columns.fieldName;
+        December = columns.key;
       }
     
 }
