@@ -141,7 +141,7 @@ export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, 
 			let iColumn: any = {
 				key: column.name,
 				name: column.displayName,
-				fieldName: column.alias,
+				fieldName: column.name,
 				dataType:column.dataType,
 				currentWidth: column.visualSizeFactor,
 				data: { isPrimary: column.isPrimary },
