@@ -152,8 +152,8 @@ export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, 
 				sortDescendingAriaLabel: 'Z to A',
 				className: 'detailList-cell',
 				headerClassName: 'detailList-gridLabels',
-				isPrimary: column.isPrimary
-				
+				isPrimary: column.isPrimary,
+				order:column.order				
 			}
 
 

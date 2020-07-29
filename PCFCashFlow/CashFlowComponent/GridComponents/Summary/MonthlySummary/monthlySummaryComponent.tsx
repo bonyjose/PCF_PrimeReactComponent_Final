@@ -266,38 +266,39 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
             switch (p.fieldName) {
                 case expandYear:
                     resultData = {
-                        field: p.fieldName, header: "Year", expander: true, isEditable: false
+                        field: p.fieldName, header: "Year", expander: true, isEditable: false,order:p.order
                     }
                     cols.push(resultData);
                     break;
                 case cashFlow:
                     resultData = {
-                        field: p.fieldName, header: "Cash Flow", expander: expander, isEditable: false
+                        field: p.fieldName, header: "Cash Flow", expander: expander, isEditable: false,order:p.order
                     }
                     cols.push(resultData);
                     break;
                 case ppr:
                     resultData = {
-                        field: p.fieldName, header: "PPR", expander: expander, isEditable: false
+                        field: p.fieldName, header: "PPR", expander: expander, isEditable: false,order:p.order
                     }
                     cols.push(resultData);
                     break;
                 case lineTotal:
                     resultData = {
-                        field: p.fieldName, header: "Total", expander: expander, isEditable: false
+                        field: p.fieldName, header: "Total", expander: expander, isEditable: false,order:p.order
                     }
                     cols.push(resultData);
                     break;
                 default:
                     resultData = {
-                        field: p.fieldName, header: p.name, expander: expander, isEditable: isMonthlyEdit
+                        field: p.fieldName, header: p.name, expander: expander, isEditable: isMonthlyEdit,order:p.order
                     }
                     cols.push(resultData);
                     month.push(p.fieldName);
                     break;
             }
         });
-        let datas = this.sortByKey(Object.values(cols), 'expander');
+        let datasPrimary = this.sortByKey(Object.values(cols), 'order');
+        let datas = this.sortByKey(Object.values(datasPrimary), 'expander');
         return datas;
     }
 
