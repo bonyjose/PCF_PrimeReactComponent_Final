@@ -297,7 +297,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
                     break;
             }
         });
-        let datasPrimary = this.sortByKey(Object.values(cols), 'order');
+        let datasPrimary =Object.values(cols).sort(function(a, b) { return a.order - b.order; });
         let datas = this.sortByKey(Object.values(datasPrimary), 'expander');
         return datas;
     }
