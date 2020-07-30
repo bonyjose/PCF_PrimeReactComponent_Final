@@ -98,7 +98,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         }
         let data = this.messages.current.state.messages;
         try{
-            if (!isValid && data.length === 0 )
+            if (!isValid  )
             {
                 this.messages.current.clear;
                 // this.messages.current.show({ sticky: true, severity: 'warn', detail: 'All fields are mandatory' });
