@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="PCFCashFlow" constructor="PCFCashFlow" version="0.0.22" display-name-key="PCFCashFlow" description-key="PCF CashFlow " control-type="standard">
+  <control namespace="PCFCashFlow" constructor="PCFCashFlow" version="0.0.30" display-name-key="PCFCashFlow" description-key="PCF CashFlow Grid " control-type="standard">
     <!-- dataset node represents a set of entity records on CDS; allow more than one datasets -->
-    <data-set name="cashFlowDataSet" display-name-key="Dataset_Display_Key">
+    <data-set name="cashFlowDataSet" display-name-key="Cashflow Grid">
       <!-- <property-set name="Total" display-name-key="LineTotal" description-key="enter row gr" of-type="SingleLine.Text" usage="input" required="true" /> -->
      
-      <property-set name="January" display-name-key="Jan" description-key="Property_Desc_Key" of-type="Currency" usage="bound" required="true" />
-	    <property-set name="February" display-name-key="Feb" description-key="Property_Desc_Key" of-type="Currency" usage="bound" required="true" />
-	    <property-set name="March" display-name-key="Mar" description-key="Property_Desc_Key" of-type="Currency" usage="bound" required="true" />
-		  <property-set name="April" display-name-key="Apr" description-key="Property_Desc_Key" of-type="Currency" usage="bound" required="true" />
-		  <property-set name="May" display-name-key="May" description-key="Property_Desc_Key" of-type="Currency" usage="bound" required="true" />
-		  <property-set name="June" display-name-key="Jun" description-key="Property_Desc_Key" of-type="Currency" usage="bound" required="true" />
-		  <property-set name="July" display-name-key="Jul" description-key="Property_Desc_Key" of-type="Currency" usage="bound" required="true" />
-		  <property-set name="August" display-name-key="Aug" description-key="Property_Desc_Key" of-type="Currency" usage="bound" required="true" />
-		  <property-set name="September" display-name-key="Sept" description-key="Property_Desc_Key" of-type="Currency" usage="bound" required="true" />
-		  <property-set name="October" display-name-key="Oct" description-key="Property_Desc_Key" of-type="Currency" usage="bound" required="true" />
-	    <property-set name="November" display-name-key="Nov" description-key="Property_Desc_Key" of-type="Currency" usage="bound" required="true" />
-	    <property-set name="December" display-name-key="Dec" description-key="Property_Desc_Key" of-type="Currency" usage="bound" required="true" />
+      <property-set name="January" display-name-key="January" description-key="Select the field for January" of-type="Currency" usage="bound" required="true" />
+	    <property-set name="February" display-name-key="February" description-key="Select the field for February" of-type="Currency" usage="bound" required="true" />
+	    <property-set name="March" display-name-key="March" description-key="Select the field for March" of-type="Currency" usage="bound" required="true" />
+	    <property-set name="April" display-name-key="April" description-key="Select the field for April" of-type="Currency" usage="bound" required="true" />
+		  <property-set name="May" display-name-key="May" description-key="Select the field for May" of-type="Currency" usage="bound" required="true" />
+		  <property-set name="June" display-name-key="June" description-key="Select the field for June" of-type="Currency" usage="bound" required="true" />
+		  <property-set name="July" display-name-key="July" description-key="Select the field for July" of-type="Currency" usage="bound" required="true" />
+		  <property-set name="August" display-name-key="August" description-key="Select the field for August" of-type="Currency" usage="bound" required="true" />
+		  <property-set name="September" display-name-key="September" description-key="Select the field for September" of-type="Currency" usage="bound" required="true" />
+		  <property-set name="October" display-name-key="Octpber" description-key="Select the field for October" of-type="Currency" usage="bound" required="true" />
+	    <property-set name="November" display-name-key="November" description-key="Select the field for November" of-type="Currency" usage="bound" required="true" />
+	    <property-set name="December" display-name-key="December" description-key="Select the field for December" of-type="Currency" usage="bound" required="true" />
      
     </data-set>
-      <property name="cashFlow" display-name-key="CashFlow" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
-	    <property name="ppr" display-name-key="PPR"  description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
-      <property name="EditViewEnabled" display-name-key="EditViewEnabled" description-key="enter row " of-type="SingleLine.Text" usage="input" required="true" />
-       <property name="lineTotal" display-name-key="LineTotal" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
-      <property name="expandYear" display-name-key="ExpandYear" description-key="enter row group column name" of-type="SingleLine.Text" usage="input" required="true" />
-
+      <property name="cashFlow" display-name-key="Cash Flow Name Field" description-key="Eenter the field backend name " of-type="SingleLine.Text" usage="input" required="true" />
+	<property name="ppr" display-name-key="PPR Field"  description-key="Eenter the field backend name" of-type="SingleLine.Text" usage="input" required="true" />
+       <property name="lineTotal" display-name-key="Line Total Field" description-key="Eenter the field backend name" of-type="SingleLine.Text" usage="input" required="true" />
+      <property name="expandYear" display-name-key="Year Field" description-key="Eenter the field backend name" of-type="SingleLine.Text" usage="input" required="true" />
+ 	<property name="EditViewEnabled" display-name-key="EditViewEnabled" description-key="Enter Monthly/Quaterly/Yearly" of-type="SingleLine.Text" usage="input" required="true" />
     <resources>
       <code path="index.ts" order="1"/>
       <css path="CSS/primereact.min.css" order="2" />
