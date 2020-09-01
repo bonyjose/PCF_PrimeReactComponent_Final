@@ -192,8 +192,30 @@ export class DialogDemo extends Component<AppProps, AppState>{
             cashFlow = this.props.context.parameters.cashFlow.raw;
             expandYear = this.props.context.parameters.expandYear.raw;
         }
+        let gridEntity = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         var entity = {};
         entity[lineTotal] = 0;
+        var pprEntity;
+        var request = new XMLHttpRequest();
+        // @ts-ignore 
+        request.open("GET", Xrm.Page.context.getClientUrl() + "api/data/v9.1//EntityDefinitions(LogicalName='"+gridEntity+"')/Attributes(LogicalName='"+ppr+"')", false);
+        request.setRequestHeader("OData-MaxVersion", "4.0");			
+        request.setRequestHeader("OData-Version", "4.0");
+        request.setRequestHeader("Accept", "application/json");
+        request.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        request.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+        request.onreadystatechange = function() {
+        if (request.readyState === 4) 
+        {
+            request.onreadystatechange = null;
+            if (request.status === 200) {
+                pprEntity = JSON.parse(request.response).SchemaName;
+                console.log("ppr metadate failed " + request.response);
+            }
+        };
+        request.send();
+        }
+        request.send();
 
         // @ts-ignore 
         let ContextId = this.props.context.page.entityId;
@@ -209,7 +231,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     entity[Column] = Number(editNode[Column]);
                 }
                 else if (Column == ppr) {
-                    entity["m360_PPR" + "@odata.bind"] = "/" + "m360_pprs" + "(" + ContextId + ")";
+                    entity[pprEntity + "@odata.bind"] = "/" + "m360_pprs" + "(" + ContextId + ")";
                     // entity[primaryLookupschemaName+"@odata.bind"] = "/"+entitySetName+"(" + ContextId+ ")";
                     // entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
                 }
