@@ -30,6 +30,7 @@ type AppState = {
     monthDetails: any;
     loading: boolean;
     dropDownData: any;
+    pprEntity :string;
 }
 interface inputData {
     SetData(): any,
@@ -51,13 +52,15 @@ export class DialogDemo extends Component<AppProps, AppState>{
             updatedData: [],
             monthDetails: [],
             dropDownData: "",
-            loading: false
+            loading: false,
+            pprEntity : ""
 
         };
     }
 
     componentDidMount() {
         debugger;
+        this.fetchEntityName();
         this.createMonthDefinition();
     }
 	showError() {
@@ -139,6 +142,35 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
     }
 
+    fetchEntityName()
+    {
+        debugger;
+        let gridEntity = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
+        let ppr = this.props.context.parameters.ppr.raw;
+        var pprEntity;
+        var request = new XMLHttpRequest();
+        // @ts-ignore 
+        request.open("GET", Xrm.Page.context.getClientUrl() + "api/data/v9.1//EntityDefinitions(LogicalName='"+gridEntity+"')/Attributes(LogicalName='"+ppr+"')", false);
+        request.setRequestHeader("OData-MaxVersion", "4.0");			
+        request.setRequestHeader("OData-Version", "4.0");
+        request.setRequestHeader("Accept", "application/json");
+        request.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        request.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+        request.onreadystatechange = function() {
+        if (request.readyState === 4) 
+        {
+            request.onreadystatechange = null;
+            if (request.status === 200) {
+                pprEntity = JSON.parse(request.response).SchemaName;
+                console.log("ppr metadate failed " + request.response);
+            }
+        };
+        request.send();
+        }
+        request.send();
+        this.setState({ pprEntity: pprEntity });
+    }
+
     createMonthDefinition = () => {
 
         let expandYear, ppr, lineTotal, cashFlow;
@@ -192,31 +224,10 @@ export class DialogDemo extends Component<AppProps, AppState>{
             cashFlow = this.props.context.parameters.cashFlow.raw;
             expandYear = this.props.context.parameters.expandYear.raw;
         }
-        let gridEntity = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         var entity = {};
         entity[lineTotal] = 0;
-        var pprEntity;
-        var request = new XMLHttpRequest();
-        // @ts-ignore 
-        request.open("GET", Xrm.Page.context.getClientUrl() + "api/data/v9.1//EntityDefinitions(LogicalName='"+gridEntity+"')/Attributes(LogicalName='"+ppr+"')", false);
-        request.setRequestHeader("OData-MaxVersion", "4.0");			
-        request.setRequestHeader("OData-Version", "4.0");
-        request.setRequestHeader("Accept", "application/json");
-        request.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-        request.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
-        request.onreadystatechange = function() {
-        if (request.readyState === 4) 
-        {
-            request.onreadystatechange = null;
-            if (request.status === 200) {
-                pprEntity = JSON.parse(request.response).SchemaName;
-                console.log("ppr metadate failed " + request.response);
-            }
-        };
-        request.send();
-        }
-        request.send();
-
+        let  pprEntity = this.state.pprEntity;
+       
         // @ts-ignore 
         let ContextId = this.props.context.page.entityId;
         // @ts-ignore 
@@ -297,6 +308,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         let months: any[] = [];
         months = this.createMonthDefinitionFromYear();//Define Months
         var entity = {};
+        let  pprEntity = this.state.pprEntity;
         let totalForEach = 0;
         let expandYear, ppr, lineTotal, cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
@@ -319,7 +331,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         for (let Column in editNode) {
 
             if (Column == ppr) {
-                entity["m360_PPR" + "@odata.bind"] = "/" + "m360_pprs" + "(" + contextId + ")";
+                entity[pprEntity + "@odata.bind"] = "/" + "m360_pprs" + "(" + contextId + ")";
                 //entity[ppr + "@odata.bind"] = "/" + ppr + "(" + contextId + ")";
             }
             else if (Column == expandYear) {
