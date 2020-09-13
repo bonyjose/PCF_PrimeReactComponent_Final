@@ -4,7 +4,6 @@ import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { Panel } from 'primereact/panel';
-import { CarService } from '../../service/carService';
 import { IInputs } from '../../../generated/ManifestTypes';
 import LoadingOverlay from 'react-loading-overlay';
 type AppProps = {
@@ -13,9 +12,9 @@ type AppProps = {
     setData: any;
     monthDetails: any
     pannelType: any,
-    dropDownData:any;
-    isViewEditable:Boolean,
-    isLoading:Boolean
+    dropDownData: any;
+    isViewEditable: Boolean,
+    isLoading: Boolean
 }
 
 type AppState = {
@@ -23,18 +22,12 @@ type AppState = {
     rowEditedData: [];
     popupColDef: any[];
     monthDetails: any;
-    currentYear : string;
+    currentYear: string;
     yearData: any[];
-    cars:{
-        name:"",
-        car: null,
-        }
 }
 
 export class DataTableAddNew extends Component<AppProps, AppState> {
 
-    private carservice = new CarService();
-    citySelectItems: any[] | undefined;
     constructor(props: any) {
         super(props);
         this.state = {
@@ -42,27 +35,15 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             rowEditedData: [],
             popupColDef: [],
             monthDetails: [],
-            currentYear : "",
-            yearData :[],
-            cars:{
-                name:"",
-                car: null,
-                }
+            currentYear: "",
+            yearData: []
         };
         this.vinEditor = this.vinEditor.bind(this);
         this.yearEditor = this.yearEditor.bind(this);
         this.requiredValidator = this.requiredValidator.bind(this);
         this.editorDropdown = this.editorDropdown.bind(this);
         this.DropdownEditor = this.DropdownEditor.bind(this);
-         this.citySelectItems = [
-            {label: 'New York', value: 'NY'},
-            {label: 'Rome', value: 'RM'},
-            {label: 'London', value: 'LDN'},
-            {label: 'Istanbul', value: 'IST'},
-            {label: 'Paris', value: 'PRS'}
-        ];
     }
-    
 
     componentDidMount() {
 
@@ -73,15 +54,14 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         for (var i = 0; i < this.props.columns.length; i++) {
             jsonArr[0][this.props.columns[i].field] = "";
 
-        }    
-      
+        }
+
         var yeardata = this.createDropDownDef();
-        this.setState({ popupColDef: jsonArr ,yearData : yeardata});
+        this.setState({ popupColDef: jsonArr, yearData: yeardata });
         // @ts-ignore 
-        this.setState({currentYear :yeardata[0].currentYear})
+        this.setState({ currentYear: yeardata[0].currentYear })
 
     }
-
     inputTextEditor = (props: any, field: any) => {
 
         return <InputText type="text" value={props.value[0][field]}
@@ -103,27 +83,20 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             lineTotal = this.props.context.parameters.lineTotal.raw;
             cashFlow = this.props.context.parameters.cashFlow.raw;
         }
-        // let editedNode = this.findNodeByKey(newNodes, props.node.key);
         let editedNode = newNodes[0];
-        if(this.props.pannelType === "Q")
-        {
-            if(props.field == "Q1" ||props.field == "Q2"||props.field == "Q3"||props.field == "Q4")
-            {
+        if (this.props.pannelType === "Q") {
+            if (props.field == "Q1" || props.field == "Q2" || props.field == "Q3" || props.field == "Q4") {
                 event = parseInt(event) ? parseInt(event) : '';
             }
         }
-        else if(this.props.pannelType === "M")
-        {
+        else if (this.props.pannelType === "M") {
             let months = this.state.monthDetails;
-            if (months.includes(props.field)) 
-            {
+            if (months.includes(props.field)) {
                 event = parseInt(event) ? parseInt(event) : '';
             }
         }
-        else if(this.props.pannelType === "Y")
-        {
-            if (lineTotal == props.field) 
-            {
+        else if (this.props.pannelType === "Y") {
+            if (lineTotal == props.field) {
                 event = parseInt(event) ? parseInt(event) : '';
             }
         }
@@ -160,14 +133,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                 }
             }
             newNodes[0][lineTotal] = Total;
-            // let newNode: any;
-
-            // if (typeof (newNodes[0].Q1) !== 'undefined') {
-            //     newNodes = this.parseQuartertoMonth(newNodes);
-            // }
-            // else {
-            //     newNodes = newNodes;
-            // }
         }
 
         this.setState({
@@ -178,58 +143,46 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     }
     parseQuartertoMonth(newNodes: any) {
         let January, February, March, April, May, June, July, August, September, October, November, December;
-    for (let columns of this.props.columns) {
+        for (let columns of this.props.columns) {
 
-      if(columns.fieldName == "January")
-      {
-        January = columns.key;
-      }
-      else if(columns.fieldName == "February")
-      {
-        February = columns.key;
-      }
-      else if(columns.fieldName == "March")
-      {
-        March = columns.key;
-      }
-      else if(columns.fieldName == "April")
-      {
-        April = columns.key;
-      }
-      else if(columns.fieldName == "May")
-      {
-        May = columns.key;
-      }
-      else if(columns.fieldName == "June")
-      {
-        June = columns.key;
-      }
-      else if(columns.fieldName == "July")
-      {
-        July = columns.key;
-      }
-      else if(columns.fieldName == "August")
-      {
-        August = columns.key;
-      }
-      else if(columns.fieldName == "September")
-      {
-        September = columns.key;
-      }
-      else if(columns.fieldName == "October")
-      {
-        October = columns.key;
-      }
-      else if(columns.fieldName == "November")
-      {
-        November = columns.key;
-      }
-      else if(columns.fieldName == "December")
-      {
-        December = columns.key;
-      }
-    
-}
+            if (columns.fieldName == "January") {
+                January = columns.key;
+            }
+            else if (columns.fieldName == "February") {
+                February = columns.key;
+            }
+            else if (columns.fieldName == "March") {
+                March = columns.key;
+            }
+            else if (columns.fieldName == "April") {
+                April = columns.key;
+            }
+            else if (columns.fieldName == "May") {
+                May = columns.key;
+            }
+            else if (columns.fieldName == "June") {
+                June = columns.key;
+            }
+            else if (columns.fieldName == "July") {
+                July = columns.key;
+            }
+            else if (columns.fieldName == "August") {
+                August = columns.key;
+            }
+            else if (columns.fieldName == "September") {
+                September = columns.key;
+            }
+            else if (columns.fieldName == "October") {
+                October = columns.key;
+            }
+            else if (columns.fieldName == "November") {
+                November = columns.key;
+            }
+            else if (columns.fieldName == "December") {
+                December = columns.key;
+            }
+
+        }
         newNodes[0][January] = this.numberTryParse(newNodes[0].Q1 / 3).toFixed(2);
         newNodes[0][February] = this.numberTryParse(newNodes[0].Q1 / 3).toFixed(2);
         newNodes[0][March] = this.numberTryParse(newNodes[0].Q1 / 3).toFixed(2);
@@ -306,7 +259,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         else {
             expandYear = "FinacialYear";
         }
-        // let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
 
         let resultData = {};
         let cols: any[];
@@ -317,13 +269,13 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             switch (p.field) {
                 case expandYear:
                     resultData = {
-                        field: p.field, header: "Year", expander: true, isEditable: false,IsDropdDown : true
+                        field: p.field, header: "Year", expander: true, isEditable: false, IsDropdDown: true
                     }
-                    cols.push(resultData);                   
+                    cols.push(resultData);
                     break;
                 case cashFlow:
                     resultData = {
-                        field: p.field, header: "Cash Flow", expander: expander, isEditable: this.props.isViewEditable,IsDropdDown : false
+                        field: p.field, header: "Cash Flow", expander: expander, isEditable: this.props.isViewEditable, IsDropdDown: false
                     }
                     cols.push(resultData);
                     break;
@@ -335,13 +287,13 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                         isVisible = true;
                     }
                     resultData = {
-                        field: p.field, header: "Total", expander: expander, isEditable: isVisible,IsDropdDown : false
+                        field: p.field, header: "Total", expander: expander, isEditable: isVisible, IsDropdDown: false
                     }
                     cols.push(resultData);
                     break;
                 default:
                     resultData = {
-                        field: p.field, header: p.header, expander: expander, isEditable: this.props.isViewEditable,IsDropdDown : false
+                        field: p.field, header: p.header, expander: expander, isEditable: this.props.isViewEditable, IsDropdDown: false
                     }
                     cols.push(resultData);
                     month.push(p.fieldName);
@@ -351,57 +303,52 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         return cols;
     }
 
-    createDropDownDef()
-    {
+    createDropDownDef() {
         let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let expandYear = this.props.context.parameters.expandYear.raw;
-        var yearData ;
+        var yearData;
         var req1 = new XMLHttpRequest();
-						// @ts-ignore 
-			req1.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v9.0/EntityDefinitions(LogicalName='"+gridEntity+"')/Attributes(LogicalName='"+expandYear+"')/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet($select=Options)", false);
-			req1.setRequestHeader("OData-MaxVersion", "4.0");			
-			req1.setRequestHeader("OData-Version", "4.0");
-			req1.setRequestHeader("Accept", "application/json");
-			req1.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-			req1.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
-			req1.onreadystatechange = function() {
-            if (req1.readyState === 4) 
-            {
-				req1.onreadystatechange = null;
-				if (req1.status === 200) {
+        // @ts-ignore 
+        req1.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v9.0/EntityDefinitions(LogicalName='" + gridEntity + "')/Attributes(LogicalName='" + expandYear + "')/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet($select=Options)", false);
+        req1.setRequestHeader("OData-MaxVersion", "4.0");
+        req1.setRequestHeader("OData-Version", "4.0");
+        req1.setRequestHeader("Accept", "application/json");
+        req1.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        req1.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+        req1.onreadystatechange = function () {
+            if (req1.readyState === 4) {
+                req1.onreadystatechange = null;
+                if (req1.status === 200) {
                     var resultdata = JSON.parse(req1.response);
                     yearData = resultdata;
                     console.log("api inner respnse " + req1.response);
                 }
-		};
-		req1.send();
-    }
-req1.send();
-yearData = JSON.parse(req1.response).OptionSet.Options;
-let yearDropdownDef = [];
+            };
+            req1.send();
+        }
+        req1.send();
+        yearData = JSON.parse(req1.response).OptionSet.Options;
+        let yearDropdownDef = [];
 
-    try{
-        if((yearData!=null)&&(yearData!="")&&(yearData!="undefined"))
-        {
-            for (let option of yearData)
-            {
-                // var optionitem:HTMLOptionElement = document.createElement("option");
-                let optionitem = {};
+        try {
+            if ((yearData != null) && (yearData != "") && (yearData != "undefined")) {
+                for (let option of yearData) {
+                    let optionitem = {};
                     // @ts-ignore 
-                optionitem.Value=option!.Value;
+                    optionitem.Value = option!.Value;
                     // @ts-ignore 
-                optionitem.Text = option!.Label.UserLocalizedLabel.Label;
+                    optionitem.Text = option!.Label.UserLocalizedLabel.Label;
                     // @ts-ignore 
-                yearDropdownDef.push(optionitem);
+                    yearDropdownDef.push(optionitem);
+                }
             }
         }
+        catch {
+            console.log("fetch failed");
+        }
+        console.log("api outer respnse " + yearDropdownDef);
+        return yearDropdownDef;
     }
-    catch{
-    console.log("fetch failed");
-    }      
-    console.log("api outer respnse " + yearDropdownDef);
-    return yearDropdownDef;
-}
 
     findNodeByKey(nodes: any, key: any) {
 
@@ -427,67 +374,66 @@ let yearDropdownDef = [];
     }
     requiredValidator(props: any) {
         let value = props.rowData[props.field];
- 		value.replace(/\+|-/ig, '');
+        value.replace(/\+|-/ig, '');
         let isValid = value.length > 0;
         if (isValid) {
             return value && value.length > 0;
         }
         else {
-            // alert("Cells cannot be empty");
-			props.style = {'Color': 'Red'}
+            props.style = { 'Color': 'Red' }
             return value;
         }
 
     }
 
-    handleChange=(props:any,e:any)=> {
+    handleChange = (props: any, e: any) => {
         var jsonArr = this.state.popupColDef;
-        jsonArr[0][this.props.columns[0].field] =e.Text;
+        jsonArr[0][this.props.columns[0].field] = e.Text;
         // @ts-ignore 
-        this.setState({ popupColDef: jsonArr,currentYear:e.Text });
+        this.setState({ popupColDef: jsonArr, currentYear: e.Text });
         this.props.dropDownData(e.Value);
         let childproduct = jsonArr;
         this.sendData(childproduct);
     }
-    editorDropdown= (props: any) => {
-         let field = props.field
+    editorDropdown = (props: any) => {
+        let field = props.field
         return this.DropdownEditor(props, field);
     }
 
     DropdownEditor = (props: any, field: any) => {
-         let currentYear = this.state.yearData[0].Text;
-        return <Dropdown value={currentYear} 
-        onChange={(e) => {this.handleChange(props,e.value)}}
-        options={this.state.yearData}
-        placeholder="Year" optionLabel="Text"  style={{width: '8em'}}/>
+        let currentYear = this.state.yearData[0].Text;
+        return <Dropdown value={currentYear}
+            onChange={(e) => { this.handleChange(props, e.value) }}
+            options={this.state.yearData}
+            placeholder="Year" optionLabel="Text" style={{ width: '8em' }} />
     }
 
     render() {
 
         var colDefition = this.createColDefinition();
-        
+
         var colData = this.state.colDef;
         console.log(colDefition);
         colDefition = colDefition.map((col, i) => {
-            return <Column key={col.field} field={col.field} editor={col.isEditable ? this.vinEditor : (col.IsDropdDown? this.editorDropdown:undefined)}   header={col.header}  className={col.IsDropdDown?"dropColumn":"normalColumn"}/>;  // editorValidator={this.requiredValidator}
+            return <Column key={col.field} field={col.field} editor={col.isEditable ? this.vinEditor : (col.IsDropdDown ? this.editorDropdown : undefined)} header={col.header} className={col.IsDropdDown ? "dropColumn" : "normalColumn"} />;  // editorValidator={this.requiredValidator}
         });
 
         return (
             <LoadingOverlay
-                    active={this.props.isLoading}
-                    spinner>
-            <div className="addnew gridstyle">
-                <Panel>
-                    <div className="content-section implementation">
-                        {/* <h3>New Entry</h3> */}
-                        <DataTable editMode="Cell" value={this.state.popupColDef} >
-                            {colDefition}
+                active={this.props.isLoading}
+                spinner>
+                <div className="addnew gridstyle">
+                    <Panel>
+                        <div className="content-section implementation">
+                            {/* <h3>New Entry</h3> */}
+                            <DataTable editMode="Cell" value={this.state.popupColDef} >
+                                {colDefition}
 
-                        </DataTable>
-                    </div>
-                </Panel>
+                            </DataTable>
+                        </div>
+                    </Panel>
 
-            </div>
+                </div>
             </LoadingOverlay>
         );
     }

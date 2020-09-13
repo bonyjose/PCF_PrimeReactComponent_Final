@@ -37,10 +37,7 @@ type monthState = {
 class YearlyComponent extends Component<AppMonthProps, monthState>{
     public messages = React.createRef<any>();
     constructor(props: AppMonthProps) {
-
         super(props);
-
-
         this.state = {
             nodes: [],
             sampledata: this.props.data,
@@ -54,9 +51,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
             loading: false,
             sortField:this.props.context.parameters.expandYear.raw
         };
-
     }
-
 
     componentDidUpdate(prevProps, prevState) {
 
@@ -145,7 +140,6 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
         return (!str || 0 === str.length);
     }
     successCallback() {
-        // console.log("api create success");
         return console.log("api update success");
     }
 
@@ -271,9 +265,6 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
         let datas = this.sortByKey(Object.values(cols), 'expander');
         return datas;
     }
-
-
-
     sortByKey(array, key) {
         return array.sort(function (a, b) {
             var x = a[key]; var y = b[key];
@@ -431,7 +422,5 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
             </LoadingOverlay>
         )
     }
-
-
 }
 export default YearlyComponent;

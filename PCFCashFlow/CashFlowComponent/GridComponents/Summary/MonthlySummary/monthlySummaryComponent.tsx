@@ -23,7 +23,7 @@ type AppMonthProps = {
     changeUpadated: any,
     pannelType: any,
     fileUpdated(boolean): any,
-    EntitySetName:string
+    EntitySetName: string
 }
 type monthState = {
     nodes: [],
@@ -41,10 +41,7 @@ type monthState = {
 class MonthlySummary extends Component<AppMonthProps, monthState>{
     public messages = React.createRef<any>();
     constructor(props: AppMonthProps) {
-
         super(props);
-
-
         this.state = {
             nodes: [],
             sampledata: this.props.data,
@@ -57,9 +54,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
             monthDetails: [],
             loading: false
         };
-
     }
-
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.IsUpdated != this.state.IsUpdated) {
@@ -75,6 +70,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
             this.setState({ nodes: jsonData });
         }
     }
+
     componentDidMount() {
 
         if (this.state.isSaved) {
@@ -106,7 +102,6 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
             rowEditedKey: props.node.key as any,
             rowEditedKeyData: rowEdited
         });
-
     }
 
     createApiUpdateRequest(editNode: any) {
@@ -124,9 +119,6 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
         }
         for (let Column in editNode) {
             if (months.includes(Column)) {
-                // if (isNaN(entity[lineTotal])) {
-                //     entity[lineTotal] = 0;
-                // }
                 if (isNaN(editNode[Column])) {
                     var cur = this.convert(editNode[Column]);
                     if (!isNull(cur)) {
@@ -166,8 +158,8 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
     isEmpty = (str) => {
         return (!str || 0 === str.length);
     }
+
     successCallback() {
-        // console.log("api create success");
         return console.log("api update success");
     }
 
@@ -257,7 +249,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
         else {
             expandYear = "FinacialYear";
         }
-        // let expandYear=this.context.parameters.expandYear.raw.toString()!=null?this.context.parameters.expandYear.raw.toString():"FinacialYear";
+
         let resultData = {};
         let cols: any[];
         let month: any[] = [];
@@ -267,38 +259,38 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
             switch (p.fieldName) {
                 case expandYear:
                     resultData = {
-                        field: p.fieldName, header: "Year", expander: true, isEditable: false,order:p.order
+                        field: p.fieldName, header: "Year", expander: true, isEditable: false, order: p.order
                     }
                     cols.push(resultData);
                     break;
                 case cashFlow:
                     resultData = {
-                        field: p.fieldName, header: "Cash Flow", expander: expander, isEditable: false,order:p.order
+                        field: p.fieldName, header: "Cash Flow", expander: expander, isEditable: false, order: p.order
                     }
                     cols.push(resultData);
                     break;
                 case ppr:
                     resultData = {
-                        field: p.fieldName, header: "PPR", expander: expander, isEditable: false,order:p.order
+                        field: p.fieldName, header: "PPR", expander: expander, isEditable: false, order: p.order
                     }
                     cols.push(resultData);
                     break;
                 case lineTotal:
                     resultData = {
-                        field: p.fieldName, header: "Total", expander: expander, isEditable: false,order:p.order
+                        field: p.fieldName, header: "Total", expander: expander, isEditable: false, order: p.order
                     }
                     cols.push(resultData);
                     break;
                 default:
                     resultData = {
-                        field: p.fieldName, header: p.name, expander: expander, isEditable: isMonthlyEdit,order:p.order
+                        field: p.fieldName, header: p.name, expander: expander, isEditable: isMonthlyEdit, order: p.order
                     }
                     cols.push(resultData);
                     month.push(p.fieldName);
                     break;
             }
         });
-        let datasPrimary =Object.values(cols).sort(function(a, b) { return a.order - b.order; });
+        let datasPrimary = Object.values(cols).sort(function (a, b) { return a.order - b.order; });
         let datas = this.sortByKey(Object.values(datasPrimary), 'expander');
         return datas;
     }
@@ -375,12 +367,9 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
         this.props.fileUpdated(false);
         let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let gridrowKey = this.state.rowEditedKeyData;
-
         let rowKeys: any[] = Object.values(gridrowKey);
         let field = Object.values(this.props.columns).map(p => p.fieldName);
-
         var uniqueKeys = Array.from(new Set(rowKeys))
-
         let nodes = this.state.nodes;
         let context: ComponentFramework.Context<IInputs>;
         context = this.props.context;
@@ -438,7 +427,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
             IsUpdated: this.state.IsUpdated,
             monthDetails: this.state.monthDetails,
             isViewEditable: isViewEditable,
-            EntitySetName:this.props.EntitySetName
+            EntitySetName: this.props.EntitySetName
         }
         let datanode: any[] = this.state.nodes;
         const dynamicColumns = Object.values(coldef).map((col, i) => {
