@@ -111,7 +111,7 @@ export class App extends React.Component<Props, State> {
             // @ts-ignore 
       var entityName=this.state.context.page.entityTypeName
       // @ts-ignore 
-      request.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v9.1//EntityDefinitions(LogicalName='"+gridEntity+"')");
+      request.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v9.1/EntityDefinitions(LogicalName='"+entityName+"')");
       request.setRequestHeader("OData-MaxVersion", "4.0");			
       request.setRequestHeader("OData-Version", "4.0");
       request.setRequestHeader("Accept", "application/json");
