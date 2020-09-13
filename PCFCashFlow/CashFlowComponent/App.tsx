@@ -109,7 +109,7 @@ export class App extends React.Component<Props, State> {
       var entitySetName;
       var request = new XMLHttpRequest();
             // @ts-ignore 
-      var entityName=this.state.context.page.entityTypeName
+      var entityName=this.state.context.page.entityTypeName   
       // @ts-ignore 
       request.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v9.1/EntityDefinitions(LogicalName='"+entityName+"')");
       request.setRequestHeader("OData-MaxVersion", "4.0");			
@@ -133,7 +133,12 @@ export class App extends React.Component<Props, State> {
   }
 
   public render() {
-    this.fetchEntityName()
+    var entityNameData=this.state.EntitySetName;
+    if(entityNameData.length===0){
+      debugger;
+      this.fetchEntityName()
+    }
+
     let inputData = {
       data: this.state.products,
       columns: this.state.columns,
