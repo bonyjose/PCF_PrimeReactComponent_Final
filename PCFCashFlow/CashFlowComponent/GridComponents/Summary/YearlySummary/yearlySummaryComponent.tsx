@@ -18,7 +18,7 @@ type AppMonthProps = {
     context: ComponentFramework.Context<IInputs>;
     IsUpdated: boolean,
     fileUpdated(boolean): any
-
+    EntitySetName:string
 }
 type monthState = {
     nodes: [],
@@ -281,7 +281,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
         });
     }
     createJsonTreestructure = () => {
-        debugger;
+
         let expandYear;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
@@ -404,7 +404,8 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
             context: this.props.context,
             IsUpdated: this.state.IsUpdated,
             monthDetails: this.state.monthDetails,
-            isViewEditable: isViewEditable
+            isViewEditable: isViewEditable,
+            EntitySetName:this.props.EntitySetName
         }
         let datanode: any[] = this.state.nodes;
         const dynamicColumns = Object.values(coldef).map((col, i) => {

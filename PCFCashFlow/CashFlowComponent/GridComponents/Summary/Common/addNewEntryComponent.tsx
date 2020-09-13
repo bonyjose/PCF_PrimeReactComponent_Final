@@ -94,7 +94,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     }
     /* Cell Editing */
     onEditorValueChange(props: any, event) {
-        debugger;
         let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let newNodes = this.state.popupColDef;
         let expandYear, ppr, lineTotal, cashFlow;
@@ -106,7 +105,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         }
         // let editedNode = this.findNodeByKey(newNodes, props.node.key);
         let editedNode = newNodes[0];
-        debugger;
         if(this.props.pannelType === "Q")
         {
             if(props.field == "Q1" ||props.field == "Q2"||props.field == "Q3"||props.field == "Q4")
@@ -129,7 +127,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                 event = parseInt(event) ? parseInt(event) : '';
             }
         }
-        debugger;
         newNodes[0][props.field] = event;
         if (this.props.pannelType === "Q") {
             let months = this.state.monthDetails;
@@ -260,7 +257,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
     }
 
     createMonthDefinition = () => {
-        debugger;
         let expandYear, ppr, lineTotal, cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
@@ -352,7 +348,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                     break;
             }
         });
-        debugger;
         return cols;
     }
 
@@ -422,7 +417,6 @@ let yearDropdownDef = [];
         return node;
     }
     vinEditor(props: any) {
-        debugger;
         let field = props.field
         return this.inputTextEditor(props, field);
     }
@@ -432,7 +426,6 @@ let yearDropdownDef = [];
         return this.inputTextEditor(props, 'year');
     }
     requiredValidator(props: any) {
-        debugger;
         let value = props.rowData[props.field];
  		value.replace(/\+|-/ig, '');
         let isValid = value.length > 0;
@@ -448,7 +441,6 @@ let yearDropdownDef = [];
     }
 
     handleChange=(props:any,e:any)=> {
-        debugger;
         var jsonArr = this.state.popupColDef;
         jsonArr[0][this.props.columns[0].field] =e.Text;
         // @ts-ignore 
@@ -458,14 +450,12 @@ let yearDropdownDef = [];
         this.sendData(childproduct);
     }
     editorDropdown= (props: any) => {
-        debugger;
-        let field = props.field
+         let field = props.field
         return this.DropdownEditor(props, field);
     }
 
     DropdownEditor = (props: any, field: any) => {
-        debugger; 
-        let currentYear = this.state.yearData[0].Text;
+         let currentYear = this.state.yearData[0].Text;
         return <Dropdown value={currentYear} 
         onChange={(e) => {this.handleChange(props,e.value)}}
         options={this.state.yearData}

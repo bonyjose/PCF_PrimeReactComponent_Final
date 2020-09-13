@@ -22,7 +22,8 @@ type AppMonthProps = {
     isUpdated: boolean,
     changeUpadated: any,
     pannelType: any,
-    fileUpdated(boolean): any
+    fileUpdated(boolean): any,
+    EntitySetName:string
 }
 type monthState = {
     nodes: [],
@@ -34,7 +35,7 @@ type monthState = {
     rowEditedKey: [],
     monthDetails: any[],
     rowEditedKeyData: any[],
-    loading: boolean,
+    loading: boolean
 }
 
 class MonthlySummary extends Component<AppMonthProps, monthState>{
@@ -385,7 +386,6 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
         context = this.props.context;
         let stateVariable = this;
         for (let i = 0; i < uniqueKeys.length; i++) {
-            debugger;
             this.setState({ loading: true }, () => {
                 setTimeout(() => {
                     let rowKey = uniqueKeys[i];
@@ -409,13 +409,10 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
 
     }
     requiredValidator = (props) => {
-        debugger;
         let value = props.node.data[props.field];
         value.replace(/\+|-/ig, '');
         let isValid = value.length > 0;
-
         return value && value.length > 0;
-
 
     }
     render() {
@@ -440,7 +437,8 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
             context: this.props.context,
             IsUpdated: this.state.IsUpdated,
             monthDetails: this.state.monthDetails,
-            isViewEditable: isViewEditable
+            isViewEditable: isViewEditable,
+            EntitySetName:this.props.EntitySetName
         }
         let datanode: any[] = this.state.nodes;
         const dynamicColumns = Object.values(coldef).map((col, i) => {

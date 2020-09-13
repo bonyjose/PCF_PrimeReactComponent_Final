@@ -16,8 +16,7 @@ interface Props {
   context: ComponentFramework.Context<IInputs>;
   IsUpdated: boolean;
   fileUpdated(boolean): any
-  // parentCallback :any;
-
+  EntitySetName:string
 }
 interface State {
   SelectedLayout: string;
@@ -51,7 +50,6 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
   }
 
   ParseToQuarter(month: any) {
-    debugger;
     let months = month;
     let lineTot
     if (typeof (this.props.context.parameters) !== 'undefined') {
@@ -641,7 +639,8 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       IsUpdated: this.state.IsUpdated,
       monthDetails: this.state.monthDetails,
       pannelType: "Q",
-      isViewEditable: isViewEditable
+      isViewEditable: isViewEditable,
+      EntitySetName:this.props.EntitySetName
     }
 
     let datanode: any[] = this.state.nodes;

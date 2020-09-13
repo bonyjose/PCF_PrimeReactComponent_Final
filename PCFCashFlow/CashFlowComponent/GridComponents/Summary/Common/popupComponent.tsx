@@ -16,6 +16,7 @@ type AppProps = {
     pannelType: any,
     actualColDef: any[],
     isViewEditable: boolean
+    EntitySetName:string
 }
 
 type AppState = {
@@ -59,7 +60,6 @@ export class DialogDemo extends Component<AppProps, AppState>{
     }
 
     componentDidMount() {
-        debugger;
         this.fetchEntityName();
         this.createMonthDefinition();
     }
@@ -85,8 +85,6 @@ export class DialogDemo extends Component<AppProps, AppState>{
         this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
     }
     onSave(name: string) {
-        debugger;
-
         let ppr = this.props.context.parameters.ppr.raw;
         let updatedDatas: any[] = this.state.updatedData;
         let isValid = true;
@@ -144,13 +142,12 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
     fetchEntityName()
     {
-        debugger;
         let gridEntity = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let ppr = this.props.context.parameters.ppr.raw;
         var pprEntity;
         var request = new XMLHttpRequest();
         // @ts-ignore 
-        request.open("GET", Xrm.Page.context.getClientUrl() + "api/data/v9.1//EntityDefinitions(LogicalName='"+gridEntity+"')/Attributes(LogicalName='"+ppr+"')", false);
+        request.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v9.1//EntityDefinitions(LogicalName='"+gridEntity+"')/Attributes(LogicalName='"+ppr+"')", false);
         request.setRequestHeader("OData-MaxVersion", "4.0");			
         request.setRequestHeader("OData-Version", "4.0");
         request.setRequestHeader("Accept", "application/json");
@@ -242,20 +239,15 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     entity[Column] = Number(editNode[Column]);
                 }
                 else if (Column == ppr) {
-                    entity[pprEntity + "@odata.bind"] = "/" + "m360_pprs" + "(" + ContextId + ")";
-                    // entity[primaryLookupschemaName+"@odata.bind"] = "/"+entitySetName+"(" + ContextId+ ")";
-                    // entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
+                    entity[pprEntity + "@odata.bind"] = "/" + this.props.EntitySetName + "(" + ContextId + ")";
                 }
                 else if (Column == cashFlow) {
                     entity[cashFlow] = editNode[Column];
                 }
                 else if (Column == expandYear) {
                     entity[expandYear] = this.state.dropDownData;
-                    // entity[expandYear] = "555080002";
-                }
+                 }
                 else {
-                    // let stri
-                    // entity[Column] = Number(editNode[Column]);
                 }
             }
             entity[lineTotal] = Number(entity[lineTotal]);
@@ -297,14 +289,12 @@ export class DialogDemo extends Component<AppProps, AppState>{
     }
 
     setDropDownData = (data) => {
-        debugger;
         let currentYearValue: any = data;
         this.setState({ dropDownData: currentYearValue })
     }
 
     //------------------------------------------------Year Region-----------------------------------------
     createMonthRequest = (editNode: any, contextId: any) => {
-        debugger;
         let months: any[] = [];
         months = this.createMonthDefinitionFromYear();//Define Months
         var entity = {};
@@ -331,9 +321,8 @@ export class DialogDemo extends Component<AppProps, AppState>{
         for (let Column in editNode) {
 
             if (Column == ppr) {
-                entity[pprEntity + "@odata.bind"] = "/" + "m360_pprs" + "(" + contextId + ")";
-                //entity[ppr + "@odata.bind"] = "/" + ppr + "(" + contextId + ")";
-            }
+                entity[pprEntity + "@odata.bind"] = "/" + this.props.EntitySetName + "(" + contextId + ")";
+              }
             else if (Column == expandYear) {
                 entity[expandYear] = this.state.dropDownData;
             }

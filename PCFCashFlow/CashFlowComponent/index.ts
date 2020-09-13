@@ -44,16 +44,6 @@ export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, 
 		// this.props.numberOfFaces = context.parameters.numberOfFaces.raw || 3;
 		this.theContainer = container;
 		this._props.data = context.parameters.cashFlowDataSet;
-		// let arraData=this._props.data ;
-		// context.parameters.cashFlowDataSet.paging.setPageSize(50);
-		// const dataSet = context.parameters.cashFlowDataSet;
-		// let datasetColumns: any[] = this._columns(dataSet);
-		// let dataItems: any[] = this._items(dataSet, datasetColumns);
-		// this._props.data = dataItems;
-		// this._props.columns = datasetColumns;
-		
-		debugger;
-
 	}
 
 
