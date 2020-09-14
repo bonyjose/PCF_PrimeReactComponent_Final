@@ -132,7 +132,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
                 break;
             }
         }
-        temp = temp.replace(/, /, '');
+        temp = temp.replace(/,/g, "");;
         return parseFloat(temp);
     }
 
