@@ -56,7 +56,7 @@ export class App extends React.Component<Props, State> {
       EntitySetName:""
     };
     this.handleChange = this.handleChange.bind(this);
-    this.fetchEntityName();
+
   }
 
   fileUpdated = (value: boolean) => {
@@ -137,7 +137,7 @@ export class App extends React.Component<Props, State> {
     if(entityNameData.length===0){
       console.log(entityNameData.length)
       debugger;
-      // this.fetchEntityName()
+      this.fetchEntityName()
     }
 
     let inputData = {
