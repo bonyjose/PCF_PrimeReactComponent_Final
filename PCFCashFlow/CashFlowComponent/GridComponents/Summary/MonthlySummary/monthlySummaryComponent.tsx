@@ -105,6 +105,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     createApiUpdateRequest(editNode: any) {
+        debugger;
         let months: any[] = [];
         if (this.state.monthDetails.length == 0) {
             this.createMonthDefinition();//Define Months
@@ -121,7 +122,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
             if (months.includes(Column)) {
                 if (isNaN(editNode[Column])) {
                     var cur = this.convert(editNode[Column]);
-                    if (!isNull(cur)) {
+                    if (!(cur===null)) {
                         entity[Column] = cur;
                         total = total + (cur);
                     }
@@ -368,6 +369,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
         for (let i = 0; i < uniqueKeys.length; i++) {
             this.setState({ loading: true }, () => {
                 setTimeout(() => {
+                    debugger;
                     let rowKey = uniqueKeys[i];
                     let editedNode = this.findNodeByKey(nodes, rowKey);
                     let editedObject = this.createApiUpdateRequest(editedNode.data);
