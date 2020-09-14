@@ -16,6 +16,7 @@ type AppProps = {
     pannelType: any,
     actualColDef: any[],
     isViewEditable: boolean
+    EntitySetName: string
 }
 
 type AppState = {
@@ -30,11 +31,10 @@ type AppState = {
     monthDetails: any;
     loading: boolean;
     dropDownData: any;
+    pprEntity: string;
 }
 interface inputData {
-    SetData(): any,
-    // data:any[]
-
+    SetData(): any
 }
 export class DialogDemo extends Component<AppProps, AppState>{
     public messages = React.createRef<any>();
@@ -51,22 +51,23 @@ export class DialogDemo extends Component<AppProps, AppState>{
             updatedData: [],
             monthDetails: [],
             dropDownData: "",
-            loading: false
+            loading: false,
+            pprEntity: ""
 
         };
     }
 
     componentDidMount() {
-        debugger;
+        this.fetchEntityName();
         this.createMonthDefinition();
     }
-	showError() {
-		this.messages.current.show({
-			severity: 'warn',
-			summary: 'Error Message',
-			detail: 'All fields are mandatory'
-		});
-	}
+    showError() {
+        this.messages.current.show({
+            severity: 'warn',
+            summary: 'Error Message',
+            detail: 'All fields are mandatory'
+        });
+    }
 
 
     onClick(name: string) {
@@ -82,38 +83,31 @@ export class DialogDemo extends Component<AppProps, AppState>{
         this.setState((prevState) => ({ ...prevState, [`${name}`]: false }))
     }
     onSave(name: string) {
-        debugger;
-
         let ppr = this.props.context.parameters.ppr.raw;
         let updatedDatas: any[] = this.state.updatedData;
         let isValid = true;
         for (let Column in updatedDatas[0]) {
-            if(updatedDatas[0][Column] == "")
-            {
-                if(Column != ppr)
-                {
+            if (updatedDatas[0][Column] == "") {
+                if (Column != ppr) {
                     isValid = false;
                 }
             }
         }
         let data = this.messages.current.state.messages;
-        try{
-            if (!isValid && data.length === 0 )
-            {
+        try {
+            if (!isValid) {
                 this.messages.current.clear;
-                // this.messages.current.show({ sticky: true, severity: 'warn', detail: 'All fields are mandatory' });
                 this.showError();
                 return;
             }
-            else
-            {
+            else {
                 this.messages.current.clear();
             }
         }
-        catch{
+        catch {
             console.log("validation failed");
         }
-        
+
         let context: ComponentFramework.Context<IInputs>;
         context = this.props.context;
         let stateVariable = this;
@@ -135,8 +129,32 @@ export class DialogDemo extends Component<AppProps, AppState>{
 
             }, 3000);
         });
-        // this.forceUpdate();
+    }
 
+    fetchEntityName() {
+        let gridEntity = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
+        let ppr = this.props.context.parameters.ppr.raw;
+        var pprEntity;
+        var request = new XMLHttpRequest();
+        // @ts-ignore 
+        request.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v9.1//EntityDefinitions(LogicalName='" + gridEntity + "')/Attributes(LogicalName='" + ppr + "')", false);
+        request.setRequestHeader("OData-MaxVersion", "4.0");
+        request.setRequestHeader("OData-Version", "4.0");
+        request.setRequestHeader("Accept", "application/json");
+        request.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        request.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+        request.onreadystatechange = function () {
+            if (request.readyState === 4) {
+                request.onreadystatechange = null;
+                if (request.status === 200) {
+                    pprEntity = JSON.parse(request.response).SchemaName;
+                    console.log("ppr metadate failed " + request.response);
+                }
+            };
+            request.send();
+        }
+        request.send();
+        this.setState({ pprEntity: pprEntity });
     }
 
     createMonthDefinition = () => {
@@ -175,15 +193,12 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     break;
             }
         });
-        // return month;
         this.setState({ monthDetails: month });
         console.log(this.state.monthDetails);
     }
 
 
     createApiUpdateRequest(editNode: any) {
-        // let months = this.createMonthDefinition;
-        // this.setState({ monthDetails: months });
         let months = this.state.monthDetails;
         let lineTotal, ppr, cashFlow, expandYear;
         if (typeof (this.props.context.parameters) !== 'undefined') {
@@ -194,6 +209,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         }
         var entity = {};
         entity[lineTotal] = 0;
+        let pprEntity = this.state.pprEntity;
 
         // @ts-ignore 
         let ContextId = this.props.context.page.entityId;
@@ -209,20 +225,15 @@ export class DialogDemo extends Component<AppProps, AppState>{
                     entity[Column] = Number(editNode[Column]);
                 }
                 else if (Column == ppr) {
-                    entity["m360_PPR" + "@odata.bind"] = "/" + "m360_pprs" + "(" + ContextId + ")";
-                    // entity[primaryLookupschemaName+"@odata.bind"] = "/"+entitySetName+"(" + ContextId+ ")";
-                    // entity["m360_PPR@odata.bind"] = "/m360_pprs(43d2bb09-a779-ea11-a811-000d3a59a6cd)";
+                    entity[pprEntity + "@odata.bind"] = "/" + this.props.EntitySetName + "(" + ContextId + ")";
                 }
                 else if (Column == cashFlow) {
                     entity[cashFlow] = editNode[Column];
                 }
                 else if (Column == expandYear) {
                     entity[expandYear] = this.state.dropDownData;
-                    // entity[expandYear] = "555080002";
                 }
                 else {
-                    // let stri
-                    // entity[Column] = Number(editNode[Column]);
                 }
             }
             entity[lineTotal] = Number(entity[lineTotal]);
@@ -264,17 +275,16 @@ export class DialogDemo extends Component<AppProps, AppState>{
     }
 
     setDropDownData = (data) => {
-        debugger;
         let currentYearValue: any = data;
         this.setState({ dropDownData: currentYearValue })
     }
 
     //------------------------------------------------Year Region-----------------------------------------
     createMonthRequest = (editNode: any, contextId: any) => {
-        debugger;
         let months: any[] = [];
         months = this.createMonthDefinitionFromYear();//Define Months
         var entity = {};
+        let pprEntity = this.state.pprEntity;
         let totalForEach = 0;
         let expandYear, ppr, lineTotal, cashFlow;
         if (typeof (this.props.context.parameters) !== 'undefined') {
@@ -297,8 +307,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         for (let Column in editNode) {
 
             if (Column == ppr) {
-                entity["m360_PPR" + "@odata.bind"] = "/" + "m360_pprs" + "(" + contextId + ")";
-                //entity[ppr + "@odata.bind"] = "/" + ppr + "(" + contextId + ")";
+                entity[pprEntity + "@odata.bind"] = "/" + this.props.EntitySetName + "(" + contextId + ")";
             }
             else if (Column == expandYear) {
                 entity[expandYear] = this.state.dropDownData;
@@ -376,7 +385,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
             <div className="addNewButton">
                 <Button label="Add New" disabled={!this.props.isViewEditable} className="addnewBtn" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic2')} iconPos="left" />
                 <Dialog position="top" header="Add New Record" visible={this.state.displayBasic2} style={{ width: '96vw' }} onHide={() => this.onHide('displayBasic2')} blockScroll footer={this.renderFooter('displayBasic2')}>
-                <Messages ref={this.messages} className="validationMessage" />
+                    <Messages ref={this.messages} className="validationMessage" />
                     <DataTableAddNew setData={this.setData} dropDownData={this.setDropDownData}   {...inputData} />
                 </Dialog>
             </div>

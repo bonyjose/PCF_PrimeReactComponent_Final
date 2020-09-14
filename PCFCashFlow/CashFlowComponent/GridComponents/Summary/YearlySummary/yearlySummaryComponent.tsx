@@ -18,7 +18,7 @@ type AppMonthProps = {
     context: ComponentFramework.Context<IInputs>;
     IsUpdated: boolean,
     fileUpdated(boolean): any
-
+    EntitySetName:string
 }
 type monthState = {
     nodes: [],
@@ -37,10 +37,7 @@ type monthState = {
 class YearlyComponent extends Component<AppMonthProps, monthState>{
     public messages = React.createRef<any>();
     constructor(props: AppMonthProps) {
-
         super(props);
-
-
         this.state = {
             nodes: [],
             sampledata: this.props.data,
@@ -54,9 +51,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
             loading: false,
             sortField:this.props.context.parameters.expandYear.raw
         };
-
     }
-
 
     componentDidUpdate(prevProps, prevState) {
 
@@ -145,7 +140,6 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
         return (!str || 0 === str.length);
     }
     successCallback() {
-        // console.log("api create success");
         return console.log("api update success");
     }
 
@@ -271,9 +265,6 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
         let datas = this.sortByKey(Object.values(cols), 'expander');
         return datas;
     }
-
-
-
     sortByKey(array, key) {
         return array.sort(function (a, b) {
             var x = a[key]; var y = b[key];
@@ -281,7 +272,7 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
         });
     }
     createJsonTreestructure = () => {
-        debugger;
+
         let expandYear;
         if (typeof (this.props.context.parameters) !== 'undefined') {
             expandYear = this.props.context.parameters.expandYear.raw;
@@ -404,7 +395,8 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
             context: this.props.context,
             IsUpdated: this.state.IsUpdated,
             monthDetails: this.state.monthDetails,
-            isViewEditable: isViewEditable
+            isViewEditable: isViewEditable,
+            EntitySetName:this.props.EntitySetName
         }
         let datanode: any[] = this.state.nodes;
         const dynamicColumns = Object.values(coldef).map((col, i) => {
@@ -430,7 +422,5 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
             </LoadingOverlay>
         )
     }
-
-
 }
 export default YearlyComponent;

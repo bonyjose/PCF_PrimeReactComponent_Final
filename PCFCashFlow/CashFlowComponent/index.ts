@@ -44,16 +44,6 @@ export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, 
 		// this.props.numberOfFaces = context.parameters.numberOfFaces.raw || 3;
 		this.theContainer = container;
 		this._props.data = context.parameters.cashFlowDataSet;
-		// let arraData=this._props.data ;
-		// context.parameters.cashFlowDataSet.paging.setPageSize(50);
-		// const dataSet = context.parameters.cashFlowDataSet;
-		// let datasetColumns: any[] = this._columns(dataSet);
-		// let dataItems: any[] = this._items(dataSet, datasetColumns);
-		// this._props.data = dataItems;
-		// this._props.columns = datasetColumns;
-		
-		debugger;
-
 	}
 
 
@@ -141,7 +131,7 @@ export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, 
 			let iColumn: any = {
 				key: column.name,
 				name: column.displayName,
-				fieldName: column.alias,
+				fieldName: column.name,
 				dataType:column.dataType,
 				currentWidth: column.visualSizeFactor,
 				data: { isPrimary: column.isPrimary },
@@ -152,8 +142,8 @@ export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, 
 				sortDescendingAriaLabel: 'Z to A',
 				className: 'detailList-cell',
 				headerClassName: 'detailList-gridLabels',
-				isPrimary: column.isPrimary
-				
+				isPrimary: column.isPrimary,
+				order:column.order				
 			}
 
 

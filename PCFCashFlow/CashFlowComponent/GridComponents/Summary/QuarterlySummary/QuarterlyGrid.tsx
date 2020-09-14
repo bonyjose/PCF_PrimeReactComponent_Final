@@ -1,5 +1,4 @@
 import React from "react";
-// import "./CSS/App.css";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { TreeTable } from "primereact/treetable";
@@ -16,8 +15,7 @@ interface Props {
   context: ComponentFramework.Context<IInputs>;
   IsUpdated: boolean;
   fileUpdated(boolean): any
-  // parentCallback :any;
-
+  EntitySetName: string
 }
 interface State {
   SelectedLayout: string;
@@ -51,7 +49,6 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
   }
 
   ParseToQuarter(month: any) {
-    debugger;
     let months = month;
     let lineTot
     if (typeof (this.props.context.parameters) !== 'undefined') {
@@ -63,70 +60,43 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     let January, February, March, April, May, June, July, August, September, October, November, December;
     for (let columns of this.props.columns) {
 
-      if(columns.fieldName == "January")
-      {
-        January = columns.fieldName;
+      if (columns.fieldName == "January") {
+        January = columns.key;
       }
-      else if(columns.fieldName == "February")
-      {
-        February = columns.fieldName;
+      else if (columns.fieldName == "February") {
+        February = columns.key;
       }
-      else if(columns.fieldName == "March")
-      {
-        March = columns.fieldName;
+      else if (columns.fieldName == "March") {
+        March = columns.key;
       }
-      else if(columns.fieldName == "April")
-      {
-        April = columns.fieldName;
+      else if (columns.fieldName == "April") {
+        April = columns.key;
       }
-      else if(columns.fieldName == "May")
-      {
-        May = columns.fieldName;
+      else if (columns.fieldName == "May") {
+        May = columns.key;
       }
-      else if(columns.fieldName == "June")
-      {
-        June = columns.fieldName;
+      else if (columns.fieldName == "June") {
+        June = columns.key;
       }
-      else if(columns.fieldName == "July")
-      {
-        July = columns.fieldName;
+      else if (columns.fieldName == "July") {
+        July = columns.key;
       }
-      else if(columns.fieldName == "August")
-      {
-        August = columns.fieldName;
+      else if (columns.fieldName == "August") {
+        August = columns.key;
       }
-      else if(columns.fieldName == "September")
-      {
-        September = columns.fieldName;
+      else if (columns.fieldName == "September") {
+        September = columns.key;
       }
-      else if(columns.fieldName == "October")
-      {
-        October = columns.fieldName;
+      else if (columns.fieldName == "October") {
+        October = columns.key;
       }
-      else if(columns.fieldName == "November")
-      {
-        November = columns.fieldName;
+      else if (columns.fieldName == "November") {
+        November = columns.key;
       }
-      else if(columns.fieldName == "December")
-      {
-        December = columns.fieldName;
+      else if (columns.fieldName == "December") {
+        December = columns.key;
       }
     }
-    
-    // if (typeof (this.props.context.parameters) !== 'undefined') {
-    
-    //   February = this.props.columns["January"];
-    //   March = this.props.columns["January"];
-    //   April = this.props.columns["January"];
-    //   May = this.props.columns["January"];
-    //   June = this.props.columns["January"];
-    //   July = this.props.columns["January"];
-    //   August = this.props.columns["January"];
-    //   September = this.props.columns["January"];
-    //   October = this.props.columns["January"];
-    //   November = this.props.columns["January"];
-    //   December = this.props.columns["January"];
-    // }
     let i = 0;
     let q1 = 0;
     let q2 = 0;
@@ -141,7 +111,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
             q3 = this.convert(columns[July]) + this.convert(columns[August]) + this.convert(columns[September]);
             q4 = this.convert(columns[October]) + this.convert(columns[November]) + this.convert(columns[December]);
           }
-          catch{
+          catch {
             console.log("add failed");
           }
         }
@@ -162,13 +132,12 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
         i++;
       }
     }
-    catch{
+    catch {
       console.log("Parse failed");
     }
     console.log(data);
     return data;
   }
-
 
   numberTryParse(string) {
     var tempCur = Number(string.replace(/[^0-9.-]+/g, ""))
@@ -178,6 +147,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     }
     return returnValue;
   }
+
   numberTryParseQuarter(string) {
     var returnValue = 0;
     if (!isNaN(string) && string != null && string != "") {
@@ -187,7 +157,6 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps, prevState) {
-
     if ((this.props.IsUpdated) && (!this.state.IsUpdated)) {
       let months = this.createMonthDefinition();
       this.setState({ monthDetails: months });
@@ -206,8 +175,8 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       this.setState({ nodes: newNodes });
       this.setState({ IsUpdated: this.props.IsUpdated });
     }
-    // this.props.parentCallback;
   }
+
   componentDidMount() {
     if (!this.state.IsUpdated || this.props.data.length > 0) {
       let months = this.createMonthDefinition();
@@ -216,7 +185,6 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       let data = this.createJsonTreestructure(QuarterData);
       let newNodes = JSON.parse(data);
       this.setState({ nodes: newNodes });
-
     }
   }
 
@@ -256,9 +224,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       }
     });
     return month;
-    // this.setState({ monthDetails: month });
   }
-
 
   createJsonTreestructure = (QuarterData: any[]) => {
     let expandYear;
@@ -269,7 +235,6 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       expandYear = "FinacialYear";
     }
     const yearHead = expandYear.toString();
-    // this.createColDefinition()
     let product: any[] = Object.values(QuarterData);
     let cols = this.createfieldDef();
     let field = Object.values(cols).map(p => p.fieldName);
@@ -332,7 +297,6 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       row["fieldName"] = "Q" + this.numberTryParseQuarter(i + 1);
       cols.push(row);
     }
-
     return cols;
 
   }
@@ -447,24 +411,47 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     let total = 0;
     let lineTotal;
     if (typeof (this.props.context.parameters) !== 'undefined') {
-      lineTotal = this.props.context. parameters.lineTotal.raw;
+      lineTotal = this.props.context.parameters.lineTotal.raw;
     }
-
-
     let January, February, March, April, May, June, July, August, September, October, November, December;
-    if (typeof (this.props.context.parameters) !== 'undefined') {
-      January = this.props.columns["January"];
-      February = this.props.columns["January"];
-      March = this.props.columns["January"];
-      April = this.props.columns["January"];
-      May = this.props.columns["January"];
-      June = this.props.columns["January"];
-      July = this.props.columns["January"];
-      August = this.props.columns["January"];
-      September = this.props.columns["January"];
-      October = this.props.columns["January"];
-      November = this.props.columns["January"];
-      December = this.props.columns["January"];
+    for (let columns of this.props.columns) {
+
+      if (columns.fieldName == "January") {
+        January = columns.key;
+      }
+      else if (columns.fieldName == "February") {
+        February = columns.key;
+      }
+      else if (columns.fieldName == "March") {
+        March = columns.key;
+      }
+      else if (columns.fieldName == "April") {
+        April = columns.key;
+      }
+      else if (columns.fieldName == "May") {
+        May = columns.key;
+      }
+      else if (columns.fieldName == "June") {
+        June = columns.key;
+      }
+      else if (columns.fieldName == "July") {
+        July = columns.key;
+      }
+      else if (columns.fieldName == "August") {
+        August = columns.key;
+      }
+      else if (columns.fieldName == "September") {
+        September = columns.key;
+      }
+      else if (columns.fieldName == "October") {
+        October = columns.key;
+      }
+      else if (columns.fieldName == "November") {
+        November = columns.key;
+      }
+      else if (columns.fieldName == "December") {
+        December = columns.key;
+      }
     }
     for (let Column in editNode) {
 
@@ -502,12 +489,10 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     return entity;
   }
 
-
   isEmpty = (str) => {
     return (!str || 0 === str.length);
   }
 
-  // Function to convert 
   convert = (currency) => {
     var k, temp = "";
     for (var i = 0; i < currency.length; i++) {
@@ -522,10 +507,6 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       temp = temp.replace(/, /, '');
     }
 
-    // if(temp == "")
-    // {
-    //   temp = 0;
-    // }
     return parseFloat(temp);
   }
 
@@ -621,12 +602,13 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       IsUpdated: this.state.IsUpdated,
       monthDetails: this.state.monthDetails,
       pannelType: "Q",
-      isViewEditable: isViewEditable
+      isViewEditable: isViewEditable,
+      EntitySetName: this.props.EntitySetName
     }
 
     let datanode: any[] = this.state.nodes;
     const dynamicColumns = Object.values(coldef).map((col, i) => {
-      return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} sortable={col.expander}  editor={col.isEditable ? this.vinEditor : undefined} style={{ width: '100px' }} headerClassName="p-col-d" />;
+      return <Column key={col.field} field={col.field} header={col.header} expander={col.expander} sortable={col.expander} editor={col.isEditable ? this.vinEditor : undefined} style={{ width: '100px' }} headerClassName="p-col-d" />;
     });
     return (
       <LoadingOverlay
