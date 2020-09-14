@@ -139,14 +139,6 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
     isEmpty = (str) => {
         return (!str || 0 === str.length);
     }
-    successCallback() {
-        return console.log("api update success");
-    }
-
-    errorCallback() {
-        return console.log("api update failed");
-    }
-
     findNodeByKey(nodes: any, key: any) {
 
         let path = key.split('-');
@@ -330,7 +322,6 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
             }
             ResultArray.push(resultData);
         }
-        console.log("Year Data:",ResultArray);
         return JSON.parse(JSON.stringify(ResultArray));
 
     }

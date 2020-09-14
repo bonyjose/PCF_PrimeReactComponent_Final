@@ -245,7 +245,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             }
         });
         this.setState({ monthDetails: month });
-        console.log(this.state.monthDetails);
     }
 
     createColDefinition = () => {
@@ -321,7 +320,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
                 if (req1.status === 200) {
                     var resultdata = JSON.parse(req1.response);
                     yearData = resultdata;
-                    console.log("api inner respnse " + req1.response);
                 }
             };
             req1.send();
@@ -344,9 +342,7 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
             }
         }
         catch {
-            console.log("fetch failed");
         }
-        console.log("api outer respnse " + yearDropdownDef);
         return yearDropdownDef;
     }
 
@@ -413,7 +409,6 @@ export class DataTableAddNew extends Component<AppProps, AppState> {
         var colDefition = this.createColDefinition();
 
         var colData = this.state.colDef;
-        console.log(colDefition);
         colDefition = colDefition.map((col, i) => {
             return <Column key={col.field} field={col.field} editor={col.isEditable ? this.vinEditor : (col.IsDropdDown ? this.editorDropdown : undefined)} header={col.header} className={col.IsDropdDown ? "dropColumn" : "normalColumn"} />;  // editorValidator={this.requiredValidator}
         });

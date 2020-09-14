@@ -54,7 +54,6 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     if (typeof (this.props.context.parameters) !== 'undefined') {
       lineTot = this.props.context.parameters.lineTotal.raw;
     }
-    console.log(months);
     let product: any[] = Object.values(this.props.data);
     let data = Object.values(product);
     let January, February, March, April, May, June, July, August, September, October, November, December;
@@ -112,7 +111,6 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
             q4 = this.convert(columns[October]) + this.convert(columns[November]) + this.convert(columns[December]);
           }
           catch {
-            console.log("add failed");
           }
         }
 
@@ -127,15 +125,13 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
         }
         catch
         {
-          console.log("add list failed");
         }
         i++;
       }
     }
     catch {
-      console.log("Parse failed");
+
     }
-    console.log(data);
     return data;
   }
 
@@ -508,14 +504,6 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     }
 
     return parseFloat(temp);
-  }
-
-  successCallback() {
-    console.log("api update success");
-  }
-
-  errorCallback() {
-    console.log("api update failed");
   }
 
   findNodeByKey(nodes: any, key: any) {

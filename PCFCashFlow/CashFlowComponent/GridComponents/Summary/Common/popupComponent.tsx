@@ -105,7 +105,6 @@ export class DialogDemo extends Component<AppProps, AppState>{
             }
         }
         catch {
-            console.log("validation failed");
         }
 
         let context: ComponentFramework.Context<IInputs>;
@@ -115,7 +114,6 @@ export class DialogDemo extends Component<AppProps, AppState>{
         let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let editedObject = this.createApiUpdateRequest(updatedDatas[0]);
 
-        console.log(editedObject);
         this.setState({ loading: true }, () => {
             setTimeout(() => {
                 this.props.context.webAPI.createRecord(gridEntity, editedObject).then(function (result) {
@@ -148,8 +146,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
                 request.onreadystatechange = null;
                 if (request.status === 200) {
                     pprEntity = JSON.parse(request.response).SchemaName;
-                    console.log("ppr metadate failed " + request.response);
-                }
+                    }
             };
             request.send();
         }
@@ -194,7 +191,6 @@ export class DialogDemo extends Component<AppProps, AppState>{
             }
         });
         this.setState({ monthDetails: month });
-        console.log(this.state.monthDetails);
     }
 
 
@@ -248,17 +244,7 @@ export class DialogDemo extends Component<AppProps, AppState>{
         }
         return returnValue;
     }
-
-
-    successCallback() {
-        console.log("api update success");
-    }
-
-    errorCallback() {
-        console.log("api update failed");
-    }
-
-
+    
     renderFooter(name: string) {
         return (
             <div>

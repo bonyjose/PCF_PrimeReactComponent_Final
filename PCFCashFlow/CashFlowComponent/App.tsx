@@ -123,8 +123,7 @@ export class App extends React.Component<Props, State> {
           request.onreadystatechange = null;
           if (request.status === 200) {
             entitySetName = JSON.parse(request.response).EntitySetName;
-              console.log("ppr metadate failed " + request.response);
-          }
+            }
       };
       request.send();
       }
@@ -135,7 +134,6 @@ export class App extends React.Component<Props, State> {
   public render() {
     var entityNameData=this.state.EntitySetName;
     if(entityNameData.length===0){
-      console.log(entityNameData.length)
       debugger;
       this.fetchEntityName()
     }

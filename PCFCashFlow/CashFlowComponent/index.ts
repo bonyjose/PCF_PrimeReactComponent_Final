@@ -65,19 +65,11 @@ export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, 
 			else 
 			{
 				const dataSet = context.parameters.cashFlowDataSet;
-				// dataSet.paging.setPageSize(50);
-
 				let datasetColumns: any = this._columns(dataSet);
 				let dataItems: any = this._items(dataSet, datasetColumns);
-
-				console.log(dataItems);
 				this._props.data =dataItems;
 				this._props.columns =datasetColumns;
 				this._props.context=context;
-				// const element = React.createElement(
-				// 	App ,
-				// 	this._props
-				// );
 				const element =  React.createElement(Provider, {store: store}, 
 					React.createElement(App, this._props), 
 					
@@ -94,7 +86,6 @@ export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, 
 	notifyChange(value:[]){
 
 		this.childData = value;
-		console.log(this.childData);
 		this.notifyOutputChanged();
 	}
 	ContextSetChange(){

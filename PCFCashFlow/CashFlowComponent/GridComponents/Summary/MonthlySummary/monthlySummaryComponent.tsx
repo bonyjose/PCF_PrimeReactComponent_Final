@@ -159,14 +159,6 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
         return (!str || 0 === str.length);
     }
 
-    successCallback() {
-        return console.log("api update success");
-    }
-
-    errorCallback() {
-        return console.log("api update failed");
-    }
-
     findNodeByKey(nodes: any, key: any) {
 
         let path = key.split('-');
@@ -233,7 +225,6 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
             }
         });
         this.setState({ monthDetails: month });
-        console.log(this.state.monthDetails);
     }
 
     createColDefinition = (isMonthlyEdit: Boolean) => {
@@ -380,8 +371,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
                     let rowKey = uniqueKeys[i];
                     let editedNode = this.findNodeByKey(nodes, rowKey);
                     let editedObject = this.createApiUpdateRequest(editedNode.data);
-                    console.log(editedObject);
-                    var data = this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(function (result) {
+                     var data = this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(function (result) {
 
 
                         if (i === uniqueKeys.length - 1) {
