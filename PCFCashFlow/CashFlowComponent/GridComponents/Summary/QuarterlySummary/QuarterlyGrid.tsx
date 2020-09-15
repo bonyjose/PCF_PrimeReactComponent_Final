@@ -105,10 +105,10 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       for (let columns of data) {
         if (typeof (columns[months[3]]) !== 'undefined' && columns[months[3]] !== null) {
           try {
-            q1 = this.convert(columns[January]) + this.convert(columns[February]) + this.convert(columns[March]);
-            q2 = this.convert(columns[April]) + this.convert(columns[May]) + this.convert(columns[June]);
-            q3 = this.convert(columns[July]) + this.convert(columns[August]) + this.convert(columns[September]);
-            q4 = this.convert(columns[October]) + this.convert(columns[November]) + this.convert(columns[December]);
+            q1 = this.convertCurrency(columns[January]) + this.convertCurrency(columns[February]) + this.convertCurrency(columns[March]);
+            q2 = this.convertCurrency(columns[April]) + this.convertCurrency(columns[May]) + this.convertCurrency(columns[June]);
+            q3 = this.convertCurrency(columns[July]) + this.convertCurrency(columns[August]) + this.convertCurrency(columns[September]);
+            q4 = this.convertCurrency(columns[October]) + this.convertCurrency(columns[November]) + this.convertCurrency(columns[December]);
           }
           catch {
           }
@@ -504,6 +504,10 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     }
 
     return parseFloat(temp);
+  }
+
+  convertCurrency =(currency) => {
+    return parseFloat(currency.substring(1));
   }
 
   findNodeByKey(nodes: any, key: any) {
