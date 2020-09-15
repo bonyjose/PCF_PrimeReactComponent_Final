@@ -56,46 +56,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     }
     let product: any[] = Object.values(this.props.data);
     let data = Object.values(product);
-    let January, February, March, April, May, June, July, August, September, October, November, December;
-    for (let columns of this.props.columns) {
-
-      if (columns.fieldName == "January") {
-        January = columns.key;
-      }
-      else if (columns.fieldName == "February") {
-        February = columns.key;
-      }
-      else if (columns.fieldName == "March") {
-        March = columns.key;
-      }
-      else if (columns.fieldName == "April") {
-        April = columns.key;
-      }
-      else if (columns.fieldName == "May") {
-        May = columns.key;
-      }
-      else if (columns.fieldName == "June") {
-        June = columns.key;
-      }
-      else if (columns.fieldName == "July") {
-        July = columns.key;
-      }
-      else if (columns.fieldName == "August") {
-        August = columns.key;
-      }
-      else if (columns.fieldName == "September") {
-        September = columns.key;
-      }
-      else if (columns.fieldName == "October") {
-        October = columns.key;
-      }
-      else if (columns.fieldName == "November") {
-        November = columns.key;
-      }
-      else if (columns.fieldName == "December") {
-        December = columns.key;
-      }
-    }
+   
     let i = 0;
     let q1 = 0;
     let q2 = 0;
@@ -105,10 +66,10 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       for (let columns of data) {
         if (typeof (columns[months[3]]) !== 'undefined' && columns[months[3]] !== null) {
           try {
-            q1 = this.convertCurrency(columns[January]) + this.convertCurrency(columns[February]) + this.convertCurrency(columns[March]);
-            q2 = this.convertCurrency(columns[April]) + this.convertCurrency(columns[May]) + this.convertCurrency(columns[June]);
-            q3 = this.convertCurrency(columns[July]) + this.convertCurrency(columns[August]) + this.convertCurrency(columns[September]);
-            q4 = this.convertCurrency(columns[October]) + this.convertCurrency(columns[November]) + this.convertCurrency(columns[December]);
+            q1 = this.convertCurrency(columns[months[0]]) + this.convertCurrency(columns[months[1]]) + this.convertCurrency(columns[months[2]]);
+            q2 = this.convertCurrency(columns[month[3]]) + this.convertCurrency(columns[months[4]]) + this.convertCurrency(columns[months[5]]);
+            q3 = this.convertCurrency(columns[months[6]]) + this.convertCurrency(columns[months[7]]) + this.convertCurrency(columns[months[8]]);
+            q4 = this.convertCurrency(columns[month[9]]) + this.convertCurrency(columns[months[10]]) + this.convertCurrency(columns[months[11]]);
           }
           catch {
           }
