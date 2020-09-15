@@ -105,6 +105,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
     }
 
     createApiUpdateRequest(editNode: any) {
+        debugger;
         let months: any[] = [];
         if (this.state.monthDetails.length == 0) {
             this.createMonthDefinition();//Define Months
@@ -121,7 +122,7 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
             if (months.includes(Column)) {
                 if (isNaN(editNode[Column])) {
                     var cur = this.convert(editNode[Column]);
-                    if (!isNull(cur)) {
+                    if (!(cur===null)) {
                         entity[Column] = cur;
                         total = total + (cur);
                     }
@@ -151,20 +152,12 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
                 break;
             }
         }
-        temp = temp.replace(/, /, '');
+        temp = temp.replace(/,/g, "");;
         return parseFloat(temp);
     }
 
     isEmpty = (str) => {
         return (!str || 0 === str.length);
-    }
-
-    successCallback() {
-        return console.log("api update success");
-    }
-
-    errorCallback() {
-        return console.log("api update failed");
     }
 
     findNodeByKey(nodes: any, key: any) {
@@ -233,7 +226,6 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
             }
         });
         this.setState({ monthDetails: month });
-        console.log(this.state.monthDetails);
     }
 
     createColDefinition = (isMonthlyEdit: Boolean) => {
@@ -377,11 +369,11 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
         for (let i = 0; i < uniqueKeys.length; i++) {
             this.setState({ loading: true }, () => {
                 setTimeout(() => {
+                    debugger;
                     let rowKey = uniqueKeys[i];
                     let editedNode = this.findNodeByKey(nodes, rowKey);
                     let editedObject = this.createApiUpdateRequest(editedNode.data);
-                    console.log(editedObject);
-                    var data = this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(function (result) {
+                     var data = this.props.context.webAPI.updateRecord(gridEntity, editedNode.nodeKey, editedObject).then(function (result) {
 
 
                         if (i === uniqueKeys.length - 1) {

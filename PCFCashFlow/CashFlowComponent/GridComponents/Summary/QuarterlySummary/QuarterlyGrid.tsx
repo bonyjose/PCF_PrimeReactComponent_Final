@@ -54,49 +54,9 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     if (typeof (this.props.context.parameters) !== 'undefined') {
       lineTot = this.props.context.parameters.lineTotal.raw;
     }
-    console.log(months);
     let product: any[] = Object.values(this.props.data);
     let data = Object.values(product);
-    let January, February, March, April, May, June, July, August, September, October, November, December;
-    for (let columns of this.props.columns) {
-
-      if (columns.fieldName == "January") {
-        January = columns.key;
-      }
-      else if (columns.fieldName == "February") {
-        February = columns.key;
-      }
-      else if (columns.fieldName == "March") {
-        March = columns.key;
-      }
-      else if (columns.fieldName == "April") {
-        April = columns.key;
-      }
-      else if (columns.fieldName == "May") {
-        May = columns.key;
-      }
-      else if (columns.fieldName == "June") {
-        June = columns.key;
-      }
-      else if (columns.fieldName == "July") {
-        July = columns.key;
-      }
-      else if (columns.fieldName == "August") {
-        August = columns.key;
-      }
-      else if (columns.fieldName == "September") {
-        September = columns.key;
-      }
-      else if (columns.fieldName == "October") {
-        October = columns.key;
-      }
-      else if (columns.fieldName == "November") {
-        November = columns.key;
-      }
-      else if (columns.fieldName == "December") {
-        December = columns.key;
-      }
-    }
+   
     let i = 0;
     let q1 = 0;
     let q2 = 0;
@@ -106,13 +66,12 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
       for (let columns of data) {
         if (typeof (columns[months[3]]) !== 'undefined' && columns[months[3]] !== null) {
           try {
-            q1 = this.convert(columns[January]) + this.convert(columns[February]) + this.convert(columns[March]);
-            q2 = this.convert(columns[April]) + this.convert(columns[May]) + this.convert(columns[June]);
-            q3 = this.convert(columns[July]) + this.convert(columns[August]) + this.convert(columns[September]);
-            q4 = this.convert(columns[October]) + this.convert(columns[November]) + this.convert(columns[December]);
+            q1 = this.convertCurrency(columns[months[0]]) + this.convertCurrency(columns[months[1]]) + this.convertCurrency(columns[months[2]]);
+            q2 = this.convertCurrency(columns[month[3]]) + this.convertCurrency(columns[months[4]]) + this.convertCurrency(columns[months[5]]);
+            q3 = this.convertCurrency(columns[months[6]]) + this.convertCurrency(columns[months[7]]) + this.convertCurrency(columns[months[8]]);
+            q4 = this.convertCurrency(columns[month[9]]) + this.convertCurrency(columns[months[10]]) + this.convertCurrency(columns[months[11]]);
           }
           catch {
-            console.log("add failed");
           }
         }
 
@@ -127,15 +86,13 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
         }
         catch
         {
-          console.log("add list failed");
         }
         i++;
       }
     }
     catch {
-      console.log("Parse failed");
+
     }
-    console.log(data);
     return data;
   }
 
@@ -367,6 +324,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     }
     cols.push(resultData);
     let datas = this.sortByKey(Object.values(cols), 'expander');
+    datas.push(datas.splice(3, 1)[0]); //moving total column to the last place.
     return datas;
   }
 
@@ -510,12 +468,8 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     return parseFloat(temp);
   }
 
-  successCallback() {
-    console.log("api update success");
-  }
-
-  errorCallback() {
-    console.log("api update failed");
+  convertCurrency =(currency) => {
+    return parseFloat(currency.substring(1));
   }
 
   findNodeByKey(nodes: any, key: any) {
