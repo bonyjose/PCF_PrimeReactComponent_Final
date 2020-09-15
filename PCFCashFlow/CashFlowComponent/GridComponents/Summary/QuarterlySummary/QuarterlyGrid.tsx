@@ -324,6 +324,7 @@ export class GridQuarterlyComponent extends React.Component<Props, State> {
     }
     cols.push(resultData);
     let datas = this.sortByKey(Object.values(cols), 'expander');
+    datas.push(datas.splice(3, 1)[0]); //moving total column to the last place.
     return datas;
   }
 
