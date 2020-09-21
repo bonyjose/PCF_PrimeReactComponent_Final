@@ -58,7 +58,7 @@ export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, 
 			if(context.parameters.cashFlowDataSet.paging != null && context.parameters.cashFlowDataSet.paging.hasNextPage == true) 
 			{
 			//set page size
-				context.parameters.cashFlowDataSet.paging.setPageSize(100);
+				context.parameters.cashFlowDataSet.paging.setPageSize(1000);
 				//load next paging
 				context.parameters.cashFlowDataSet.paging.loadNextPage();
 			} 
@@ -74,7 +74,6 @@ export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, 
 					React.createElement(App, this._props), 
 					
 				  )
-			
 				ReactDOM.render(element ,
 					this.theContainer
 				);
