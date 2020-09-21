@@ -4,11 +4,6 @@ type DataSet = ComponentFramework.PropertyTypes.DataSet;
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {App,Props,State } from './App';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-
-import configureStore from './GridComponents/store/configStore'
-const store = configureStore();
 export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
 	private childData:[];
@@ -70,11 +65,9 @@ export class PCFCashFlow implements ComponentFramework.StandardControl<IInputs, 
 				this._props.data =dataItems;
 				this._props.columns =datasetColumns;
 				this._props.context=context;
-				const element =  React.createElement(Provider, {store: store}, 
-					React.createElement(App, this._props), 
-					
-				  )
-				ReactDOM.render(element ,
+				const element = 
+					React.createElement(App, this._props)
+				ReactDOM.render(element,
 					this.theContainer
 				);
 			} 

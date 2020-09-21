@@ -4,13 +4,7 @@ import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { DialogDemo } from "../Common/popupComponent";
 import { IInputs, IOutputs } from "../../../generated/ManifestTypes"
-import { useState, useEffect, useRef } from 'react'
 import { Button } from 'primereact/button';
-import { ProgressSpinner } from 'primereact/progressspinner';
-import { changeUpadated } from '../../store/actions'
-import { connect } from 'react-redux'
-import axios from 'axios';
-import { isNull } from 'util';
 import { Messages } from 'primereact/messages';
 import LoadingOverlay from 'react-loading-overlay';
 type AppMonthProps = {
@@ -18,10 +12,6 @@ type AppMonthProps = {
     columns: any[];
     context: ComponentFramework.Context<IInputs>;
     IsUpdated: boolean,
-    campaign: any,
-    isUpdated: boolean,
-    changeUpadated: any,
-    pannelType: any,
     fileUpdated(boolean): any,
     EntitySetName: string
 }
@@ -38,7 +28,7 @@ type monthState = {
     loading: boolean
 }
 
-class MonthlySummary extends Component<AppMonthProps, monthState>{
+export class MonthlyComponent extends Component<AppMonthProps, monthState>{
     public messages = React.createRef<any>();
     constructor(props: AppMonthProps) {
         super(props);
@@ -86,7 +76,6 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
         if (data.length === 0) {
             this.messages.current.show({ sticky: true, severity: 'warn', detail: 'There are unsaved changes' });
         }
-        this.props.changeUpadated()
         this.props.fileUpdated(true);
         let gridEntity: string = this.props.context.parameters.cashFlowDataSet.getTargetEntityType().toString();
         let nodes = this.state.nodes;
@@ -447,10 +436,3 @@ class MonthlySummary extends Component<AppMonthProps, monthState>{
         )
     }
 }
-const mapStateToProps = (state: any) => {
-    return {
-        campaign: state.postReduce.campaign,
-        isUpdated: state.postReduce.isUpdated
-    }
-};
-export default connect(mapStateToProps, { changeUpadated })(MonthlySummary)

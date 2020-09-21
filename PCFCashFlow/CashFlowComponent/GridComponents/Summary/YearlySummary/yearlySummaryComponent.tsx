@@ -4,11 +4,7 @@ import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { DialogDemo } from "../Common/popupComponent";
 import { IInputs, IOutputs } from "../../../generated/ManifestTypes"
-import { useState, useEffect, useRef } from 'react'
 import { Button } from 'primereact/button';
-import { ProgressSpinner } from 'primereact/progressspinner';
-
-import axios from 'axios';
 import { isNull } from 'util';
 import { Messages } from 'primereact/messages';
 import LoadingOverlay from 'react-loading-overlay';
@@ -34,7 +30,7 @@ type monthState = {
     sortField:any
 }
 
-class YearlyComponent extends Component<AppMonthProps, monthState>{
+export class YearlyComponent extends Component<AppMonthProps, monthState>{
     public messages = React.createRef<any>();
     constructor(props: AppMonthProps) {
         super(props);
@@ -414,4 +410,3 @@ class YearlyComponent extends Component<AppMonthProps, monthState>{
         )
     }
 }
-export default YearlyComponent;

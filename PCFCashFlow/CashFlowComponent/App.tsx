@@ -1,16 +1,10 @@
 import React from "react";
-import { Dropdown } from "primereact/dropdown";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import { GridQuarterlyComponent } from './GridComponents/Summary/QuarterlySummary/QuarterlyGrid'
-import MonthlySummary from './GridComponents/Summary/MonthlySummary/monthlySummaryComponent'
-import { RecordOverviewProps } from './GridComponents/interface/contextInterface'
+import { QuarterlyComponent } from './GridComponents/Summary/QuarterlySummary/quarterlySummaryComponent'
+import { MonthlyComponent } from './GridComponents/Summary/MonthlySummary/monthlySummaryComponent'
 import { IInputs, IOutputs } from "../CashFlowComponent/generated/ManifestTypes"
 import { TabView, TabPanel } from 'primereact/tabview';
-import YearlyComponent from './GridComponents/Summary/YearlySummary/yearlySummaryComponent';
-import { threadId } from "worker_threads";
+import { YearlyComponent } from './GridComponents/Summary/YearlySummary/yearlySummaryComponent';
 import { Growl } from 'primereact/growl';
-import { Message } from 'primereact/message';
 export interface Props {
   data: any;
   columns: [];
@@ -151,17 +145,15 @@ export class App extends React.Component<Props, State> {
     return (
       <div className="App">
         <Growl ref={this.growl} />
-
-
         <TabView activeIndex={this.state.activeIndex} renderActiveOnly={false} onTabChange={(e) => this.handleChange(e)}>
           <TabPanel header="Year">
             <YearlyComponent {...inputData} fileUpdated={this.fileUpdated} />;
                         </TabPanel>
           <TabPanel header="Month" >
-            <MonthlySummary {...inputData} fileUpdated={this.fileUpdated} />
+            <MonthlyComponent {...inputData} fileUpdated={this.fileUpdated} />
           </TabPanel>
           <TabPanel header="Quarter" >
-            <GridQuarterlyComponent  {...inputData} fileUpdated={this.fileUpdated} />;
+            <QuarterlyComponent  {...inputData} fileUpdated={this.fileUpdated} />;
           </TabPanel>
         </TabView>
       </div>

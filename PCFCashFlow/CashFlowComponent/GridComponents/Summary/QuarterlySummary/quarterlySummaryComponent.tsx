@@ -1,5 +1,4 @@
 import React from "react";
-import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { TreeTable } from "primereact/treetable";
 import { InputText } from "primereact/inputtext";
@@ -7,7 +6,6 @@ import { DialogDemo } from "../Common/popupComponent"
 import { IInputs, IOutputs } from "../../../generated/ManifestTypes"
 import { Button } from "primereact/button";
 import { Messages } from 'primereact/messages';
-import { ProgressSpinner } from 'primereact/progressspinner';
 import LoadingOverlay from 'react-loading-overlay';
 interface Props {
   data: any[];
@@ -29,7 +27,7 @@ interface State {
   loading: boolean,
   isSaved: boolean
 }
-export class GridQuarterlyComponent extends React.Component<Props, State> {
+export class QuarterlyComponent extends React.Component<Props, State> {
   public messages = React.createRef<any>();
   constructor(props: Props) {
     super(props);
